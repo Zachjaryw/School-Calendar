@@ -4,6 +4,8 @@ import numpy as np
 import datetime as dt
 import streamlit as st
 
+st.title("School Calendar")
+
 def initialize():
   access = '8vYE9nXcBrIAAAAAAAAAASnG5cKRmMPdSMJiH-QximbXAXZR40C9EgmR1eZjYr9M'
   dbx = dropbox.Dropbox(access)
