@@ -123,12 +123,14 @@ def thisMonth():
   if df.empty == True:
     st.text(f'There are no assignments due until after {month}')
   else:
-    st.dataframe(df)
+    st.text('Assignments:\n')
+    st.dataframe(df[df['Assignment Type'] != 'Reading'])
+    st.text('\nReadings:\n')
+    st.dataframe(df[df['Assignment Type'] == 'Reading'])
 
 def adjust(entry_pos, column, input):
   global calendar
   calendar[column][entry_pos] = input
-  
   st.text(f'Assignment position {entry_pos} adjusted')
   thisWeek()
   save_cal()
