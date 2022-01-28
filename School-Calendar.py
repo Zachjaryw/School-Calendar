@@ -202,7 +202,8 @@ def completeAction(Action):
     if ',' in index:
       positions = index.split(',')
       for pos in positions:
-        if st.button("Submit") == True:
+        a = st.button("Submit")
+        if a == True:
             progress(int(pos))
         else:
             pass
