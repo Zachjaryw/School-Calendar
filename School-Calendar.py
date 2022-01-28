@@ -305,12 +305,13 @@ def completeAction(Action):
   elif Action == "***SELECT ACTION***":
     st.text("Please select an action")
 
+acceptPassword = "bellabarry"
 password = st.text_input('Password:',"")
 user = 'Zach'
 year = st.selectbox('Year:',[2021,2022,2023])
 semester = st.selectbox('Semester:',['Spring','Fall'])
 filename = f'/{user}SchoolCalendar {semester} {year}.json'
-if password == "password":
+if password == acceptPassword:
     dbx = initialize()
     calendar = fromDBX(dbx,filename)
     Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
