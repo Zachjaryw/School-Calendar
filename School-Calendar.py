@@ -297,12 +297,12 @@ def completeAction(Action):
     st.text("Please select an action")
 
 user = st.text_input('Username:')
-year = st.multiselect('Year:',[2021,2022,2023])
-semester = st.multiselect('Semester:',['Spring','Fall'])
+year = st.selectbox('Year:',[2021,2022,2023])
+semester = st.selectbox('Semester:',['Spring','Fall'])
 filename = f'/{user}SchoolCalendar {semester} {year}.json'
 
 dbx = initialize()
 calendar = fromDBX(dbx,filename)
 
-Action = st.multiselect("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
+Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
 completeAction(Action)
