@@ -5,7 +5,6 @@ import datetime as dt
 import streamlit as st
 
 def initialize():
-  pd.set_option('st.dataframe.max_columns', None)
   access = '8vYE9nXcBrIAAAAAAAAAASnG5cKRmMPdSMJiH-QximbXAXZR40C9EgmR1eZjYr9M'
   dbx = dropbox.Dropbox(access)
   dbx.users_get_current_account()
