@@ -98,11 +98,12 @@ def show():
 def thisWeek():
   global calendar
   df = pd.DataFrame(calendar)
-  #df['Assignment Due Date'] = pd.to_datetime(df['Assignment Due Date'])
+  df['Assignment Due Date'] = pd.to_datetime(df['Assignment Due Date'])
   df.sort_values('Assignment Due Date',inplace = True)
   days_7 = str(dt.date.today() + dt.timedelta(weeks = 1))
   df = df[df['Assignment Due Date'] <= days_7]
   df = df[df['Assignment Status'] != 'Complete']
+  df['Assignment Due Date'] = df['Assignment Due Date'].apply(lambda x: dt.datetime.strftime(x, '%Y-%m-%d'))
   if df.empty == True:
     st.text(f'There are no assignments due until after {days_7}')
   else:
@@ -137,8 +138,6 @@ def adjust(entry_pos, column, input):
 
 def classCode(class_code):
   global calendar
-  classes = {102:'Art',161:'Computer Science',315:'Business Finance',343:'Communications', 'DC':'DataCamp'}
-  st.text(f'DataFrame Below is for {class_code}  {classes[class_code]}')
   df = pd.DataFrame(calendar)
   df['Assignment Due Date'] = pd.to_datetime(df['Assignment Due Date'])
   df.sort_values('Assignment Due Date',inplace = True)
