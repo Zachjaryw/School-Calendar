@@ -310,7 +310,7 @@ start = False
 
 if password == "password":
     user = 'Zach'
-    if start = False:
+    if start == False:
         year = st.selectbox('Year:',[2021,2022,2023])
         semester = st.selectbox('Semester:',['Spring','Fall'])
         filename = f'/{user}SchoolCalendar {semester} {year}.json'
