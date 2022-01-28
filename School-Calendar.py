@@ -189,7 +189,7 @@ def completeAction(Action):
     if ',' in index:
       positions = index.split(',')
       for pos in positions:
-        a = st.buttom("Submit",key = 0)
+        a = st.button("Submit",key = 0)
         if a == True:
             progress(int(pos))
         else:
@@ -223,7 +223,7 @@ def completeAction(Action):
       col = int(st.text_input("",key = 4))
     st.text("Input adjusted value")
     new = st.text_input("",key = 5)
-    if st.buttom("Submit",key = 1) == True:
+    if st.button("Submit",key = 1) == True:
         if col == 0: #'Assignment Name'
           adjust(pos,'Assignment Name',new)
         elif col == 1:#'Assignment Due Date'
@@ -253,7 +253,7 @@ def completeAction(Action):
     notes = str(st.text_input("",key = 9))
     st.text('Assignment Type (leave empty for default)')
     type_ = str(st.text_input("",key = 10))
-    if st.buttom("Submit",key = 2) == True:
+    if st.button("Submit",key = 2) == True:
         if notes == "":
           if type_ == "":
             add(name,code,date)
@@ -269,7 +269,7 @@ def completeAction(Action):
   elif Action == "Show Assignments by Type":
     st.text('Enter assignment type')
     type_ = st.text_input("",key = 11)
-    if st.buttom("Submit",key = 3) == True:
+    if st.button("Submit",key = 3) == True:
         byType(type_)
     else:
         pass
@@ -277,7 +277,7 @@ def completeAction(Action):
     st.text('Please enter the file path here:')
     st.text("The file must have correct column names: ['name','class_code','due_date','notes','status','ast_type']")
     filePath = st.text_input("",key = 12)
-    if st.buttom("Submit",key = 4) == True:
+    if st.button("Submit",key = 4) == True:
         addAssignmentsFromFile(filePath)
     else:
         pass
@@ -286,7 +286,7 @@ def completeAction(Action):
     lowDate = st.text_input("",key = 13)
     st.text('Enter the second (higher) date:')
     highDate = st.text_input("",key = 14)
-    if st.buttom("Submit",key = 5) == True:
+    if st.button("Submit",key = 5) == True:
         fromDateRange(lowDate,highDate)
     else:
         pass
