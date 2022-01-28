@@ -204,15 +204,21 @@ def completeAction(Action):
       for pos in positions:
         if st.button("Submit") == True:
             progress(int(pos))
+        else:
+            pass
     else:
       st.text("Input new state or leave empty to mark complete")
       state = str(st.text_input(""))
       if state == "":
         if st.button("Submit") == True:
             progress(index)
+        else:
+            pass
       else:
         if st.button("Submit") == True:
             progress(index,state)
+        else:
+            pass
   elif Action == "Show Old Assignments":
     previousAst()
   elif Action == "Adjust Assignment":
@@ -242,6 +248,8 @@ def completeAction(Action):
           adjust(pos,'Assignment Status',new)
         elif col == 5:#'Assignment Type'
           adjust(pos,'Assignment Type',new)
+    else:
+        pass
   elif Action == "Assignments Due This Week":
     thisWeek()
   elif Action == "Assignments Due This Month":
@@ -268,17 +276,23 @@ def completeAction(Action):
             add(name,code,date,notes)
           else:
             add(name,code,date,notes,ast_type= type_)
+    else:
+        pass
   elif Action == "Show Assignments by Type":
     st.text('Enter assignment type')
     type_ = st.text_input("")
     if st.button("Submit") == True:
         byType(type_)
+    else:
+        pass
   elif Action == "Add Assignments from file":
     st.text('Please enter the file path here:')
     st.text("The file must have correct column names: ['name','class_code','due_date','notes','status','ast_type']")
     filePath = st.text_input("")
     if st.button("Submit") == True:
         addAssignmentsFromFile(filePath)
+    else:
+        pass
   elif Action == "Assignments In Date Range":
     st.text('Enter the first (lower) date:')
     lowDate = st.text_input("")
@@ -286,6 +300,8 @@ def completeAction(Action):
     highDate = st.text_input("")
     if st.button("Submit") == True:
         fromDateRange(lowDate,highDate)
+    else:
+        pass
   elif Action == "Review Single Assignment":
     st.text('Which assignment number would you like to review? (can be any existing assignment)')
     thisWeek()
