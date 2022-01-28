@@ -316,11 +316,9 @@ if password != "password":
             semester = st.selectbox('Semester:',['Spring','Fall'])
             filename = f'/{user}SchoolCalendar {semester} {year}.json'
             if st.button("Setup") == True:
-                start = True
-        elif start == True:
-            dbx = initialize()
-            calendar = fromDBX(dbx,filename)
-            Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
-            completeAction(Action)
+                dbx = initialize()
+                calendar = fromDBX(dbx,filename)
+                Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
+                completeAction(Action)
 
     
