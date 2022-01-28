@@ -304,15 +304,23 @@ def completeAction(Action):
         st.text(f'{list(calendar.keys())[i]}: \t {calendar[list(calendar.keys())[i]][asst]}')
   elif Action == "***SELECT ACTION***":
     st.text("Please select an action")
+    
+password = ""
+start = False
 
-password = st.text_input('Password:',"")
-user = 'Zach'
-year = st.selectbox('Year:',[2021,2022,2023])
-semester = st.selectbox('Semester:',['Spring','Fall'])
-filename = f'/{user}SchoolCalendar {semester} {year}.json'
 if password == "password":
-    dbx = initialize()
-    calendar = fromDBX(dbx,filename)
-    Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
-    completeAction(Action)
+    user = 'Zach'
+    if start = False:
+        year = st.selectbox('Year:',[2021,2022,2023])
+        semester = st.selectbox('Semester:',['Spring','Fall'])
+        filename = f'/{user}SchoolCalendar {semester} {year}.json'
+        if st.button("Setup") == True:
+            start = True
+    elif start == True:
+        dbx = initialize()
+        calendar = fromDBX(dbx,filename)
+        Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
+        completeAction(Action)
+elif password != "password":
+    password = st.text_input('Password:',"")
     
