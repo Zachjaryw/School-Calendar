@@ -189,27 +189,28 @@ def completeAction(Action):
     thisWeek()
     st.text("Input Assignment position (or positions seperated by commas)")
     index = st.text_input("","",key = 0)
-    if ',' in index:
-      positions = index.split(',')
-      for pos in positions:
-        a = st.button("Submit",key = 0)
-        if a == True:
-            progress(int(pos))
+    if st.button("Submit",key = 10) == True:
+        if ',' in index:
+          positions = index.split(',')
+          for pos in positions:
+            a = st.button("Submit",key = 0)
+            if a == True:
+                progress(int(pos))
+            else:
+                pass
         else:
-            pass
-    else:
-      st.text("Input new state or leave empty to mark complete")
-      state = str(st.text_input("",key = 1))
-      if state == "":
-        if st.button("Submit",key = 6) == True:
-            progress(index)
-        else:
-            pass
-      else:
-        if st.button("Submit", key = 7) == True:
-            progress(index,state)
-        else:
-            pass
+          st.text("Input new state or leave empty to mark complete")
+          state = str(st.text_input("",key = 1))
+          if state == "":
+            if st.button("Submit",key = 6) == True:
+                progress(index)
+            else:
+                pass
+          else:
+            if st.button("Submit", key = 7) == True:
+                progress(index,state)
+            else:
+                pass
   elif Action == "Show Old Assignments":
     previousAst()
   elif Action == "Adjust Assignment":
