@@ -1,5 +1,4 @@
-import dropbox, json
-from _io import *
+import dropbox, json, io
 import pandas as pd
 import numpy as np
 import datetime as dt
@@ -13,14 +12,13 @@ def initialize():
   return dbx
 
 def toDBX(dbx, data,filename):
-  with StringIO() as stream:
+  with io.StringIO() as stream:
     json.dump(data, stream)
-    stream.seek(0)
     dbx.files_upload(stream.read().encode(), filename, mode=dropbox.files.WriteMode.overwrite)
 
 def fromDBX(dbx, filename):
   _, res = dbx.files_download(filename)
-  with BytesIO(res.content) as stream:
+  with io.BytesIO(res.content) as stream:
     data = json.load(stream)
   return data 
 
