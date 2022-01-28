@@ -295,7 +295,6 @@ def completeAction(Action):
     if st.button('Submit'):
         addAssignmentsFromFile(filePath)
   elif Action == "Assignments In Date Range":
-    
     st.text('Enter the first (lower) date:')
     lowDate = st.text_input('')
     if st.button('Submit date 1'):
@@ -307,11 +306,10 @@ def completeAction(Action):
     st.text('Which assignment number would you like to review? (can be any existing assignment)')
     thisWeek()
     asst = int(st.number_input(''))
-    if st.button('Submit'):
-        for i in range(len(list(calendar.keys()))):
-          if i == 2:
+    for i in range(len(list(calendar.keys()))):
+        if i == 2:
             st.text(f'{list(calendar.keys())[i]}: \t\t {calendar[list(calendar.keys())[i]][asst]}')
-          else:  
+        else:  
             st.text(f'{list(calendar.keys())[i]}: \t {calendar[list(calendar.keys())[i]][asst]}')
   elif Action == "***SELECT ACTION***":
     st.text("Please select an action")
