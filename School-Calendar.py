@@ -304,7 +304,7 @@ def completeAction(Action):
   elif Action == "***SELECT ACTION***":
     st.text("Please select an action")
 
-password = st.text_input('Password:',"*")
+password = st.text_input('Password:',"")
 user = 'Zach'
 year = st.selectbox('Year:',[2021,2022,2023])
 semester = st.selectbox('Semester:',['Spring','Fall'])
