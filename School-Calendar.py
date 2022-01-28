@@ -198,7 +198,7 @@ def completeAction(Action):
   elif Action == "Progress":
     shortThisWeek()
     st.text("Input Assignment position (or positions seperated by commas)")
-    index = st.text_st.text_input("")
+    index = st.text_input("","")
     if ',' in index:
       positions = index.split(',')
       for pos in positions:
