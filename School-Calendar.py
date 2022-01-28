@@ -298,7 +298,7 @@ def completeAction(Action):
 
 user = st.text_input('Username:')
 year = st.multiselect('Year:',[2021,2022,2023])
-semester = st.multuselect('Semester:',['Spring','Fall'])
+semester = st.multiselect('Semester:',['Spring','Fall'])
 filename = f'/{user}SchoolCalendar {semester} {year}.json'
 
 dbx = initialize()
