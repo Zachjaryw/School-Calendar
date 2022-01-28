@@ -13,7 +13,7 @@ def initialize():
 def toDBX(dbx, data,filename):
   with io.StringIO() as stream:
     json.dump(data, stream)
-    #dbx.files_upload(stream.read().encode(), filename, mode=dropbox.files.WriteMode.overwrite)
+    dbx.files_upload(stream.read().encode(), filename, mode=dropbox.files.WriteMode.overwrite)
 
 def fromDBX(dbx, filename):
   _, res = dbx.files_download(filename)
@@ -312,3 +312,4 @@ if password == "bella":
     calendar = fromDBX(dbx,filename)
     Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
     completeAction(Action)
+    
