@@ -183,7 +183,7 @@ def completeAction(Action):
   if Action == "Show Full Calendar":
     show()
   elif Action == "Progress":
-    shortThisWeek()
+    thisWeek()
     st.text("Input Assignment position (or positions seperated by commas)")
     index = st.text_input("","")
     if ',' in index:
