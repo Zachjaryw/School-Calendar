@@ -15,6 +15,7 @@ def initialize():
 def toDBX(dbx, data,filename):
   with io.StringIO() as stream:
     json.dump(data, stream)
+    stream.seek(0)
     dbx.files_upload(stream.read().encode(), filename, mode=dropbox.files.WriteMode.overwrite)
 
 def fromDBX(dbx, filename):
