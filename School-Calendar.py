@@ -203,7 +203,7 @@ def completeAction(Action):
         else:
             pass
       else:
-        if st.thisWeek"Submit") == True:
+        if st.button("Submit", key = 7) == True:
             progress(index,state)
         else:
             pass
