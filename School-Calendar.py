@@ -98,7 +98,7 @@ def show():
 def thisWeek():
   global calendar
   df = pd.DataFrame(calendar)
-  df['Assignment Due Date'] = pd.to_datetime(df['Assignment Due Date'])
+  #df['Assignment Due Date'] = pd.to_datetime(df['Assignment Due Date'])
   df.sort_values('Assignment Due Date',inplace = True)
   days_7 = str(dt.date.today() + dt.timedelta(weeks = 1))
   df = df[df['Assignment Due Date'] <= days_7]
@@ -111,20 +111,6 @@ def thisWeek():
     st.text('\nReadings:\n')
     st.dataframe(df[df['Assignment Type'] == 'Reading'])
   
-def shortThisWeek():
-  df = pd.DataFrame(calendar)
-  df['Assignment Due Date'] = pd.to_datetime(df['Assignment Due Date'])
-  df.sort_values('Assignment Due Date',inplace = True)
-  days_7 = str(dt.date.today() + dt.timedelta(weeks = 1))
-  df = df[df['Assignment Due Date'] <= days_7]
-  df = df[df['Assignment Status'] != 'Complete']
-  if df.empty == True:
-    st.text(f'There are no assignments due until after {days_7}')
-  else:
-    st.text('Assignments:\n')
-    st.dataframe(df[df['Assignment Type'] != 'Reading'][['Assignment Name','Class Code','Assignment Due Date']])
-    st.text('\nReadings:\n')
-    st.dataframe(df[df['Assignment Type'] == 'Reading'][['Assignment Name','Class Code','Assignment Due Date']])
 
 def thisMonth():
   global calendar
