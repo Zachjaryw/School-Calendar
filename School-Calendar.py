@@ -198,7 +198,7 @@ def completeAction(Action):
       st.text("Input new state or leave empty to mark complete")
       state = str(st.text_input(""))
       if state == "":
-        if st.thisWeek"Submit") == True:
+        if st.button("Submit",key = 6) == True:
             progress(index)
         else:
             pass
