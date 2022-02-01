@@ -188,25 +188,25 @@ def completeAction(Action):
   elif Action == "Progress":
     thisWeek()
     st.text("Input Assignment position (or positions seperated by commas)")
-    index = st.text_input("","",key = 00)
+    index = st.text_input("","",key = 0)
     if ',' in index:
       positions = index.split(',')
       for pos in positions:
-        a = st.button("Submit",key = 0)
+        a = st.button("Submit",key = 17)
         if a == True:
             progress(int(pos))
         else:
             pass
     else:
       st.text("Input new state or leave empty to mark complete")
-      state = str(st.text_input("",key = 01))
+      state = str(st.text_input("",key = 1))
       if state == "":
-        if st.button("Submit",key = 6) == True:
+        if st.button("Submit",key = 18) == True:
             progress(index)
         else:
             pass
       else:
-        if st.button("Submit", key = 7) == True:
+        if st.button("Submit", key = 19) == True:
             progress(index,state)
         else:
             pass
@@ -215,18 +215,18 @@ def completeAction(Action):
   elif Action == "Adjust Assignment":
     thisWeek()
     st.text("Input position of assignment to adjust")
-    pos = int(st.text_input("",key = 02))
+    pos = int(st.text_input("",key = 2))
     st.text("Input the value for the column to adjust")
     for i in range(len(list(calendar.keys()))):
       st.text(f'{i}. {list(calendar.keys())[i]}')
     st.text('\n')
-    col = int(st.text_input("",key = 03))
+    col = int(st.text_input("",key = 3))
     while not(col >= 0 and col <= 5):
       st.text('Invalid input: please enter again')
-      col = int(st.text_input("",key = 04))
+      col = int(st.text_input("",key = 4))
     st.text("Input adjusted value")
-    new = st.text_input("",key = 05)
-    if st.button("Submit",key = 1) == True:
+    new = st.text_input("",key = 5)
+    if st.button("Submit",key = 20) == True:
         if col == 0: #'Assignment Name'
           adjust(pos,'Assignment Name',new)
         elif col == 1:#'Assignment Due Date'
@@ -247,16 +247,16 @@ def completeAction(Action):
     thisMonth()
   elif Action == "New Assignment":
     st.text("New Assignment name")
-    name = st.text_input("",key = 06)
+    name = st.text_input("",key = 6)
     st.text("Class Code")
-    code = st.text_input("",key = 07)
+    code = st.text_input("",key = 7)
     st.text('Due Date')
-    date = st.text_input("",key = 08)
+    date = st.text_input("",key = 8)
     st.text('Notes (leave empty for default)')
-    notes = str(st.text_input("",key = 09))
+    notes = str(st.text_input("",key = 9))
     st.text('Assignment Type (leave empty for default)')
-    type_ = str(st.text_input("",key = 010))
-    if st.button("Submit",key = 2) == True:
+    type_ = str(st.text_input("",key = 10))
+    if st.button("Submit",key = 21) == True:
         if notes == "":
           if type_ == "":
             add(name,code,date)
@@ -271,32 +271,32 @@ def completeAction(Action):
         pass
   elif Action == "Show Assignments by Type":
     st.text('Enter assignment type')
-    type_ = st.text_input("",key = 011)
-    if st.button("Submit",key = 3) == True:
+    type_ = st.text_input("",key = 11)
+    if st.button("Submit",key = 22) == True:
         byType(type_)
     else:
         pass
   elif Action == "Add Assignments from file":
     st.text('Please enter the file path here:')
     st.text("The file must have correct column names: ['name','class_code','due_date','notes','status','ast_type']")
-    filePath = st.text_input("",key = 012)
-    if st.button("Submit",key = 4) == True:
+    filePath = st.text_input("",key = 12)
+    if st.button("Submit",key = 23) == True:
         addAssignmentsFromFile(filePath)
     else:
         pass
   elif Action == "Assignments In Date Range":
     st.text('Enter the first (lower) date:')
-    lowDate = st.text_input("",key = 013)
+    lowDate = st.text_input("",key = 13)
     st.text('Enter the second (higher) date:')
-    highDate = st.text_input("",key = 014)
-    if st.button("Submit",key = 5) == True:
+    highDate = st.text_input("",key = 14)
+    if st.button("Submit",key = 24) == True:
         fromDateRange(lowDate,highDate)
     else:
         pass
   elif Action == "Review Single Assignment":
     st.text('Which assignment number would you like to review? (can be any existing assignment)')
     thisWeek()
-    asst = int(st.text_input("",key = 015))
+    asst = int(st.text_input("",key = 15))
     for i in range(len(list(calendar.keys()))):
       if i == 2:
         st.text(f'{list(calendar.keys())[i]}: \t\t {calendar[list(calendar.keys())[i]][asst]}')
