@@ -189,14 +189,14 @@ def completeAction(Action):
     thisWeek()
     st.text("Input Assignment position (or positions seperated by commas)")
     index = st.text_input("","",key = 0)
-    if ',' in index:
+    if "," in index:
       positions = index.split(',')
-      for pos in positions:
-        a = st.button("Submit",key = 17)
-        if a == True:
+      a = st.button("Submit",key = 17)
+      if a == True:
+        for pos in positions:
             progress(int(pos))
-        else:
-            pass
+      else:
+        pass
     else:
       st.text("Input new state or leave empty to mark complete")
       state = str(st.text_input("",key = 1))
