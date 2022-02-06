@@ -333,7 +333,7 @@ elif user == "NEW":
   elif not(newUsername in data.keys()):
     password_1 = st.text_input('Enter your password here:')
     password_2 = st.text_input("Re-enter your password here:")
-    if password_1 == password_2:
+    if password_2 != "" and password_1 == password_2:
       newCal = {}
       for y in years:
         for sem in semesters:
