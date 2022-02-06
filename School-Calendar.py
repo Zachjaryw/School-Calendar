@@ -318,7 +318,7 @@ if password == acceptPassword:
     completeAction(Action)
 elif password == "SET TO NEW CALENDAR MODE":
   dbx = initialize()
-  calendar = fromDBX(dbx,filename)
+  calendar = fromDBX(dbx,filename)['Zach'][1]['Spring 2022']['Zach'][1]['Zach'][1]
   calendar = {'Zach':['bellabarry',{'Spring 2022':calendar,
                                     'Fall 2022':{
                                                   'Assignment Name': [],
