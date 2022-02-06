@@ -310,26 +310,43 @@ def completeAction(Action):
   elif Action == "***SELECT ACTION***":
     st.text("Please select an action")
 
-    
+
+years = [2022,2023]
+semesters = ['Spring','Fall']
 filename = f'/SchoolCalendar.json'
 dbx = initialize()
 data = fromDBX(dbx,filename)
-user = st.text_input("Enter Username")
-if user in data.keys():
+user = st.text_input("Enter Username or type 'NEW' for a new user:")
+if user != 'NEW' and user in data.keys():
   acceptPassword = data[user][0]
   password = st.text_input('Password:',"")
   if password == acceptPassword:
-      year = st.selectbox('Year:',[2022,2023])
-      semester = st.selectbox('Semester:',['Spring','Fall'])
+      year = st.selectbox('Year:',years)
+      semester = st.selectbox('Semester:',semesters)
       calendar = data[user][1][f'{semester} {year}']
       Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
-
-
-
-
-
-
+elif user == "NEW":
+  newUsername = st.text_input('Enter your username here:')
+  if newUsername in data.keys():
+    st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
+  elif not(newUsername in data.keys()):
+    password_1 = st.text_input('Enter your password here:')
+    passowrd_2 = st.text_input("Re-enter your password here:")
+    if password_1 == password_2:
+      newCal = {}
+      for y in years:
+        for sem in semesters:
+          newCal[f'{sem} {y}'] = {
+                                      'Assignment Name': [],
+                                      'Assignment Due Date': [],
+                                      'Class Code': [],
+                                      'Assignment Notes': [],
+                                      'Assignment Status': [],
+                                      'Assignment Type': []
+                                }
+      data[newUsername] = [password_1, newCal]
+      st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
 
 
 
