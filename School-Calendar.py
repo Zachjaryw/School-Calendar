@@ -35,8 +35,8 @@ def save_cal():
   global calendar
   global data
   global dbx
-  global filename
   global user
+  global filename
   global semester
   global year
   data[user][1][f'{semester} {year}'] = calendar
@@ -314,9 +314,9 @@ def completeAction(Action):
 years = [2022,2023]
 semesters = ['Spring','Fall']
 filename = f'/SchoolCalendar.json'
+user = st.text_input("Enter Username or type 'NEW' for a new user:")
 dbx = initialize()
 data = fromDBX(dbx,filename)
-user = st.text_input("Enter Username or type 'NEW' for a new user:")
 if user != 'NEW' and user in data.keys():
   acceptPassword = data[user][0]
   password = st.text_input('Password:',"")
@@ -346,7 +346,10 @@ elif user == "NEW":
                                       'Assignment Type': []
                                 }
       data[newUsername] = [password_1, newCal]
+      toDBX(dbx, data, filename)
       st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
+elif user not in data.keys():
+  st.text("Enter Valid Username")
 
 
 
