@@ -308,7 +308,7 @@ def completeAction(Action):
 acceptPassword = "bellabarry"
 password = st.text_input('Password:',"")
 user = 'Zach'
-year = st.selectbox('Year:',[2021,2022,2023])
+year = st.selectbox('Year:',[2022,2023])
 semester = st.selectbox('Semester:',['Spring','Fall'])
 filename = f'/ZachSchoolCalendar {semester} {year}.json'
 if password == acceptPassword:
@@ -319,5 +319,32 @@ if password == acceptPassword:
 elif password == "SET TO NEW CALENDAR MODE":
   dbx = initialize()
   calendar = fromDBX(dbx,filename)
-  calendar = {'Zach':['bellabarry',calendar]}
+  calendar = {'Zach':['bellabarry',{'Spring 2022':calendar,
+                                    'Fall 2022':{
+                                                  'Assignment Name': [],
+                                                  'Assignment Due Date': [],
+                                                  'Class Code': [],
+                                                  'Assignment Notes': [],
+                                                  'Assignment Status': [],
+                                                  'Assignment Type': []
+                                            },
+                                    'Spring 2023':{
+                                                  'Assignment Name': [],
+                                                  'Assignment Due Date': [],
+                                                  'Class Code': [],
+                                                  'Assignment Notes': [],
+                                                  'Assignment Status': [],
+                                                  'Assignment Type': []
+                                            },
+                                    'Fall 2023':{
+                                                  'Assignment Name': [],
+                                                  'Assignment Due Date': [],
+                                                  'Class Code': [],
+                                                  'Assignment Notes': [],
+                                                  'Assignment Status': [],
+                                                  'Assignment Type': []
+                                            }
+                                    }
+                      ]
+              }
   save_cal()
