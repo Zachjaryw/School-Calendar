@@ -332,7 +332,7 @@ elif user == "NEW":
     st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
   elif not(newUsername in data.keys()):
     password_1 = st.text_input('Enter your password here:')
-    passowrd_2 = st.text_input("Re-enter your password here:")
+    password_2 = st.text_input("Re-enter your password here:")
     if password_1 == password_2:
       newCal = {}
       for y in years:
