@@ -317,6 +317,7 @@ if password == acceptPassword:
     Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
     completeAction(Action)
 elif password == "SET TO NEW CALENDAR MODE":
+  dbx = initialize()
   calendar = fromDBX(dbx,filename)
   calendar = {'Zach':['bellabarry',calendar]}
   save_cal()
