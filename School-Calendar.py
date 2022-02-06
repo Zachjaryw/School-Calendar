@@ -327,27 +327,29 @@ if user != 'NEW' and user in data.keys():
       Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
 elif user == "NEW":
-  newUsername = st.text_input('Enter your username here:')
-  if newUsername in data.keys():
-    st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
-  elif not(newUsername in data.keys()):
-    password_1 = st.text_input('Enter your password here:')
-    password_2 = st.text_input("Re-enter your password here:")
-    if password_2 != "" and password_1 == password_2:
-      newCal = {}
-      for y in years:
-        for sem in semesters:
-          newCal[f'{sem} {y}'] = {
-                                      'Assignment Name': [],
-                                      'Assignment Due Date': [],
-                                      'Class Code': [],
-                                      'Assignment Notes': [],
-                                      'Assignment Status': [],
-                                      'Assignment Type': []
-                                }
-      data[newUsername] = [password_1, newCal]
-      toDBX(dbx, data, filename)
-      st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
+  authorization = st.text_input('Enter developer authorization token to create new account:')
+  if authorization == "activatenewaccount":
+    newUsername = st.text_input('Enter your username here:')
+    if newUsername in data.keys():
+      st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
+    elif not(newUsername in data.keys()):
+      password_1 = st.text_input('Enter your password here:')
+      password_2 = st.text_input("Re-enter your password here:")
+      if password_2 != "" and password_1 == password_2:
+        newCal = {}
+        for y in years:
+          for sem in semesters:
+            newCal[f'{sem} {y}'] = {
+                                        'Assignment Name': [],
+                                        'Assignment Due Date': [],
+                                        'Class Code': [],
+                                        'Assignment Notes': [],
+                                        'Assignment Status': [],
+                                        'Assignment Type': []
+                                  }
+        data[newUsername] = [password_1, newCal]
+        toDBX(dbx, data, filename)
+        st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
 elif user not in data.keys():
   st.text("Enter Valid Username")
 
