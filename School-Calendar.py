@@ -33,9 +33,14 @@ def setup_new_semester():
 
 def save_cal():
   global calendar
+  global data
   global dbx
   global filename
-  toDBX(dbx, calendar, filename)
+  global user
+  global semester
+  global year
+  data[user][1][f'{semester} {year}'] = calendar
+  toDBX(dbx, data, filename)
 
 def reset():
   global calendar
@@ -305,46 +310,26 @@ def completeAction(Action):
   elif Action == "***SELECT ACTION***":
     st.text("Please select an action")
 
-acceptPassword = "bellabarry"
-password = st.text_input('Password:',"")
-user = 'Zach'
-year = st.selectbox('Year:',[2022,2023])
-semester = st.selectbox('Semester:',['Spring','Fall'])
-filename = f'/ZachSchoolCalendar {semester} {year}.json'
-if password == acceptPassword:
-    dbx = initialize()
-    calendar = fromDBX(dbx,filename)
-    Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
-    completeAction(Action)
-elif password == "SET TO NEW CALENDAR MODE":
-  dbx = initialize()
-  calendar = fromDBX(dbx,filename)['Zach'][1]['Spring 2022']['Zach'][1]['Zach'][1]
-  calendar = {'Zach':['bellabarry',{'Spring 2022':calendar,
-                                    'Fall 2022':{
-                                                  'Assignment Name': [],
-                                                  'Assignment Due Date': [],
-                                                  'Class Code': [],
-                                                  'Assignment Notes': [],
-                                                  'Assignment Status': [],
-                                                  'Assignment Type': []
-                                            },
-                                    'Spring 2023':{
-                                                  'Assignment Name': [],
-                                                  'Assignment Due Date': [],
-                                                  'Class Code': [],
-                                                  'Assignment Notes': [],
-                                                  'Assignment Status': [],
-                                                  'Assignment Type': []
-                                            },
-                                    'Fall 2023':{
-                                                  'Assignment Name': [],
-                                                  'Assignment Due Date': [],
-                                                  'Class Code': [],
-                                                  'Assignment Notes': [],
-                                                  'Assignment Status': [],
-                                                  'Assignment Type': []
-                                            }
-                                    }
-                      ]
-              }
-  save_cal()
+    
+filename = f'/SchoolCalendar.json'
+dbx = initialize()
+data = fromDBX(dbx,filename)
+user = st.text_input("Enter Username")
+if user in data.keys():
+  acceptPassword = data[user][0]
+  password = st.text_input('Password:',"")
+  if password == acceptPassword:
+      year = st.selectbox('Year:',[2022,2023])
+      semester = st.selectbox('Semester:',['Spring','Fall'])
+      calendar = data[user][1][f'{semester} {year}']
+      Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
+      completeAction(Action)
+
+
+
+
+
+
+
+
+
