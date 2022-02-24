@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import datetime as dt
 import streamlit as st
-from twilio.rest import Client
+
 
 st.title("School Calendar")
 
@@ -25,18 +25,6 @@ def fromDBX(dbx, filename):
     data = json.load(stream)
   return data 
 
-def sendAccessToken(dbx):
-    token = list("abcdefghijklmnopqrstuvwxyz1234567890")
-    a = []
-    for i in token:
-        a.insert(np.random.randint(0,len(a)),i)
-    accessToken = "".join(a[:9])
-    toDBX(dbx,{"Access Token":accessToken},'/AccessToken.json')
-    client = Client(st.secrets.twilio.accountSID,st.secrets.twilio.authToken)
-    client.messages.create(to= st.secrets.phoneNumbers.to,
-                           from_ = st.secrets.phoneNumbers.from_,
-                           body = f'School Calendar: Someone is trying to setup a new account. Access Token = {accessToken}')
-    return accessToken
 
 class Huff():
     def encrypt(string):
@@ -386,8 +374,8 @@ if user != 'NEW' and user in data.keys():
       completeAction(Action)
 elif user == "NEW":
   authorization = st.text_input('Enter developer authorization token to create new account:')
-  sendAccessToken(dbx)
-  if authorization == fromDBX(dbx,filename)['Access Token']:
+  #sendAccessToken(dbx)
+  if authorization == 'access':#fromDBX(dbx,filename)['Access Token']:
     newUsername = st.text_input('Enter your username here:')
     if newUsername in data.keys():
       st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
