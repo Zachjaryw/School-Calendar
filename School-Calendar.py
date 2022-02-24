@@ -25,18 +25,12 @@ def fromDBX(dbx, filename):
     data = json.load(stream)
   return data 
 
-def sendAccessToken(dbx):
-    token = list("abcdefghijklmnopqrstuvwxyz1234567890")
-    a = ['a']
-    for i in token:
-        a.insert(np.random.randint(0,len(a)),i)
-    accessToken = "".join(a[1:][:9])
-    toDBX(dbx,{"Access Token":accessToken},'/AccessToken.json')
+def sendMessage(message:str):
     client = Client(st.secrets.twilio.accountSID,st.secrets.twilio.authToken)
     client.messages.create(to= st.secrets.phoneNumbers.to,
                            from_ = st.secrets.phoneNumbers.from_,
-                           body = f'School Calendar: Someone is trying to setup a new account. Access Token = {accessToken}')
-    return accessToken
+                           body = message)
+    return st.secrets.access.accessToken
 
 class Huff():
     def encrypt(string):
@@ -375,7 +369,6 @@ filename = st.secrets.file.filename
 user = st.text_input("Enter Username or type 'NEW' for a new user:")
 dbx = initialize()
 data = fromDBX(dbx,filename)
-setup = 0
 if user != 'NEW' and user in data.keys():
   acceptPassword = Huff.decrypt(data[user][0])
   password = st.text_input('Password:',"")
@@ -386,11 +379,10 @@ if user != 'NEW' and user in data.keys():
       Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
 elif user == "NEW":
-  authorization = st.text_input('Enter developer authorization token to create new account:')
-  if setup == 0:
-    accessToken = sendAccessToken(dbx)
-    setup = 1
-  if authorization == accesssToken:
+  authorization = st.text_input('Please type "access-" so a new authorization code can be generated:')
+  if authorization == "":
+     accessToken = sendMessage(f"A new user would like to setup an account. Access token: {st.secrets.access.accessToken}")
+  elif authorization == accessToken:
     newUsername = st.text_input('Enter your username here:')
     if newUsername in data.keys():
       st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
