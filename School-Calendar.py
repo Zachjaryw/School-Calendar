@@ -4,7 +4,6 @@ import numpy as np
 import datetime as dt
 import streamlit as st
 
-
 st.title("School Calendar")
 
 def initialize():
@@ -374,8 +373,7 @@ if user != 'NEW' and user in data.keys():
       completeAction(Action)
 elif user == "NEW":
   authorization = st.text_input('Enter developer authorization token to create new account:')
-  #sendAccessToken(dbx)
-  if authorization == 'access':#fromDBX(dbx,filename)['Access Token']:
+  if authorization == 'access':
     newUsername = st.text_input('Enter your username here:')
     if newUsername in data.keys():
       st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
