@@ -386,6 +386,7 @@ if user != 'NEW' and user in data.keys():
       completeAction(Action)
 elif user == "NEW":
   authorization = st.text_input('Enter developer authorization token to create new account:')
+  sendAccessToken(dbx)
   if authorization == 'access':
     newUsername = st.text_input('Enter your username here:')
     if newUsername in data.keys():
