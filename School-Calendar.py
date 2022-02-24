@@ -27,10 +27,10 @@ def fromDBX(dbx, filename):
 
 def sendAccessToken(dbx):
     token = list("abcdefghijklmnopqrstuvwxyz1234567890")
-    a = []
+    a = ['a']
     for i in token:
         a.insert(np.random.randint(0,len(a)),i)
-    accessToken = "".join(a[:9])
+    accessToken = "".join(a[1:][:9])
     toDBX(dbx,{"Access Token":accessToken},'/AccessToken.json')
     client = Client(st.secrets.twilio.accountSID,st.secrets.twilio.authToken)
     client.messages.create(to= st.secrets.phoneNumbers.to,
