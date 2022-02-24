@@ -372,7 +372,7 @@ if user != 'NEW' and user in data.keys():
       completeAction(Action)
 elif user == "NEW":
   authorization = st.text_input('Enter developer authorization token to create new account:')
-  if authorization == "activatenewaccount":
+  if authorization == st.secrets.newaccount.newaccount:
     newUsername = st.text_input('Enter your username here:')
     if newUsername in data.keys():
       st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
@@ -391,7 +391,7 @@ elif user == "NEW":
                                         'Assignment Status': [],
                                         'Assignment Type': []
                                   }
-        data[newUsername] = [password_1, newCal]
+        data[newUsername] = [Huff.encrypt(password_1), newCal]
         toDBX(dbx, data, filename)
         st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
 elif user not in data.keys():
