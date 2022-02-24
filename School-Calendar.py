@@ -369,7 +369,7 @@ filename = st.secrets.file.filename
 user = st.text_input("Enter Username or type 'NEW' for a new user:")
 dbx = initialize()
 data = fromDBX(dbx,filename)
-if user != 'NEW' and user in data.keys():
+if user != 'NEW' and user in Huff.decrypt_list(list(data.keys())):
   acceptPassword = Huff.decrypt(data[user][0])
   password = st.text_input('Password:',"")
   if password == acceptPassword:
@@ -406,7 +406,7 @@ elif user == "NEW":
         st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
   else:
     st.text('Please Enter Auth Key from Developer')
-elif user not in data.keys():
+elif user not in Huff.decrypt_list(list(data.keys())):
   st.text("Enter Valid Username")
 
 
