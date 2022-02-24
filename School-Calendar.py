@@ -7,7 +7,7 @@ import streamlit as st
 st.title("School Calendar")
 
 def initialize():
-  access = '8vYE9nXcBrIAAAAAAAAAASnG5cKRmMPdSMJiH-QximbXAXZR40C9EgmR1eZjYr9M'
+  access = st.secrets.access
   dbx = dropbox.Dropbox(access)
   dbx.users_get_current_account()
   return dbx
@@ -44,7 +44,8 @@ class Huff():
     def decrypt(string):
         index = string[string.index(':')+2:]
         string = string[:string.index(':')]
-        idx = pd.read_csv('https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv')
+        decryptURL = st.secrets.decryptURL
+        idx = pd.read_csv(decryptURL)
         decrypt = [str(i)[:i.index(':')] for i in idx[str(index)].values.tolist()]
         values = [str(i) for i in idx['Find'].values.tolist()]
         stringList = []
