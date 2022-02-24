@@ -382,7 +382,7 @@ elif user == "NEW":
   authorization = st.text_input('Please type "access-" so a new authorization code can be generated:')
   if authorization == "":
      accessToken = sendMessage(f"A new user would like to setup an account. Access token: {st.secrets.access.accessToken}")
-  elif authorization == accessToken:
+  elif authorization == st.secrets.access.accessToken:
     newUsername = st.text_input('Enter your username here:')
     if newUsername in data.keys():
       st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
