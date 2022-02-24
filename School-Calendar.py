@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import datetime as dt
 import streamlit as st
+import random
 from twilio.rest import Client
 
 st.title("School Calendar")
