@@ -24,6 +24,49 @@ def fromDBX(dbx, filename):
     data = json.load(stream)
   return data 
 
+class Huff():
+    def encrypt(string):
+        index = random.randint(0,1000)
+        string = list(string)
+        idx = pd.read_csv(f'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/{index}.csv')
+        left = idx['left'].values.tolist()
+        right = idx['right'].values.tolist()
+        stringList = []
+        for position in string:
+            for row in range(len(left)):
+                if position in left[row]:
+                    stringList.append('0')
+                elif position in right[row]:
+                    stringList.append('1')
+        stringList.append(f':#{index}')
+        return "".join(stringList)
+            
+    def decrypt(string):
+        index = string[string.index(':')+2:]
+        string = string[:string.index(':')]
+        idx = pd.read_csv('https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv')
+        decrypt = [str(i)[:i.index(':')] for i in idx[str(index)].values.tolist()]
+        values = [str(i) for i in idx['Find'].values.tolist()]
+        stringList = []
+        posIndex = 0
+        while len(string) != 0:
+            position = string[:posIndex+1]
+            if position in decrypt:
+                find = decrypt.index(string[:posIndex+1])
+                stringList.append(values[find])
+                string = string[posIndex+1:]
+                posIndex = 0
+            else:
+                posIndex += 1
+        return "".join(stringList)
+
+
+    def encrypt_list(list_name):
+      return [Huff.encrypt(str(item)) for item in list_name]
+
+    def decrypt_list(list_name):
+      return [Huff.decrypt(item) for item in list_name]
+
 def setup_new_semester():
   global dbx
   global calendar
@@ -318,7 +361,7 @@ user = st.text_input("Enter Username or type 'NEW' for a new user:")
 dbx = initialize()
 data = fromDBX(dbx,filename)
 if user != 'NEW' and user in data.keys():
-  acceptPassword = data[user][0]
+  acceptPassword = Huff.decrypt(data[user][0])
   password = st.text_input('Password:',"")
   if password == acceptPassword:
       year = st.selectbox('Year:',years)
