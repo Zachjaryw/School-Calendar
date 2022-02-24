@@ -375,6 +375,7 @@ filename = st.secrets.file.filename
 user = st.text_input("Enter Username or type 'NEW' for a new user:")
 dbx = initialize()
 data = fromDBX(dbx,filename)
+setup = 0
 if user != 'NEW' and user in data.keys():
   acceptPassword = Huff.decrypt(data[user][0])
   password = st.text_input('Password:',"")
@@ -386,7 +387,10 @@ if user != 'NEW' and user in data.keys():
       completeAction(Action)
 elif user == "NEW":
   authorization = st.text_input('Enter developer authorization token to create new account:')
-  if authorization == sendAccessToken(dbx):
+  if setup = 0:
+    accessToken = sendAccessToken(dbx)
+    setup = 1
+  if authorization == accesssToken:
     newUsername = st.text_input('Enter your username here:')
     if newUsername in data.keys():
       st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
