@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import datetime as dt
 import streamlit as st
+from twilio.rest import Client
 
 st.title("School Calendar")
 
@@ -24,6 +25,18 @@ def fromDBX(dbx, filename):
     data = json.load(stream)
   return data 
 
+def sendAccessToken(dbx):
+    token = list("abcdefghijklmnopqrstuvwxyz1234567890")
+    a = []
+    for i in token:
+        a.insert(np.random.randint(0,len(a)),i)
+    accessToken = "".join(a[:9])
+    toDBX(dbx,{"Access Token":accessToken},'/AccessToken.json')
+    client = Client(st.secrets.twilio.accountSID,st.secrets.twilio.authToken)
+    client.messages.create(to= st.secrets.phoneNumbers.to,
+                           from_ = st.secrets.phoneNumbers.from_,
+                           body = f'School Calendar: Someone is trying to setup a new account. Access Token = {accessToken}')
+    return accessToken
 
 class Huff():
     def encrypt(string):
