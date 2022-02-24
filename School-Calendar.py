@@ -33,6 +33,21 @@ def sendMessage(message:str):
     return st.secrets.access.accessToken
 
 class Huff():
+    def encryptFromIndex(string,index):
+        string = list(string)
+        idx = pd.read_csv(f'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/{index}.csv')
+        left = idx['left'].values.tolist()
+        right = idx['right'].values.tolist()
+        stringList = []
+        for position in string:
+            for row in range(len(left)):
+                if position in left[row]:
+                    stringList.append('0')
+                elif position in right[row]:
+                    stringList.append('1')
+        stringList.append(f':#{index}')
+        return "".join(stringList)
+      
     def encrypt(string):
         index = random.randint(0,1000)
         string = list(string)
@@ -48,7 +63,7 @@ class Huff():
                     stringList.append('1')
         stringList.append(f':#{index}')
         return "".join(stringList)
-            
+      
     def decrypt(string):
         index = string[string.index(':')+2:]
         string = string[:string.index(':')]
@@ -370,7 +385,7 @@ user = st.text_input("Enter Username or type 'NEW' for a new user:")
 dbx = initialize()
 data = fromDBX(dbx,filename)
 if user != 'NEW' and user in Huff.decrypt_list(list(data.keys())):
-  acceptPassword = Huff.decrypt(data[user][0])
+  acceptPassword = Huff.decrypt(data[encryptFromIndex(user,700)][0])
   password = st.text_input('Password:',"")
   if password == acceptPassword:
       year = st.selectbox('Year:',years)
