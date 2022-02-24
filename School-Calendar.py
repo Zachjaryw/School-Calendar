@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import datetime as dt
 import streamlit as st
-import random
 from twilio.rest import Client
 
 st.title("School Calendar")
@@ -30,7 +29,7 @@ def sendAccessToken(dbx):
     token = list("abcdefghijklmnopqrstuvwxyz1234567890")
     a = []
     for i in token:
-        a.insert(random.randint(0,len(a)),i)
+        a.insert(np.random.randint(0,len(a)),i)
     accessToken = "".join(a[:9])
     toDBX(dbx,{"Access Token":accessToken},'/AccessToken.json')
     client = Client(st.secrets.twilio.accountSID,st.secrets.twilio.authToken)
