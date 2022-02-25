@@ -391,7 +391,7 @@ if user != 'NEW' and user in Huff.decrypt_list(list(data.keys())[0]):
   decrypted = Huff.decrypt_list(list(data.keys()))
   acceptIndex = decrypted[1][decryped[0].index(user)]
   acceptUser = Huff.encryptFromIndex(user,acceptIndex)
-  acceptPassword = Huff.decrypt(data[acceptUser][0])
+  acceptPassword = Huff.decrypt(data[acceptUser][0])[0]
   password = st.text_input('Password:',"")
   if password == acceptPassword:
       year = st.selectbox('Year:',years)
