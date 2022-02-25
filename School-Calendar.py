@@ -387,10 +387,10 @@ filename = st.secrets.file.filename
 user = st.text_input("Enter Username or type 'NEW' for a new user:")
 dbx = initialize()
 data = fromDBX(dbx,filename)
-if user not in Huff.decrypt_list(list(data.keys())[0]):
+decrypted = Huff.decrypt_list(list(data.keys()))
+if user not in decrypted[0]:
   st.text("Enter Valid Username")
-elif user != 'NEW' and user in Huff.decrypt_list(list(data.keys())[0]):
-  decrypted = Huff.decrypt_list(list(data.keys()))
+elif user != 'NEW' and user in decrypted[0]:
   acceptIndex = decrypted[1][decryped[0].index(user)]
   acceptUser = Huff.encryptFromIndex(user,acceptIndex)
   acceptPassword = Huff.decrypt(data[acceptUser][0])[0]
