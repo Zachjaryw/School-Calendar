@@ -422,7 +422,7 @@ elif user == "NEW":
                                         'Assignment Status': [],
                                         'Assignment Type': []
                                   }
-        data[newUsername] = [Huff.encrypt(password_1), newCal]
+        data[Huff.encrypt(newUsername)] = [Huff.encrypt(password_1), newCal]
         toDBX(dbx, data, filename)
         st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
   else:
