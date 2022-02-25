@@ -401,7 +401,7 @@ if user != 'NEW' and user in decrypted[0]:
       completeAction(Action)
 elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-")
-  if st.button('Press to send access code to developer (please only press once so only one access token is generated)'):
+  if st.button('Press to generate access code'):
      accessToken = sendMessage(f"A new user would like to setup an account. Access token: {st.secrets.access.accessToken}")
   if authorization == st.secrets.access.accessToken:
     newUsername = st.text_input('Enter your username here:')
