@@ -35,7 +35,7 @@ def sendMessage(message:str):
 class Huff():
     def encryptFromIndex(string,index):
         string = list(string)
-        idx = pd.read_csv(f'{st.secrets.decryptURL.encryptURL}{index}.csv')
+        idx = pd.read_csv(f'{st.secrets.encrypt.encryptURL}{index}.csv')
         left = idx['left'].values.tolist()
         right = idx['right'].values.tolist()
         stringList = []
@@ -51,7 +51,7 @@ class Huff():
     def encrypt(string):
         index = random.randint(0,1000)
         string = list(string)
-        idx = pd.read_csv(f'{st.secrets.decryptURL.encryptURL}{index}.csv')
+        idx = pd.read_csv(f'{st.secrets.encrypt.encryptURL}{index}.csv')
         left = idx['left'].values.tolist()
         right = idx['right'].values.tolist()
         stringList = []
