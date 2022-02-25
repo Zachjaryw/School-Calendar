@@ -82,14 +82,17 @@ class Huff():
                 posIndex = 0
             else:
                 posIndex += 1
-        return "".join(stringList)
-
+        return ("".join(stringList),index)
 
     def encrypt_list(list_name):
       return [Huff.encrypt(str(item)) for item in list_name]
 
     def decrypt_list(list_name):
-      return [Huff.decrypt(item) for item in list_name]
+      returnValue = [Huff.decrypt(item) for item in list_name]
+      decrypted = [i[0] for i in returnValue]
+      indexes = [i[1] for i in returnValue]
+      return (decrypted,indexes)
+
 
 def setup_new_semester():
   global dbx
@@ -384,8 +387,8 @@ filename = st.secrets.file.filename
 user = st.text_input("Enter Username or type 'NEW' for a new user:")
 dbx = initialize()
 data = fromDBX(dbx,filename)
-if user != 'NEW' and user in Huff.decrypt_list(list(data.keys())):
-  acceptPassword = Huff.decrypt(data[Huff.encryptFromIndex(user,700)][0])
+if user != 'NEW' and user in Huff.decrypt_list(list(data.keys())[0]):
+  acceptPassword = Huff.decrypt(data[Huff.encryptFromIndex(user,Huff.decrypt_list(list(data.keys())[1][Huff.decrypt_list(list(data.keys())[0].index([user])])])
   password = st.text_input('Password:',"")
   if password == acceptPassword:
       year = st.selectbox('Year:',years)
@@ -421,7 +424,7 @@ elif user == "NEW":
         st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
   else:
     st.text('Please Enter Auth Key from Developer')
-elif user not in Huff.decrypt_list(list(data.keys())):
+elif user not in Huff.decrypt_list(list(data.keys())[0]):
   st.text("Enter Valid Username")
 
 
