@@ -398,7 +398,7 @@ elif user != 'NEW' and user in decrypted[0]:
   if password == acceptPassword:
       year = st.selectbox('Year:',years)
       semester = st.selectbox('Semester:',semesters)
-      calendar = data[user][1][f'{semester} {year}']
+      calendar = data[acceptUser][1][f'{semester} {year}']
       Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
 elif user == "NEW":
