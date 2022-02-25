@@ -105,11 +105,11 @@ def save_cal():
   global calendar
   global data
   global dbx
-  global user
+  global acceptUser
   global filename
   global semester
   global year
-  data[user][1][f'{semester} {year}'] = calendar
+  data[acceptUser][1][f'{semester} {year}'] = calendar
   toDBX(dbx, data, filename)
 
 def reset():
