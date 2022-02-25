@@ -403,7 +403,7 @@ elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-")
   if st.button('Press to generate access code'):
       #accessToken = sendMessage(f"A new user would like to setup an account. Access token: {st.secrets.access.accessToken}")
-      st.text(f'An access token has been send to the developer. Pleae message {st.secrets.phoneNumbers.to} for access.')
+      st.text(f'An access token has been sent to the developer. Message {st.secrets.phoneNumbers.to} for access.')
   if authorization == st.secrets.access.accessToken:
     newUsername = st.text_input('Enter your username here:')
     if newUsername in decrypted[0]:
