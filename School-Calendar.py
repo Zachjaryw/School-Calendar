@@ -388,7 +388,10 @@ user = st.text_input("Enter Username or type 'NEW' for a new user:")
 dbx = initialize()
 data = fromDBX(dbx,filename)
 if user != 'NEW' and user in Huff.decrypt_list(list(data.keys())[0]):
-  acceptPassword = Huff.decrypt(data[Huff.encryptFromIndex(user,Huff.decrypt_list(list(data.keys())[1][Huff.decrypt_list(list(data.keys())[0].index([user])])])
+  decrypted = Huff.decrypt_list(list(data.keys()))
+  acceptIndex = decrypted[1][decryped[0].index(user)]
+  acceptUser = Huff.encryptFromIndex(user,acceptIndex)
+  acceptPassword = Huff.decrypt(data[acceptUser][0])
   password = st.text_input('Password:',"")
   if password == acceptPassword:
       year = st.selectbox('Year:',years)
