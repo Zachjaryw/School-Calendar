@@ -405,9 +405,9 @@ elif user == "NEW":
      accessToken = sendMessage(f"A new user would like to setup an account. Access token: {st.secrets.access.accessToken}")
   elif authorization == st.secrets.access.accessToken:
     newUsername = st.text_input('Enter your username here:')
-    if newUsername in data.keys():
+    if newUsername in decrypted[0]:
       st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
-    elif not(newUsername in data.keys()):
+    elif not(newUsername in decrypted[0]):
       password_1 = st.text_input('Enter your password here:')
       password_2 = st.text_input("Re-enter your password here:")
       if password_2 != "" and password_1 == password_2:
