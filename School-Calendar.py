@@ -400,10 +400,10 @@ if user != 'NEW' and user in decrypted[0]:
       Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
 elif user == "NEW":
-  authorization = st.text_input('Please type "access-" so a new authorization code can be generated:',"access-")
-  if authorization == "":
+  authorization = st.text_input('Please type the authorization code here:',"access-")
+  if st.button('Press to send access code to developer (please only press once so only one access token is generated)'):
      accessToken = sendMessage(f"A new user would like to setup an account. Access token: {st.secrets.access.accessToken}")
-  elif authorization == st.secrets.access.accessToken:
+  if authorization == st.secrets.access.accessToken:
     newUsername = st.text_input('Enter your username here:')
     if newUsername in decrypted[0]:
       st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
