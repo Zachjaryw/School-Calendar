@@ -30,7 +30,7 @@ def sendMessage(message:str):
     client.messages.create(to= st.secrets.phoneNumbers.to,
                            from_ = st.secrets.phoneNumbers.from_,
                            body = message)
-    return st.secrets.access.accessToken
+    return message
 
 def randomMessage():
     message = []
@@ -41,7 +41,7 @@ def randomMessage():
     client = Client(st.secrets.twilio.accountSID,st.secrets.twilio.authToken)
     client.messages.create(to= st.secrets.phoneNumbers.to,
                            from_ = st.secrets.phoneNumbers.from_,
-                           body = message)
+                           body = f"A new user would like to setup an account. Access token: {message}")
     return message
 
 class Huff():
@@ -414,11 +414,10 @@ if user != 'NEW' and user in decrypted[0]:
 elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-")
   if st.button('Press to generate access code'):
-      #accessToken = sendMessage(f"A new user would like to setup an account. Access token: {st.secrets.access.accessToken}")
       accessToken = randomMessage()
       toDBX(dbx, accessToken,'/AccessToken.json')
       st.text(f'An access token has been sent to the developer. Message {st.secrets.phoneNumbers.to} for access.')
-  if authorization == st.secrets.access.accessToken:
+  if authorization == st.secrets.access.accessToken or authorization == fromDBX(dbx,'/AccessToken.json'):
     newUsername = st.text_input('Enter your username here:')
     if newUsername in decrypted[0]:
       st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
@@ -440,8 +439,6 @@ elif user == "NEW":
         data[Huff.encrypt(newUsername)] = [Huff.encrypt(password_1), newCal]
         toDBX(dbx, data, filename)
         st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
-  elif authorization == fromDBX(dbx,'/AccessToken.json'):
-    st.text('accept')
   else:
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted[0]:
