@@ -417,7 +417,7 @@ elif user == "NEW":
       accessToken = randomMessage()
       toDBX(dbx, accessToken,'/AccessToken.json')
       st.text(f'An access token has been sent to the developer. Message {st.secrets.phoneNumbers.to} for access.')
-  if authorization == st.secrets.access.accessToken or authorization == fromDBX(dbx,'/AccessToken.json'):
+  if authorization == st.secrets.access.accessToken or authorization == f'access-{fromDBX(dbx,'/AccessToken.json'}'):
     newUsername = st.text_input('Enter your username here:')
     if newUsername in decrypted[0]:
       st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
