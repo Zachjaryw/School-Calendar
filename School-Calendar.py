@@ -440,6 +440,8 @@ elif user == "NEW":
         data[Huff.encrypt(newUsername)] = [Huff.encrypt(password_1), newCal]
         toDBX(dbx, data, filename)
         st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
+  elif authorization == fromDBX(dbx,'/AccessToken.json'):
+    st.text('accept')
   else:
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted[0]:
