@@ -402,7 +402,9 @@ if user != 'NEW' and user in decrypted[0]:
 elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-")
   if st.button('Press to generate access code'):
-      accessToken = sendMessage(f"A new user would like to setup an account. Access token: {st.secrets.access.accessToken}")
+      #accessToken = sendMessage(f"A new user would like to setup an account. Access token: {st.secrets.access.accessToken}")
+      accessToken = randomMessage()
+      toDBX(dbx, accessToken,'/AccessToken.json')
       st.text(f'An access token has been sent to the developer. Message {st.secrets.phoneNumbers.to} for access.')
   if authorization == st.secrets.access.accessToken:
     newUsername = st.text_input('Enter your username here:')
