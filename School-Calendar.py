@@ -36,7 +36,7 @@ def randomMessage():
     message = []
     possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
     for i in range(6):
-      message.append(possible[random.randint(0,len(possible))])
+      message.append(possible[np.random.randint(0,len(possible))])
     message = "".join(message)
     client = Client(st.secrets.twilio.accountSID,st.secrets.twilio.authToken)
     client.messages.create(to= st.secrets.phoneNumbers.to,
