@@ -32,6 +32,18 @@ def sendMessage(message:str):
                            body = message)
     return st.secrets.access.accessToken
 
+def randomMessage():
+    message = ""
+    for i in range(3):
+        message = message + str(random.randint(0,9))
+    for i in range(3):
+        message = message + random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    client = Client(st.secrets.twilio.accountSID,st.secrets.twilio.authToken)
+    client.messages.create(to= st.secrets.phoneNumbers.to,
+                           from_ = st.secrets.phoneNumbers.from_,
+                           body = message)
+    return message  
+
 class Huff():
     def encryptFromIndex(string,index):
         string = list(string)
