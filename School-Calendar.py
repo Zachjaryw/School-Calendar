@@ -360,9 +360,9 @@ elif user == "NEW":
     newUsername = st.text_input('Enter your username here:')
     if newUsername == '':
       st.text('Please enter a valid username.')
-    elif newUsername in decrypted[0]:
+    elif newUsername in decrypted:
       st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
-    elif not(newUsername in decrypted[0]):
+    elif not(newUsername in decrypted):
       password_1 = st.text_input('Enter your password here:')
       password_2 = st.text_input("Re-enter your password here:")
       if password_2 != "" and password_1 == password_2:
@@ -382,5 +382,5 @@ elif user == "NEW":
         st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
   else:
     st.text('Please Enter Auth Key from Developer')
-elif user not in decrypted[0]:
+elif user not in decrypted:
   st.text("Enter Valid Username")
