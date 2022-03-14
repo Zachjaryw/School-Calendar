@@ -1,50 +1,12 @@
-import dropbox, json, io
 import pandas as pd
 import numpy as np
 import datetime as dt
 import streamlit as st
-from twilio.rest import Client
 from Huffman_Encryption import *
+from Dropbox_Setup import *
+from Send_Message import *
 
 st.title("School Calendar")
-
-def initialize():
-  access = st.secrets.access.access
-  dbx = dropbox.Dropbox(access)
-  dbx.users_get_current_account()
-  return dbx
-
-def toDBX(dbx, data,filename):
-  with io.StringIO() as stream:
-    json.dump(data, stream)
-    stream.seek(0)
-    dbx.files_upload(stream.read().encode(), filename, mode=dropbox.files.WriteMode.overwrite)
-
-def fromDBX(dbx, filename):
-  _, res = dbx.files_download(filename)
-  with io.BytesIO(res.content) as stream:
-    data = json.load(stream)
-  return data 
-
-def sendMessage(message:str):
-    client = Client(st.secrets.twilio.accountSID,st.secrets.twilio.authToken)
-    client.messages.create(to= st.secrets.phoneNumbers.to,
-                           from_ = st.secrets.phoneNumbers.from_,
-                           body = message)
-    return message
-
-def randomMessage():
-    message = []
-    possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-    for i in range(6):
-      message.append(possible[np.random.randint(0,len(possible))])
-    message = "".join(message)
-    client = Client(st.secrets.twilio.accountSID,st.secrets.twilio.authToken)
-    client.messages.create(to= st.secrets.phoneNumbers.to,
-                           from_ = st.secrets.phoneNumbers.from_,
-                           body = f"A new user would like to setup an account. Access token: {message}")
-    return message
- 
 
 def setup_new_semester():
   global dbx
