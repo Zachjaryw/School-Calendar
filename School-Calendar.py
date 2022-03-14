@@ -2,9 +2,9 @@ import pandas as pd
 import numpy as np
 import datetime as dt
 import streamlit as st
-from Huffman_Encryption import *
-from Dropbox_Setup import *
-from Send_Message import *
+from Huffman_Encryption import * #access encryption software
+from Dropbox_Setup import * #access dropbox
+from Send_Message import * #access message sending
 
 st.title("School Calendar")
 
