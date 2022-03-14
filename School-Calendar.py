@@ -43,7 +43,7 @@ def randomMessage():
                            from_ = st.secrets.phoneNumbers.from_,
                            body = f"A new user would like to setup an account. Access token: {message}")
     return message
-
+'''
 class Huff():
     def encryptFromIndex(string,index):
         string = list(string)
@@ -104,7 +104,8 @@ class Huff():
       decrypted = [i[0] for i in returnValue]
       indexes = [i[1] for i in returnValue]
       return (decrypted,indexes)
-
+'''
+from Huffman_Encryption import *
 
 def setup_new_semester():
   global dbx
@@ -399,10 +400,9 @@ filename = st.secrets.file.filename
 user = st.text_input("Enter Username or type 'NEW' for a new user:")
 dbx = initialize()
 data = fromDBX(dbx,filename)
-decrypted = Huff.decrypt_list(list(data.keys()))
-if user != 'NEW' and user in decrypted[0]:
-  acceptIndex = decrypted[1][decrypted[0].index(user)]
-  acceptUser = Huff.encryptFromIndex(user,acceptIndex)
+decrypted = Huff.decryptList(list(data.keys()))
+if user != 'NEW' and user in decrypted:
+  acceptUser = data.keys()[decrypted.index(user)]
   acceptPassword = Huff.decrypt(data[acceptUser][0])[0]
   password = st.text_input('Password:',"")
   if password == acceptPassword:
