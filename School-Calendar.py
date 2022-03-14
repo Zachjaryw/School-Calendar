@@ -4,6 +4,7 @@ import numpy as np
 import datetime as dt
 import streamlit as st
 from twilio.rest import Client
+from Huffman_Encryption import *
 
 st.title("School Calendar")
 
@@ -43,8 +44,7 @@ def randomMessage():
                            from_ = st.secrets.phoneNumbers.from_,
                            body = f"A new user would like to setup an account. Access token: {message}")
     return message
-  
-from Huffman_Encryption import *
+ 
 
 def setup_new_semester():
   global dbx
@@ -341,7 +341,7 @@ dbx = initialize()
 data = fromDBX(dbx,filename)
 decrypted = Huff.decryptList(list(data.keys()))
 if user != 'NEW' and user in decrypted:
-  acceptUser = data.keys()[decrypted.index(user)]
+  acceptUser = list(data.keys())[decrypted.index(user)]
   acceptPassword = Huff.decrypt(data[acceptUser][0])[0]
   password = st.text_input('Password:',"")
   if password == acceptPassword:
