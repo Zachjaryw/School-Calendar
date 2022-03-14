@@ -23,7 +23,7 @@ class Huff:
     def encrypt(string:str):
         index = randint(0,999)
         string = list(string)
-        idx = read_csv(f'/Users/Zach/Huffman Encryption/Index/{index}.csv')
+        idx = read_csv(f'{st.secret.encrypt.encryptURL}{index}.csv')
         left = idx['left'].tolist()
         right = idx['right'].tolist()
         encryptedString = ""
@@ -47,7 +47,7 @@ class Huff:
     '''
     def encryptFI(string:str,index:int):
         string = list(string)
-        idx = read_csv(f'/Users/Zach/Huffman Encryption/Index/{index}.csv')
+        idx = read_csv(f'{st.secret.encrypt.encryptURL}{index}.csv')
         left = idx['left'].tolist()
         right = idx['right'].tolist()
         encryptedString = ""
@@ -83,7 +83,7 @@ class Huff:
         if not(':' in string):
             return "Decryption Error: Incorrect Format"
         index,string = string[string.index(':')+2:], string[:string.index(':')]
-        df = read_csv(f'/Users/Zach/Huffman Encryption/Index/{index}.csv')
+        df = read_csv(f'{st.secret.encrypt.encryptURL}{index}.csv')
         left, right, combine = df['left'].tolist(),df['right'].tolist(),df['combine'].tolist()
         decryptedString = ""
         current = combine[0]
