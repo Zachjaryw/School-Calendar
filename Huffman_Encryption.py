@@ -5,6 +5,7 @@ Huffman Encryption and Decryption
 '''
 import packages
 '''
+import streamlit as st
 from pandas import read_csv
 from numpy.random import randint
 
