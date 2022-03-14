@@ -43,68 +43,7 @@ def randomMessage():
                            from_ = st.secrets.phoneNumbers.from_,
                            body = f"A new user would like to setup an account. Access token: {message}")
     return message
-'''
-class Huff():
-    def encryptFromIndex(string,index):
-        string = list(string)
-        idx = pd.read_csv(f'{st.secrets.encrypt.encryptURL}{index}.csv')
-        left = idx['left'].values.tolist()
-        right = idx['right'].values.tolist()
-        stringList = []
-        for position in string:
-            for row in range(len(left)):
-                if position in left[row]:
-                    stringList.append('0')
-                elif position in right[row]:
-                    stringList.append('1')
-        stringList.append(f':#{index}')
-        return "".join(stringList)
-      
-    def encrypt(string):
-        index = random.randint(0,1000)
-        string = list(string)
-        idx = pd.read_csv(f'{st.secrets.encrypt.encryptURL}{index}.csv')
-        left = idx['left'].values.tolist()
-        right = idx['right'].values.tolist()
-        stringList = []
-        for position in string:
-            for row in range(len(left)):
-                if position in left[row]:
-                    stringList.append('0')
-                elif position in right[row]:
-                    stringList.append('1')
-        stringList.append(f':#{index}')
-        return "".join(stringList)
-      
-    def decrypt(string):
-        index = string[string.index(':')+2:]
-        string = string[:string.index(':')]
-        decryptURL = st.secrets.decryptURL.decryptURL
-        idx = pd.read_csv(decryptURL)
-        decrypt = [str(i)[:i.index(':')] for i in idx[str(index)].values.tolist()]
-        values = [str(i) for i in idx['Find'].values.tolist()]
-        stringList = []
-        posIndex = 0
-        while len(string) != 0:
-            position = string[:posIndex+1]
-            if position in decrypt:
-                find = decrypt.index(string[:posIndex+1])
-                stringList.append(values[find])
-                string = string[posIndex+1:]
-                posIndex = 0
-            else:
-                posIndex += 1
-        return ("".join(stringList),index)
-
-    def encrypt_list(list_name):
-      return [Huff.encrypt(str(item)) for item in list_name]
-
-    def decrypt_list(list_name):
-      returnValue = [Huff.decrypt(item) for item in list_name]
-      decrypted = [i[0] for i in returnValue]
-      indexes = [i[1] for i in returnValue]
-      return (decrypted,indexes)
-'''
+  
 from Huffman_Encryption import *
 
 def setup_new_semester():
