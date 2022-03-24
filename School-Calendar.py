@@ -367,7 +367,7 @@ def setupCompleteAssignments():
       adjust('Assignment Status',newValue)
     elif t:
       adjust('Assignment Type',newValue)
-     st.experimental_rerun()
+    st.experimental_rerun()
   elif True in fullButtons:
     asst = exec(f'a{thisWeekPositions()[fullButtons.index(True)]}.position')
     for i in range(len(list(calendar.keys()))):
