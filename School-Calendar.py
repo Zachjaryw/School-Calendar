@@ -164,9 +164,7 @@ def previousAst():
 def progress(index_pos, stage = 'Complete'):
   global calendar
   calendar['Assignment Status'][int(index_pos)] = str(stage)
-  
   st.text(f"Assignment {str(calendar['Assignment Name'][int(index_pos)])} is now marked as {stage}")
-  thisWeek()
   save_cal()
 
 def byType(select_type):
@@ -305,6 +303,7 @@ def completeAction(Action):
     st.text("Please select an action")
   elif Action == "TEST COMPLETE ASSTS":
     setupCompleteAssignments()
+    st.experimental_rerun()
 
 class assignment:
     def __init__(self,position:int):
