@@ -183,30 +183,31 @@ def completeAction(Action):
   if Action == "Show Full Calendar":
     show()
   elif Action == "Progress":
-    thisWeek()
-    st.text("Input Assignment position (or positions seperated by commas)")
-    index = st.text_input("","",key = 0)
-    if "," in index:
-      positions = index.split(',')
-      a = st.button("Submit",key = 17)
-      if a == True:
-        for pos in positions:
-            progress(int(pos))
-      else:
-        pass
-    else:
-      st.text("Input new state or leave empty to mark complete")
-      state = str(st.text_input("",key = 1))
-      if state == "":
-        if st.button("Submit",key = 18) == True:
-            progress(index)
-        else:
-            pass
-      else:
-        if st.button("Submit", key = 19) == True:
-            progress(index,state)
-        else:
-            pass
+    setupCompleteAssignments()
+    #thisWeek()
+    #st.text("Input Assignment position (or positions seperated by commas)")
+    #index = st.text_input("","",key = 0)
+    #if "," in index:
+    #  positions = index.split(',')
+    #  a = st.button("Submit",key = 17)
+    #  if a == True:
+    #    for pos in positions:
+    #        progress(int(pos))
+    #  else:
+    #    pass
+    #else:
+    #  st.text("Input new state or leave empty to mark complete")
+    #  state = str(st.text_input("",key = 1))
+    #  if state == "":
+    #    if st.button("Submit",key = 18) == True:
+    #        progress(index)
+    #    else:
+    #        pass
+    #  else:
+    #    if st.button("Submit", key = 19) == True:
+    #        progress(index,state)
+    #    else:
+    #        pass
   elif Action == "Show Old Assignments":
     previousAst()
   elif Action == "Adjust Assignment":
@@ -301,8 +302,6 @@ def completeAction(Action):
         st.text(f'{list(calendar.keys())[i]}: \t {calendar[list(calendar.keys())[i]][asst]}')
   elif Action == "***SELECT ACTION***":
     st.text("Please select an action")
-  elif Action == "TEST COMPLETE ASSTS":
-    setupCompleteAssignments()
 
 class assignment:
     def __init__(self,position:int):
@@ -356,7 +355,7 @@ if user != 'NEW' and user in decrypted:
         year = st.selectbox('Year:',years)
         semester = st.selectbox('Semester:',semesters)
       calendar = data[acceptUser][1][f'{semester} {year}']
-      Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range","TEST COMPLETE ASSTS"])
+      Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
 elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-")
