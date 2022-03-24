@@ -215,10 +215,6 @@ def completeAction(Action):
     st.text("Input position of assignment to adjust")
     pos = st.text_input('Assignment Position',"0",key = 2)
     pos = int(pos)
-    st.text("Input the value for the column to adjust")
-    for i in range(len(list(calendar.keys()))):
-      st.text(f'{i}. {list(calendar.keys())[i]}')
-    st.text('\n')
     col = st.selectbox("Select Which Column:",['Assignment Name','Assignment Due Date','Class Code','Assignment Notes','Assignment Status','Assignment Type'])
     st.text("Input adjusted value")
     new = st.text_input("",key = 5)
