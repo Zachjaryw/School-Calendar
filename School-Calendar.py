@@ -38,15 +38,13 @@ def reset():
         'Assignment Type': []
   }
 
-def fromDateRange(lowDate, highDate):
+def fromDateRangePositions(lowDate, highDate):
   global calendar
   df = pd.DataFrame(calendar)
   df.sort_values('Assignment Due Date',inplace = True)
   df = df[df['Assignment Due Date'] >= lowDate][df['Assignment Due Date'] <= highDate]
-  if df.empty == True:
-    st.text(f'There are no assignments between {lowDate} and {highDate}.')
-  else:
-    st.dataframe(df)
+  df['Assignment Due Date'] = df['Assignment Due Date'].apply(lambda x: dt.datetime.strftime(x, '%Y-%m-%d'))
+  return df.index.values.tolist()
 
 def addAssignmentsFromFile(file):
   global calendar
@@ -132,35 +130,31 @@ def thisMonth():
     st.text('\nReadings:\n')
     st.dataframe(df[df['Assignment Type'] == 'Reading'])
 
-def adjust(entry_pos, column, input):
-  global calendar
-  calendar[column][entry_pos] = input
-  st.text(f'Assignment position {entry_pos} adjusted')
-  thisWeek()
-  save_cal()
-
-def classCode(class_code):
+def thisMonthPositions():
   global calendar
   df = pd.DataFrame(calendar)
   df['Assignment Due Date'] = pd.to_datetime(df['Assignment Due Date'])
   df.sort_values('Assignment Due Date',inplace = True)
-  df = df[df['Class Code'] == str(class_code)]
+  month_1 = str(dt.date.today() + dt.timedelta(month = 1))
+  df = df[df['Assignment Due Date'] <= month_1]
   df = df[df['Assignment Status'] != 'Complete']
-  if df.empty == True:
-    st.text(f'There are no assignments for class code {class_code}')
-  else:
-    st.dataframe(df)
+  df['Assignment Due Date'] = df['Assignment Due Date'].apply(lambda x: dt.datetime.strftime(x, '%Y-%m-%d'))
+  return df.index.values.tolist()
+
+def adjust(entry_pos, column, input):
+  global calendar
+  calendar[column][entry_pos] = input
+  st.text(f'Assignment position {entry_pos} adjusted')
+  save_cal()
   
-def previousAst():
+def previousAstPositions():
   global calendar
   df = pd.DataFrame(calendar)
   df['Assignment Due Date'] = pd.to_datetime(df['Assignment Due Date'])
   df.sort_values('Assignment Due Date',inplace = True)
   df = df[df['Assignment Status'] == 'Complete']
-  if df.empty == True:
-    st.text(f'There are no complete assignments')
-  else:
-    st.dataframe(df)
+  df['Assignment Due Date'] = df['Assignment Due Date'].apply(lambda x: dt.datetime.strftime(x, '%Y-%m-%d'))
+  return df.index.values.tolist()
 
 def progress(index_pos, stage = 'Complete'):
   global calendar
@@ -181,35 +175,8 @@ def byType(select_type):
     st.dataframe(df)
 
 def completeAction(Action):
-  if Action == "Show Full Calendar":
-    show()
-  #elif Action == "Progress":
-    #thisWeek()
-    #st.text("Input Assignment position (or positions seperated by commas)")
-    #index = st.text_input("","",key = 0)
-    #if "," in index:
-    #  positions = index.split(',')
-    #  a = st.button("Submit",key = 17)
-    #  if a == True:
-    #    for pos in positions:
-    #        progress(int(pos))
-    #  else:
-    #    pass
-    #else:
-    #  st.text("Input new state or leave empty to mark complete")
-    #  state = str(st.text_input("",key = 1))
-    #  if state == "":
-    #    if st.button("Submit",key = 18) == True:
-    #        progress(index)
-    #    else:
-    #        pass
-    #  else:
-    #    if st.button("Submit", key = 19) == True:
-    #        progress(index,state)
-    #    else:
-    #        pass
-  elif Action == "Show Old Assignments":
-    previousAst()
+  if Action == "Show Old Assignments":
+    setupPreviousAssignments()
   elif Action == "Adjust Assignment":
     thisWeek()
     st.text("Input position of assignment to adjust")
@@ -235,7 +202,7 @@ def completeAction(Action):
   elif Action == "Assignments Due This Week":
     setupCompleteAssignments()
   elif Action == "Assignments Due This Month":
-    thisMonth()
+    setupCompleteAssignmentsMonth()
   elif Action == "New Assignment":
     st.text("New Assignment name")
     name = st.text_input("",key = 6)
@@ -260,39 +227,15 @@ def completeAction(Action):
             add(name,code,date,notes,ast_type= type_)
     else:
         pass
-  elif Action == "Show Assignments by Type":
-    st.text('Enter assignment type')
-    type_ = st.text_input("",key = 11)
-    if st.button("Submit",key = 22) == True:
-        byType(type_)
-    else:
-        pass
-  elif Action == "Add Assignments from file":
-    st.text('Please enter the file path here:')
-    st.text("The file must have correct column names: ['name','class_code','due_date','notes','status','ast_type']")
-    filePath = st.text_input("",key = 12)
-    if st.button("Submit",key = 23) == True:
-        addAssignmentsFromFile(filePath)
-    else:
-        pass
   elif Action == "Assignments In Date Range":
     st.text('Enter the first (lower) date:')
     lowDate = st.text_input("",key = 13)
     st.text('Enter the second (higher) date:')
     highDate = st.text_input("",key = 14)
     if st.button("Submit",key = 24) == True:
-        fromDateRange(lowDate,highDate)
+        setupDateRangeAssignments(lowDate,highDate)
     else:
         pass
-  elif Action == "Review Single Assignment":
-    st.text('Which assignment number would you like to review? (can be any existing assignment)')
-    thisWeek()
-    asst = int(st.text_input("",key = 15))
-    for i in range(len(list(calendar.keys()))):
-      if i == 2:
-        st.text(f'{list(calendar.keys())[i]}: \t\t {calendar[list(calendar.keys())[i]][asst]}')
-      else:  
-        st.text(f'{list(calendar.keys())[i]}: \t {calendar[list(calendar.keys())[i]][asst]}')
   elif Action == "***SELECT ACTION***":
     st.text("Please select an action")
 
@@ -311,6 +254,11 @@ class assignment:
         global calendar
         progress(self.position)
         st.text(f'{self.position} marked complete')
+
+    def incompleteAssignment(self):
+        global calendar
+        progress(self.position,"Incomplete")
+        st.text(f'{self.position} marked Incomplete')        
         
     def adjustAssignment(self,column,newValue):
         adjust(self.position,column,newValue)
@@ -345,7 +293,7 @@ def setupCompleteAssignments():
           exec(f'col1.text(a{item}.name)')
           exec(f'col2.text(a{item}.due)')
           exec(f'col3.text(a{item}.code)')
-          exec(f"completeButton{item} = col4.button('Complete',key = {item})")
+          exec(f"completeButton{item} = col4.button('Complete',key = {10000+item})")
           exec(f"completeButtons.append(completeButton{item})")
           exec(f"fullButton{item} = col5.button('Full Asst',key = {item+20000})")
           exec(f"fullButtons.append(fullButton{item})")
@@ -354,6 +302,91 @@ def setupCompleteAssignments():
     st.experimental_rerun()
   elif True in fullButtons:
     exec(f'a{thisWeekPositions()[fullButtons.index(True)]}.printValues()')
+
+def setupCompleteAssignmentsMonth():
+  col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,1.5,2,2])
+  col0.text("#")
+  col1.text("Name")
+  col2.text("Due Date")
+  col3.text("Class Code")
+  col4.text("Complete")
+  col5.text("Assignment Details")
+  completeButtons = []
+  fullButtons = []
+  for item in thismonthPositions():
+      exec(f'a{item} = assignment(item)')
+      with st.container():
+          col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,1.5,2,2])
+          exec(f'col0.text(a{item}.position)')
+          exec(f'col1.text(a{item}.name)')
+          exec(f'col2.text(a{item}.due)')
+          exec(f'col3.text(a{item}.code)')
+          exec(f"completeButton{item} = col4.button('Complete',key = {10000+item})")
+          exec(f"completeButtons.append(completeButton{item})")
+          exec(f"fullButton{item} = col5.button('Full Asst',key = {item+20000})")
+          exec(f"fullButtons.append(fullButton{item})")
+  if True in completeButtons:
+    exec(f'a{thismonthPositions()[completeButtons.index(True)]}.completeAssignment()')
+    st.experimental_rerun()
+  elif True in fullButtons:
+    exec(f'a{thismonthPositions()[fullButtons.index(True)]}.printValues()')
+
+def setupPreviousAssignments():
+  col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,1.5,2,2])
+  col0.text("#")
+  col1.text("Name")
+  col2.text("Due Date")
+  col3.text("Class Code")
+  col4.text("Incomplete")
+  col5.text("Assignment Details")
+  completeButtons = []
+  fullButtons = []
+  for item in previousAstPositions():
+      exec(f'a{item} = assignment(item)')
+      with st.container():
+          col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,1.5,2,2])
+          exec(f'col0.text(a{item}.position)')
+          exec(f'col1.text(a{item}.name)')
+          exec(f'col2.text(a{item}.due)')
+          exec(f'col3.text(a{item}.code)')
+          exec(f"completeButton{item} = col4.button('Incomplete',key = {10000+item})")
+          exec(f"completeButtons.append(completeButton{item})")
+          exec(f"fullButton{item} = col5.button('Full Asst',key = {item+20000})")
+          exec(f"fullButtons.append(fullButton{item})")
+  if True in completeButtons:
+    exec(f'a{previousAstPositions()[completeButtons.index(True)]}.incompleteAssignment()')
+    st.experimental_rerun()
+  elif True in fullButtons:
+    exec(f'a{previousAstPositions()[fullButtons.index(True)]}.printValues()')
+
+def setupDateRangeAssignments(lowDate,highDate):
+  col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,1.5,2,2])
+  col0.text("#")
+  col1.text("Name")
+  col2.text("Due Date")
+  col3.text("Class Code")
+  col4.text("Complete")
+  col5.text("Assignment Details")
+  completeButtons = []
+  fullButtons = []
+  for item in fromDateRangePositions(lowDate, highDate):
+      exec(f'a{item} = assignment(item)')
+      with st.container():
+          col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,1.5,2,2])
+          exec(f'col0.text(a{item}.position)')
+          exec(f'col1.text(a{item}.name)')
+          exec(f'col2.text(a{item}.due)')
+          exec(f'col3.text(a{item}.code)')
+          exec(f"completeButton{item} = col4.button('Complete',key = {10000+item})")
+          exec(f"completeButtons.append(completeButton{item})")
+          exec(f"fullButton{item} = col5.button('Full Asst',key = {item+20000})")
+          exec(f"fullButtons.append(fullButton{item})")
+  if True in completeButtons:
+    exec(f'a{fromDateRangePositions(lowDate, highDate)[completeButtons.index(True)]}.completeAssignment()')
+    st.experimental_rerun()
+  elif True in fullButtons:
+    exec(f'a{fromDateRangePositions(lowDate, highDate)[fullButtons.index(True)]}.printValues()')
+
 
 years = [2022,2023]
 semesters = ['Spring','Fall']
@@ -408,4 +441,3 @@ elif user == "NEW":
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
   st.text("Enter Valid Username")
-
