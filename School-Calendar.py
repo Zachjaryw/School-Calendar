@@ -178,7 +178,7 @@ def completeAction(Action):
   if Action == "Show Old Assignments":
     setupPreviousAssignments()
   elif Action == "Adjust Assignment":
-    thisWeek()
+    setupCompleteAssignments()
     st.text("Input position of assignment to adjust")
     pos = st.text_input('Assignment Position',"0",key = 2)
     pos = int(pos)
