@@ -351,8 +351,9 @@ if user != 'NEW' and user in decrypted:
   acceptPassword = Huff.decrypt(data[acceptUser][0])
   password = st.text_input('Password:',"")
   if password == acceptPassword:
-      year = st.selectbox('Year:',years)
-      semester = st.selectbox('Semester:',semesters)
+      with st.expander():
+        year = st.selectbox('Year:',years)
+        semester = st.selectbox('Semester:',semesters)
       calendar = data[acceptUser][1][f'{semester} {year}']
       Action = st.selectbox("Select Action",["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range","TEST COMPLETE ASSTS"])
       completeAction(Action)
