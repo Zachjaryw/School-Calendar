@@ -103,7 +103,17 @@ def thisWeek():
     st.dataframe(df[df['Assignment Type'] != 'Reading'])
     st.text('\nReadings:\n')
     st.dataframe(df[df['Assignment Type'] == 'Reading'])
-  
+
+def thisWeekPositions():
+  global calendar
+  df = pd.DataFrame(calendar)
+  df['Assignment Due Date'] = pd.to_datetime(df['Assignment Due Date'])
+  df.sort_values('Assignment Due Date',inplace = True)
+  days_7 = str(dt.date.today() + dt.timedelta(weeks = 1))
+  df = df[df['Assignment Due Date'] <= days_7]
+  df = df[df['Assignment Status'] != 'Complete']
+  df['Assignment Due Date'] = df['Assignment Due Date'].apply(lambda x: dt.datetime.strftime(x, '%Y-%m-%d'))
+  return df.index.values.tolist()
 
 def thisMonth():
   global calendar
@@ -293,7 +303,42 @@ def completeAction(Action):
         st.text(f'{list(calendar.keys())[i]}: \t {calendar[list(calendar.keys())[i]][asst]}')
   elif Action == "***SELECT ACTION***":
     st.text("Please select an action")
+  elif Action == "TEST COMPLETE ASSTS":
+    setupCompleteAsignments()
 
+class assignment:
+    def __init__(self,position:int):
+        global calendar
+        self.position = position
+        self.name = calendar['Assignment Name'][position]
+        self.due = calendar['Assignment Due Date'][position]
+        self.code = calendar['Class Code'][position]
+
+    def completeAssignment(self):
+        global calendar
+        progress(self.position)
+        st.text(f'{self.position} marked complete')
+
+def setupCompleteAssignments():
+  col0,col1,col2,col3,col4 = st.columns([1,4,2,1.5,2])
+  col0.text("#")
+  col1.text("Name")
+  col2.text("Due Date")
+  col3.text("Class Code")
+  col4.text("Complete")
+  buttons = []
+  for item in thisWeekPositions():
+      exec(f'a{item} = assignment(item)')
+      with st.container():
+          col0,col1,col2,col3,col4 = st.columns([1,4,2,1.5,2])
+          exec(f'col0.text(a{item}.position)')
+          exec(f'col1.text(a{item}.name)')
+          exec(f'col2.text(a{item}.due)')
+          exec(f'col3.text(a{item}.code)')
+          exec(f"button{item} = col4.button('Complete',key = {item})")
+          exec(f"buttons.append(button{item})")
+  if True in buttons:
+    exec(f'a{thisWeekPositions()[buttons.index(True)]}.completeAssignment()')
 
 years = [2022,2023]
 semesters = ['Spring','Fall']
@@ -346,3 +391,31 @@ elif user == "NEW":
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
   st.text("Enter Valid Username")
+
+
+'''
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+accessToken = 'access-ACT1219'
+
+[twilio]
+accountSID = 'ACceb691744171ae3ed3556b6d298a11ee'
+authToken = '661ce654daa8ff39029ea152bc6050eb'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+19035737575'
+
+[file]
+filename = '/SchoolCalendar.json'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+
+'''
+
