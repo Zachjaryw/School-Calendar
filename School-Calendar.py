@@ -337,7 +337,7 @@ def setupCompleteAssignments():
           exec(f'col2.text(a{item}.due)')
           exec(f'col3.text(a{item}.code)')
           exec(f"completeButton{item} = col4.button('Complete',key = {item})")
-          exec(f"completeButtons.append(combpleteButton{item})")
+          exec(f"completeButtons.append(completeButton{item})")
           exec(f"adjustButton{item} = col4.button('Adjust',key = {item+10000})")
           exec(f"adjustButtons.append(adjustButton{item})")
           exec(f"fullButton{item} = col4.button('Full Asst',key = {item+20000})")
