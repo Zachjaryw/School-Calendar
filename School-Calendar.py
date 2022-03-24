@@ -326,13 +326,13 @@ class assignment:
         st.text(f'Value {self.position} in {column} adjusted.')
         
     def printValues(self):
-        st.text(f'Item Position:\n{self.position}')
-        st.text(f'Name:\n\n{self.name}')
-        st.text(f'Due Date:\n\n{self.due}')
-        st.text(f'Class Code:\n\n{self.code}')
-        st.text(f'Notes:\n\n{self.note}')
-        st.text(f'Status:\n\n{self.status}')
-        st.text(f'Type:\n\n{self.type_}')
+        st.text(f'\033[1mItem Position:\033[0;0m\n{self.position}')
+        st.text(f'\033[1mName:\033[0;0m\n\n{self.name}')
+        st.text(f'\033[1mDue Date:\033[0;0m\n\n{self.due}')
+        st.text(f'\033[1mClass Code:\033[0;0m\n\n{self.code}')
+        st.text(f'\033[1mNotes:\033[0;0m\n\n{self.note}')
+        st.text(f'\033[1mStatus:\033[0;0m\n\n{self.status}')
+        st.text(f'\033[1mType:\033[0;0m\n\n{self.type_}')
         
 
 def setupCompleteAssignments():
