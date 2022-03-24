@@ -311,11 +311,29 @@ class assignment:
         self.name = calendar['Assignment Name'][position]
         self.due = calendar['Assignment Due Date'][position]
         self.code = calendar['Class Code'][position]
+        self.note = calendar['Assignment Notes'][position]
+        self.status = calendar['Assignment Status'][position]
+        self.type_ = calendar['Assignment Type'][position]
 
     def completeAssignment(self):
         global calendar
         progress(self.position)
         st.text(f'{self.position} marked complete')
+        
+    def adjustAssignment(self,column,newValue):
+        global calendar
+        adjust(self.position,column,newValue)
+        st.text(f'Value {self.position} in {column} adjusted.')
+        
+    def printValues(self):
+        st.text(f'Item Position:\n{self.position}')
+        st.text(f'Name:\n\n{self.name}')
+        st.text(f'Due Date:\n\n{self.due}')
+        st.text(f'Class Code:\n\n{self.code}')
+        st.text(f'Notes:\n\n{self.note}')
+        st.text(f'Status:\n\n{self.status}')
+        st.text(f'Type:\n\n{self.type_}')
+        
 
 def setupCompleteAssignments():
   col0,col1,col2,col3,col4,col5,col6 = st.columns([1,4,2,1.5,2,2,2])
@@ -356,26 +374,20 @@ def setupCompleteAssignments():
     s = status.button('Status')
     t = type_.button('Type')
     if n:
-      adjust('Assignment Name',newValue)
+      exec(f"a{thisWeekPositions()[adjustButtons.index(True)]}.adjustAssignment('Assignment Name',newValue)")
     elif d:
-      adjust('Assignment Due Date',newValue)
+      exec(f"a{thisWeekPositions()[adjustButtons.index(True)]}.adjustAssignment('Assignment Due Date',newValue)")
     elif c:
-      adjust('Class Code',newValue)
+      exec(f"a{thisWeekPositions()[adjustButtons.index(True)]}.adjustAssignment('Class Code',newValue)")
     elif no:
-      adjust('Assignment Notes',newValue)
+      exec(f"a{thisWeekPositions()[adjustButtons.index(True)]}.adjustAssignment('Assignment Notes',newValue)")
     elif s:
-      adjust('Assignment Status',newValue)
+      exec(f"a{thisWeekPositions()[adjustButtons.index(True)]}.adjustAssignment('Assignment Status',newValue)")
     elif t:
-      adjust('Assignment Type',newValue)
+      exec(f"a{thisWeekPositions()[adjustButtons.index(True)]}.adjustAssignment('Assignment Type',newValue)")
     st.experimental_rerun()
   elif True in fullButtons:
-    asst = exec(f'a{thisWeekPositions()[fullButtons.index(True)]}.position')
-    for i in range(len(list(calendar.keys()))):
-      if i == 2:
-        st.text(f'{list(calendar.keys())[i]}: \t\t {calendar[list(calendar.keys())[i]][int(asst)]}')
-      else:  
-        st.text(f'{list(calendar.keys())[i]}: \t {calendar[list(calendar.keys())[i]][int(asst)]}')
-    st.experimental_rerun()
+    exec(f'a{thisWeekPositions()[fullButtons.index(True)]}.printValues()')
 
 years = [2022,2023]
 semesters = ['Spring','Fall']
