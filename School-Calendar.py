@@ -369,7 +369,7 @@ def setupCompleteAssignments():
       adjust('Assignment Type',newValue)
     st.experimental_rerun()
   elif True in fullButtons:
-    asst = exec(f'a{thisWeekPositions()[fullButtons.index(True)]}.position')
+    asst = int(exec(f'a{thisWeekPositions()[fullButtons.index(True)]}.position'))
     for i in range(len(list(calendar.keys()))):
       if i == 2:
         st.text(f'{list(calendar.keys())[i]}: \t\t {calendar[list(calendar.keys())[i]][asst]}')
