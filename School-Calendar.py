@@ -317,24 +317,32 @@ class assignment:
         st.text(f'{self.position} marked complete')
 
 def setupCompleteAssignments():
-  col0,col1,col2,col3,col4 = st.columns([1,4,2,1.5,2])
+  col0,col1,col2,col3,col4,col5,col6 = st.columns([1,4,2,1.5,2,2,2])
   col0.text("#")
   col1.text("Name")
   col2.text("Due Date")
   col3.text("Class Code")
   col4.text("Complete")
-  buttons = []
+  col5.text("Adjust")
+  col6.text("Full Asst")
+  completeButtons = []
+  adjustButtons = []
+  fullButtons = []
   for item in thisWeekPositions():
       exec(f'a{item} = assignment(item)')
       with st.container():
-          col0,col1,col2,col3,col4 = st.columns([1,4,2,1.5,2])
+          col0,col1,col2,col3,col4,col5,col6 = st.columns([1,4,2,1.5,2,2,2])
           exec(f'col0.text(a{item}.position)')
           exec(f'col1.text(a{item}.name)')
           exec(f'col2.text(a{item}.due)')
           exec(f'col3.text(a{item}.code)')
-          exec(f"button{item} = col4.button('Complete',key = {item})")
-          exec(f"buttons.append(button{item})")
-  if True in buttons:
+          exec(f"completeButton{item} = col4.button('Complete',key = {item})")
+          exec(f"completeButtons.append(combpleteButton{item})")
+          exec(f"adjustButton{item} = col4.button('Adjust',key = {item+10000})")
+          exec(f"adjustButtons.append(adjustButton{item})")
+          exec(f"fullButton{item} = col4.button('Full Asst',key = {item+20000})")
+          exec(f"fullButtons.append(fullButton{item})")
+  if True in completeButtons:
     exec(f'a{thisWeekPositions()[buttons.index(True)]}.completeAssignment()')
     st.experimental_rerun()
 
