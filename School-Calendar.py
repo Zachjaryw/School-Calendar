@@ -304,7 +304,7 @@ def completeAction(Action):
   elif Action == "***SELECT ACTION***":
     st.text("Please select an action")
   elif Action == "TEST COMPLETE ASSTS":
-    setupCompleteAsignments()
+    setupCompleteAssignments()
 
 class assignment:
     def __init__(self,position:int):
