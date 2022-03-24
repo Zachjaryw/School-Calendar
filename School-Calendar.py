@@ -210,36 +210,32 @@ def completeAction(Action):
     #        pass
   elif Action == "Show Old Assignments":
     previousAst()
-  #elif Action == "Adjust Assignment":
-  #  thisWeek()
-  #  st.text("Input position of assignment to adjust")
-  #  pos = int(st.text_input("",key = 2))
-  #  st.text("Input the value for the column to adjust")
-  #  for i in range(len(list(calendar.keys()))):
-  #    st.text(f'{i}. {list(calendar.keys())[i]}')
-  #  st.text('\n')
-  #  col = int(st.text_input("",key = 3))
-  #  while not(col >= 0 and col <= 5):
-  #    st.text('Invalid input: please enter again')
-  #    col = int(st.text_input("",key = 4))
-  #  st.text("Input adjusted value")
-  #  new = st.text_input("",key = 5)
-  #  if st.button("Submit",key = 20) == True:
-  #      if col == 0: #'Assignment Name'
-  #        adjust(pos,'Assignment Name',new)
-  #      elif col == 1:#'Assignment Due Date'
-  #        adjust(pos,'Assignment Due Date',new)
-  #      elif col == 2:#'Class Code'
-  #        adjust(pos,'Class Code',new)
-  #      elif col == 3:#'Assignment Notes'
-  #        adjust(pos,'Assignment Notes',new)
-  #      elif col == 4:#'Assignment Status'
-  #        adjust(pos,'Assignment Status',new)
-  #      elif col == 5:#'Assignment Type'
-  #        adjust(pos,'Assignment Type',new)
-  #  else:
-  #      pass
-  #
+  elif Action == "Adjust Assignment":
+    thisWeek()
+    st.text("Input position of assignment to adjust")
+    pos = int(st.text_input("",key = 2))
+    st.text("Input the value for the column to adjust")
+    for i in range(len(list(calendar.keys()))):
+      st.text(f'{i}. {list(calendar.keys())[i]}')
+    st.text('\n')
+    col = st.selectbox("Select Which Column:",['Assignment Name','Assignment Due Date','Class Code','Assignment Notes','Assignment Status','Assignment Type'])
+    st.text("Input adjusted value")
+    new = st.text_input("",key = 5)
+    if st.button("Submit",key = 20) == True:
+        if col == 'Assignment Name':
+          adjust(pos,'Assignment Name',new)
+        elif col == 'Assignment Due Date':
+          adjust(pos,'Assignment Due Date',new)
+        elif col == 'Class Code':
+          adjust(pos,'Class Code',new)
+        elif col == 'Assignment Notes':
+          adjust(pos,'Assignment Notes',new)
+        elif col == 'Assignment Status':
+          adjust(pos,'Assignment Status',new)
+        elif col == 'Assignment Type':
+          adjust(pos,'Assignment Type',new)
+    else:
+        pass
   elif Action == "Assignments Due This Week":
     setupCompleteAssignments()
   elif Action == "Assignments Due This Month":
@@ -380,7 +376,7 @@ if user != 'NEW' and user in decrypted:
         year = st.selectbox('Year:',years)
         semester = st.selectbox('Semester:',semesters)
       calendar = data[acceptUser][1][f'{semester} {year}']
-      Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Show Old Assignments","Assignments In Date Range"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
+      Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
 elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-")
