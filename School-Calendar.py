@@ -6,7 +6,7 @@ from Huffman_Encryption import * #access encryption software
 from Dropbox_Setup import * #access dropbox
 from Send_Message import * #access message sending
 
-st.set_page_config(layout="medium")
+st.set_page_config(layout="wide")
 st.title("School Calendar")
 
 def setup_new_semester():
