@@ -346,6 +346,15 @@ def setupCompleteAssignments():
   if True in completeButtons:
     exec(f'a{thisWeekPositions()[buttons.index(True)]}.completeAssignment()')
     st.experimental_rerun()
+  elif True in adjustButtons:
+    pass
+  elif True in fullButtons:
+    asst = exec(f'a{thisWeekPositions()[buttons.index(True)]}.position')
+    for i in range(len(list(calendar.keys()))):
+      if i == 2:
+        st.text(f'{list(calendar.keys())[i]}: \t\t {calendar[list(calendar.keys())[i]][asst]}')
+      else:  
+        st.text(f'{list(calendar.keys())[i]}: \t {calendar[list(calendar.keys())[i]][asst]}')
 
 years = [2022,2023]
 semesters = ['Spring','Fall']
