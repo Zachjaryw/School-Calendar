@@ -343,7 +343,7 @@ def setupCompleteAssignments():
   col3.text("Class Code")
   col4.text("Complete")
   col5.text("Adjust")
-  col6.text("Full Asst")
+  col6.text("Assignment Details")
   completeButtons = []
   adjustButtons = []
   fullButtons = []
