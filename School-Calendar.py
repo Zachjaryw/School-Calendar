@@ -351,7 +351,7 @@ if user != 'NEW' and user in decrypted:
   acceptPassword = Huff.decrypt(data[acceptUser][0])
   password = st.text_input('Password:',"")
   if password == acceptPassword:
-      with st.expander():
+      with st.expander("Year and Semester Selection"):
         year = st.selectbox('Year:',years)
         semester = st.selectbox('Semester:',semesters)
       calendar = data[acceptUser][1][f'{semester} {year}']
