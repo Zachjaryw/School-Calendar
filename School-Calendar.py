@@ -324,6 +324,7 @@ class assignment:
         global calendar
         adjust(self.position,column,newValue)
         st.text(f'Value {self.position} in {column} adjusted.')
+        st.experimental_rerun()
         
     def printValues(self):
         st.text(f'Item Position:          {self.position}')
@@ -385,7 +386,6 @@ def setupCompleteAssignments():
       exec(f"a{thisWeekPositions()[adjustButtons.index(True)]}.adjustAssignment('Assignment Status',newValue)")
     elif t:
       exec(f"a{thisWeekPositions()[adjustButtons.index(True)]}.adjustAssignment('Assignment Type',newValue)")
-    st.experimental_rerun()
   elif True in fullButtons:
     exec(f'a{thisWeekPositions()[fullButtons.index(True)]}.printValues()')
 
