@@ -337,6 +337,7 @@ def setupCompleteAssignments():
           exec(f"buttons.append(button{item})")
   if True in buttons:
     exec(f'a{thisWeekPositions()[buttons.index(True)]}.completeAssignment()')
+        st.experimental_rerun()
 
 years = [2022,2023]
 semesters = ['Spring','Fall']
