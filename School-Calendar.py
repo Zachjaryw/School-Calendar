@@ -336,56 +336,30 @@ class assignment:
         
 
 def setupCompleteAssignments():
-  col0,col1,col2,col3,col4,col5,col6 = st.columns([1,4,2,1.5,2,2,2])
+  col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,1.5,2,2])
   col0.text("#")
   col1.text("Name")
   col2.text("Due Date")
   col3.text("Class Code")
   col4.text("Complete")
-  col5.text("Adjust")
-  col6.text("Assignment Details")
+  col5.text("Assignment Details")
   completeButtons = []
-  adjustButtons = []
   fullButtons = []
   for item in thisWeekPositions():
       exec(f'a{item} = assignment(item)')
       with st.container():
-          col0,col1,col2,col3,col4,col5,col6 = st.columns([1,4,2,1.5,2,2,2])
+          col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,1.5,2,2])
           exec(f'col0.text(a{item}.position)')
           exec(f'col1.text(a{item}.name)')
           exec(f'col2.text(a{item}.due)')
           exec(f'col3.text(a{item}.code)')
           exec(f"completeButton{item} = col4.button('Complete',key = {item})")
           exec(f"completeButtons.append(completeButton{item})")
-          exec(f"adjustButton{item} = col5.button('Adjust',key = {item+10000})")
-          exec(f"adjustButtons.append(adjustButton{item})")
-          exec(f"fullButton{item} = col6.button('Full Asst',key = {item+20000})")
+          exec(f"fullButton{item} = col5.button('Full Asst',key = {item+20000})")
           exec(f"fullButtons.append(fullButton{item})")
   if True in completeButtons:
     exec(f'a{thisWeekPositions()[completeButtons.index(True)]}.completeAssignment()')
     st.experimental_rerun()
-  elif True in adjustButtons:
-    newValue = st.text_input("Enter New Value:","")
-    st.write("After Writing new value, select the button associated with the column you would like to adjust.")
-    name,date,code,notes,status,type_ = st.columns(6)
-    n = name.button('Name')
-    d = date.button('Date')
-    c = code.button('Class')
-    no = notes.button('Notes')
-    s = status.button('Status')
-    t = type_.button('Type')
-    if n:
-      exec(f"a{thisWeekPositions()[adjustButtons.index(True)]}.adjustAssignment('Assignment Name',newValue)")
-    elif d:
-      exec(f"a{thisWeekPositions()[adjustButtons.index(True)]}.adjustAssignment('Assignment Due Date',newValue)")
-    elif c:
-      exec(f"a{thisWeekPositions()[adjustButtons.index(True)]}.adjustAssignment('Class Code',newValue)")
-    elif no:
-      exec(f"a{thisWeekPositions()[adjustButtons.index(True)]}.adjustAssignment('Assignment Notes',newValue)")
-    elif s:
-      exec(f"a{thisWeekPositions()[adjustButtons.index(True)]}.adjustAssignment('Assignment Status',newValue)")
-    elif t:
-      exec(f"a{thisWeekPositions()[adjustButtons.index(True)]}.adjustAssignment('Assignment Type',newValue)")
   elif True in fullButtons:
     exec(f'a{thisWeekPositions()[fullButtons.index(True)]}.printValues()')
 
