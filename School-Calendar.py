@@ -369,12 +369,12 @@ def setupCompleteAssignments():
       adjust('Assignment Type',newValue)
     st.experimental_rerun()
   elif True in fullButtons:
-    asst = int(exec(f'a{thisWeekPositions()[fullButtons.index(True)]}.position'))
+    asst = exec(f'a{thisWeekPositions()[fullButtons.index(True)]}.position')
     for i in range(len(list(calendar.keys()))):
       if i == 2:
-        st.text(f'{list(calendar.keys())[i]}: \t\t {calendar[list(calendar.keys())[i]][asst]}')
+        st.text(f'{list(calendar.keys())[i]}: \t\t {calendar[list(calendar.keys())[i]][int(asst)]}')
       else:  
-        st.text(f'{list(calendar.keys())[i]}: \t {calendar[list(calendar.keys())[i]][asst]}')
+        st.text(f'{list(calendar.keys())[i]}: \t {calendar[list(calendar.keys())[i]][int(asst)]}')
     st.experimental_rerun()
 
 years = [2022,2023]
