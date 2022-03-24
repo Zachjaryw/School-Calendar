@@ -344,17 +344,38 @@ def setupCompleteAssignments():
           exec(f"fullButton{item} = col6.button('Full Asst',key = {item+20000})")
           exec(f"fullButtons.append(fullButton{item})")
   if True in completeButtons:
-    exec(f'a{thisWeekPositions()[buttons.index(True)]}.completeAssignment()')
+    exec(f'a{thisWeekPositions()[completeButtons.index(True)]}.completeAssignment()')
     st.experimental_rerun()
   elif True in adjustButtons:
-    pass
+    newValue = st.text_input("Enter New Value:","")
+    name,date,code,notes,status,type_ = st.columns(6)
+    n = name.button('Name')
+    d = date.button('Date')
+    c = code.button('Class')
+    no = notes.button('Notes')
+    s = status.button('Status')
+    t = type_.button('Type')
+    if n:
+      adjust('Assignment Name',newValue)
+    elif d:
+      adjust('Assignment Due Date',newValue)
+    elif c:
+      adjust('Class Code',newValue)
+    elif no:
+      adjust('Assignment Notes',newValue)
+    elif s:
+      adjust('Assignment Status',newValue)
+    elif t:
+      adjust('Assignment Type',newValue)
+     st.experimental_rerun()
   elif True in fullButtons:
-    asst = exec(f'a{thisWeekPositions()[buttons.index(True)]}.position')
+    asst = exec(f'a{thisWeekPositions()[fullButtons.index(True)]}.position')
     for i in range(len(list(calendar.keys()))):
       if i == 2:
         st.text(f'{list(calendar.keys())[i]}: \t\t {calendar[list(calendar.keys())[i]][asst]}')
       else:  
         st.text(f'{list(calendar.keys())[i]}: \t {calendar[list(calendar.keys())[i]][asst]}')
+    st.experimental_rerun()
 
 years = [2022,2023]
 semesters = ['Spring','Fall']
