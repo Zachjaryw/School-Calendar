@@ -303,7 +303,6 @@ def completeAction(Action):
     st.text("Please select an action")
   elif Action == "TEST COMPLETE ASSTS":
     setupCompleteAssignments()
-    st.experimental_rerun()
 
 class assignment:
     def __init__(self,position:int):
