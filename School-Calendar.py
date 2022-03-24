@@ -213,7 +213,8 @@ def completeAction(Action):
   elif Action == "Adjust Assignment":
     thisWeek()
     st.text("Input position of assignment to adjust")
-    pos = st.number_input('Assignment Position',key = 2)
+    pos = st.text_input('Assignment Position',key = 2)
+    pos = int(pos)
     st.text("Input the value for the column to adjust")
     for i in range(len(list(calendar.keys()))):
       st.text(f'{i}. {list(calendar.keys())[i]}')
