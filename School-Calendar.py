@@ -209,11 +209,13 @@ def completeAction(Action):
   elif Action == "Assignments Due This Month":
     setupCompleteAssignmentsMonth()
   elif Action == "New Assignment":
-    name = st.text_input("New Assignment name","",key = 6)
-    code = st.text_input("Class Code","",key = 7)
-    date = st.text_input('Due Date',"",key = 8)
+    nameC,codeC = st.columns(2)
+    name = nameC.text_input("New Assignment name","",key = 6)
+    code = codeC.text_input("Class Code","",key = 7)
+    date = nameC.date_input('Due Date',"",key = 8)
+    type_ = str(codeC.text_input('Assignment Type (leave empty for default)',"",key = 10))
+    date = str(date).replace('/','-')
     notes = str(st.text_input('Notes (leave empty for default)',"",key = 9))
-    type_ = str(st.text_input('Assignment Type (leave empty for default)',"",key = 10))
     if st.button("Submit",key = 21) == True:
         if notes == "":
           if type_ == "":
