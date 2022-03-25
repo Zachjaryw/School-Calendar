@@ -12,6 +12,7 @@ c1.title("School Calendar")
 logout = c2.button("Logout")
 if logout:
   st.balloons()
+  st.snow()
 
 def setup_new_semester():
   global dbx
