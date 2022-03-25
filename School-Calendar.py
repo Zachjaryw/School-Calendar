@@ -290,7 +290,7 @@ def setupCompleteAssignments():
           exec(f'col3.text(a{item}.code)')
           exec(f"completeButton{item} = col4.button('Complete',key = {10000+item})")
           exec(f"completeButtons.append(completeButton{item})")
-          exec(f"fullButton{item} = col5.button('Full Asst',key = {item+20000})")
+          exec(f"fullButton{item} = col5.button('Full Assignment',key = {item+20000})")
           exec(f"fullButtons.append(fullButton{item})")
   if True in completeButtons:
     exec(f'a{thisWeekPositions()[completeButtons.index(True)]}.completeAssignment()')
@@ -318,7 +318,7 @@ def setupCompleteAssignmentsMonth():
           exec(f'col3.text(a{item}.code)')
           exec(f"completeButton{item} = col4.button('Complete',key = {10000+item})")
           exec(f"completeButtons.append(completeButton{item})")
-          exec(f"fullButton{item} = col5.button('Full Asst',key = {item+20000})")
+          exec(f"fullButton{item} = col5.button('Full Assignment',key = {item+20000})")
           exec(f"fullButtons.append(fullButton{item})")
   if True in completeButtons:
     exec(f'a{thismonthPositions()[completeButtons.index(True)]}.completeAssignment()')
@@ -346,7 +346,7 @@ def setupPreviousAssignments():
           exec(f'col3.text(a{item}.code)')
           exec(f"completeButton{item} = col4.button('Incomplete',key = {10000+item})")
           exec(f"completeButtons.append(completeButton{item})")
-          exec(f"fullButton{item} = col5.button('Full Asst',key = {item+20000})")
+          exec(f"fullButton{item} = col5.button('Full Assignment',key = {item+20000})")
           exec(f"fullButtons.append(fullButton{item})")
   if True in completeButtons:
     exec(f'a{previousAstPositions()[completeButtons.index(True)]}.incompleteAssignment()')
@@ -374,7 +374,7 @@ def setupDateRangeAssignments(lowDate,highDate):
           exec(f'col3.text(a{item}.code)')
           exec(f"completeButton{item} = col4.button('Complete',key = {10000+item})")
           exec(f"completeButtons.append(completeButton{item})")
-          exec(f"fullButton{item} = col5.button('Full Asst',key = {item+20000})")
+          exec(f"fullButton{item} = col5.button('Full Assignment',key = {item+20000})")
           exec(f"fullButtons.append(fullButton{item})")
   if True in completeButtons:
     exec(f'a{fromDateRangePositions(lowDate, highDate)[completeButtons.index(True)]}.completeAssignment()')
