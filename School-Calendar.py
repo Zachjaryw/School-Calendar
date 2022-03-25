@@ -11,8 +11,7 @@ c1,c2 = st.columns([8,1])
 c1.title("School Calendar")
 logout = c2.button("Logout")
 if logout:
-  st.balloons()
-  st.snow()
+  st.experimental_memo.clear()
 
 def setup_new_semester():
   global dbx
