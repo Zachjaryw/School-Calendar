@@ -10,6 +10,8 @@ st.set_page_config(layout="wide")
 c1,c2 = st.columns([8,1])
 c1.title("School Calendar")
 logout = c2.button("Logout")
+if logout:
+  st.balloons()
 
 def setup_new_semester():
   global dbx
