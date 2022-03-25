@@ -7,7 +7,9 @@ from Dropbox_Setup import * #access dropbox
 from Send_Message import * #access message sending
 
 st.set_page_config(layout="wide")
-st.title("School Calendar")
+c1,c2 = st.columns([5,1])
+c1.title("School Calendar")
+logout = c2.button("Logout")
 
 def setup_new_semester():
   global dbx
