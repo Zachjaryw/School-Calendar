@@ -45,6 +45,7 @@ def reset():
 def fromDateRangePositions(lowDate, highDate):
   global calendar
   df = pd.DataFrame(calendar)
+  df['Assignment Due Date'] = pd.to_datetime(df['Assignment Due Date'])
   df.sort_values('Assignment Due Date',inplace = True)
   df = df[df['Assignment Due Date'] >= lowDate][df['Assignment Due Date'] <= highDate]
   df['Assignment Due Date'] = df['Assignment Due Date'].apply(lambda x: dt.datetime.strftime(x, '%Y-%m-%d'))
