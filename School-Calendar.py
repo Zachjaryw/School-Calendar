@@ -228,8 +228,9 @@ def completeAction(Action):
     else:
         pass
   elif Action == "Assignments In Date Range":
-    lowDate = st.date_input("Enter the first (lower) date:",key = 13)
-    highDate = st.date_input("Enter the second (higher) date:",key = 14)
+    date1,date2 = st.columns(2)
+    lowDate = date1.date_input("Enter the first (lower) date:",key = 13)
+    highDate = date2.date_input("Enter the second (higher) date:",key = 14)
     lowDate = str(lowDate).replace('/','-')
     highDate = str(highDate).replace('/','-')
     if st.button("Submit",key = 24) == True:
