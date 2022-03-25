@@ -212,7 +212,7 @@ def completeAction(Action):
     nameC,codeC = st.columns(2)
     name = nameC.text_input("New Assignment name","",key = 6)
     code = codeC.text_input("Class Code","",key = 7)
-    date = nameC.date_input('Due Date',"",key = 8)
+    date = nameC.date_input('Due Date',key = 8)
     type_ = str(codeC.text_input('Assignment Type (leave empty for default)',"",key = 10))
     date = str(date).replace('/','-')
     notes = str(st.text_input('Notes (leave empty for default)',"",key = 9))
