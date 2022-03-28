@@ -418,9 +418,9 @@ elif user == "NEW":
   if authorization == st.secrets.access.accessToken or authorization == ('access-' + str(fromDBX(dbx,'/AccessToken.json'))):
     newUsername = st.text_input('Enter your username here:')
     if newUsername == '':
-      st.text('Please enter a valid username.')
+      st.warning('Please enter a valid username.')
     elif newUsername in decrypted:
-      st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
+      st.warning(f"Username, {newUsername}, is already taken. Please select a new username.")
     elif not(newUsername in decrypted):
       password_1 = st.text_input('Enter your password here:')
       password_2 = st.text_input("Re-enter your password here:")
@@ -442,4 +442,4 @@ elif user == "NEW":
   else:
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
-  st.text("Enter Valid Username")
+  st.warning("Enter Valid Username")
