@@ -12,6 +12,17 @@ def initialize():
   return dbx
 
 '''
+method initializeToken sets up access to a dropbox from new access token
+@param token. dropbox app access token
+@return dbx. an open access token to the desired dropbox
+'''
+def initializeToken(token):
+  access = token
+  dbx = dropbox.Dropbox(access)
+  dbx.users_get_current_account()
+  return dbx
+
+'''
 method toDBX allows for files to be written and rewritten to dropbox
 @param dbx. initialization variable
 @param data. what information you would like to put in the desired file.
@@ -34,4 +45,7 @@ def fromDBX(dbx, filename):
   _, res = dbx.files_download(filename)
   with io.BytesIO(res.content) as stream:
     data = json.load(stream)
-  return data 
+  return data
+
+def deleteFile(dbx,filename):
+  dbx.files_delete(filename)
