@@ -267,7 +267,7 @@ def completeAction(Action):
       courses = fromDBX(dbxProf,st.secrets.file.courseFilename)
       if course in courses['Course']:
           st.text(f'You are now enrolled in {course}')
-          courses['Students'][course['Course'].index(course)].append(acceptUser)
+          courses['Students'][courses['Course'].index(course)].append(acceptUser)
           toDBX(dbxProf,course,st.secrets.file.courseFilename)
           data[acceptUser][2][f'{semester} {year}'].append(course)
           saveCal()
