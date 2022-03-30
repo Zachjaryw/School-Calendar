@@ -237,7 +237,7 @@ def completeAction(Action):
       whichCourse = st.selectbox('Select a course:',['Select a Course']+data[acceptUser][2][f'{semester} {year}'],key=27)
       if whichCourse != 'Select a Course':
           assignments = fromDBX(dbxProf,f'{st.secrets.access.coursePath}{whichCourse}.json')
-          col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,1])
+          col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
           col0.text('#')
           col1.text("Name")
           col2.text("Due Date")
@@ -246,14 +246,14 @@ def completeAction(Action):
           col5.text("Add to Calendar")
           addButtons = []
           for i in range(len(assignments['Assignment Name'])):
-              col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,1])
+              col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
               col0.text(i)
               col1.text(assignments['Assignment Name'][i])
               col2.text(assignments['Assignment Due Date'][i])
               col3.text(assignments['Assignment Notes'][i])
               col4.text(assignments['Assignment Type'][i])
               exec(f'addButton{i} = col5.button("Add",key = 25000+{i})')
-              exec(f'addButtons.append(addButton{i}')
+              exec(f'addButtons.append(addButton{i})')
           if True in addButtons:
               index = addButtons.index(True)
               add(assignments['Assignment Name'][index],
