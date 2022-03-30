@@ -234,9 +234,9 @@ def completeAction(Action):
     else:
         pass
   elif Action == "Course Assignments":
-      whichCourse = st.selectbox('Select a course:',['Select a Course']+data[acceptUser][2][f'{semester} {year}'][0],key=27)
+      whichCourse = st.selectbox('Select a course:',['Select a Course']+data[acceptUser][2],key=27)
       if whichCourse != 'Select a Course':
-          assignments = fromDBX(dbx,f'{st.secrets.access.coursePath}{whichCourse}.json')
+          assignments = fromDBX(dbx,f'{courseFilename}{whichCourse}.json')
           col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
           col0.text('#')
           col1.text("Name")
@@ -245,9 +245,9 @@ def completeAction(Action):
           col4.text("Type")
           col5.text("Add to Calendar")
           addButtons = []
-          idx = data[acceptUser][2][f'{semester} {year}'][0].index(whichCourse)
+          idx = data[acceptUser][2].index(whichCourse)
           for i in range(len(assignments['Assignment Name'])):
-            if not(i in data[acceptUser][2][f'{semester} {year}'][1][idx]):
+            if not(i in data[acceptUser][3][idx]):
               col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
               col0.text(i)
               col1.text(assignments['Assignment Name'][i])
@@ -255,7 +255,9 @@ def completeAction(Action):
               col3.text(assignments['Assignment Notes'][i])
               col4.text(assignments['Assignment Type'][i])
               exec(f'addButton{i} = col5.button("Add",key = 25000+{i})')
-              exec(f'addButtons.append(addButton{i})')
+            else:
+              exec("addButton{i} = False")
+            exec(f'addButtons.append(addButton{i})')
           if True in addButtons:
               index = addButtons.index(True)
               add(assignments['Assignment Name'][index],
@@ -264,17 +266,18 @@ def completeAction(Action):
                   assignments['Assignment Notes'][index],
                   'Incomplete',
                   assignments['Assignment Type'][index])
-              data[acceptUser][2][f'{semester} {year}'][1][idx].append(index)
+              data[acceptUser][3][idx].append(index)
+              st.text('Assignment added to calendar')
               st.experimental_rerun()
               save_cal()
   elif Action == "My Courses":
-      courses = fromDBX(dbx,st.secrets.file.courseFilename)
+      courses = fromDBX(dbx,courseFilename)
       cos = []
       col1,col2,col3 = st.columns([4,4,2])
       col1.text('Course Name')
       col2.text('Professor Name')
       col3.text('Unenroll this course')
-      for i in range(len(data[acceptUser][2][f'{semester} {year}'][0])):
+      for i in range(len(data[acceptUser][2])):
         col1,col2,col3 = st.columns([4,4,2])
         col1.text(courses['Course'][i])
         col2.text(Huff.decrypt(courses['Professor'][i]))
@@ -283,22 +286,22 @@ def completeAction(Action):
         if True in cos:
           unenrolled = courses['Course'][cos.index(True)]
           st.text(f'You are now unenrolled in {unenrolled}')
-          data[acceptUser][2][f'{semester} {year}'][1].remove(data[acceptUser][2][f'{semester} {year}'][0].index(unenrolled))
-          data[acceptUser][2][f'{semester} {year}'][0].remove(unenrolled)
+          index = data[acceptUser][2].index(unenrolled)
+          data[acceptUser][2].remove(data[acceptUser][2][index])
+          data[acceptUser][3].remove(data[acceptUser][3][index])
           coursesIndex = courses['Course'].index(unenrolled)
-          courses['Students'][coursesIndex].remove(acceptUser)
+          toDBX(dbx,courses,courseFilename)
           save_cal()
           st.experimental_rerun()
       course = st.text_input('Enter the code for the course you would like to join:',"",key = 26)
-      if course in data[acceptUser][2][f'{semester} {year}'][0]:
+      if course == '':
+          pass
+      elif course in data[acceptUser][2]:
           st.text('You are already enrolled in this course')
       elif course in courses['Course']:
           st.text(f'You are now enrolled in {course}')
-          idx = courses['Course'].index(course)
-          courses['Students'][idx].append(acceptUser)
-          toDBX(dbx,courses,st.secrets.file.courseFilename)
-          data[acceptUser][2][f'{semester} {year}'][0].append(course)
-          data[acceptUser][2][f'{semester} {year}'][1].append([])
+          data[acceptUser][2].append(course)
+          data[acceptUser][3].append([])
           save_cal()
           st.experimental_rerun()
       else:
@@ -458,6 +461,7 @@ def setupDateRangeAssignments(lowDate,highDate):
 years = [2022,2023]
 semesters = ['Spring','Fall']
 filename = st.secrets.file.filename
+courseFilename = st.secrets.file.coursesFilename
 user = st.text_input("Enter Username or type 'NEW' for a new user:")
 dbx = initialize()
 data = fromDBX(dbx,filename)
@@ -510,3 +514,33 @@ elif user == "NEW":
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
   st.text("Enter Valid Username")
+
+'''
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+coursePath = '/Courses/'
+accessToken = 'access-ACT1219'
+
+[twilio]
+accountSID = 'ACceb691744171ae3ed3556b6d298a11ee'
+authToken = '661ce654daa8ff39029ea152bc6050eb'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+19035737575'
+
+[file]
+filename = '/SchoolCalendar.json'
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+
+'''
+

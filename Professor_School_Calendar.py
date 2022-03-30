@@ -19,7 +19,6 @@ def approveCourse(user):
     elif course != "" and not(course in usernames[user][1]):
         approvedCourses['Course'].append(course)
         approvedCourses['Professor'].append(user)
-        approvedCourses['Students'].append([])
         usernames[user][1].append(course)
         toDBX(dbx,usernames,userFilename)
         st.text(f"{Huff.decrypt(user)}, you have now been approved as the professor for course {course}.")
@@ -80,6 +79,7 @@ def completeAction(user,action):
                 col3.text(assignments['Assignment Notes'][i])
                 col4.text(assignments['Assignment Type'][i])
     elif action == 'Adjust Assignments':
+        st.warning('If your students have already added this assignment to their calendar, their assignment will not be updated')
         whichCourse = st.selectbox('Select a course:',['Select a Course']+fromDBX(dbx,userFilename)[user][1],key = 14)
         if whichCourse != 'Select a Course':
             assignments = fromDBX(dbx,f'{st.secrets.access.coursePath}{whichCourse}.json')
@@ -124,17 +124,18 @@ def completeAction(user,action):
     elif action == 'Remove Course':
         whichCourse = st.selectbox('Select a course:',['Select a Course']+fromDBX(dbx,userFilename)[user][1],key = 18)
         if whichCourse != 'Select a Course':
-            if st.text_input(f'Please type "delete course {whichCourse}" to remove the course') == f"delete course {whichCourse}":
-                if st.button('Remove Course'):
-                    deleteFile(dbx,f'{st.secrets.access.coursePath}{whichCourse}.json')
-                    usernames = fromDBX(dbx,userFilename)
-                    usernames[user][1].remove(whichCourse)
-                    toDBX(dbx,usernames,userFilename)
-                    c = fromDBX(dbx,courseFilename)
-                    index = c['Course'].index(whichCourse)
-                    c['Course'].remove(whichCourse)
-                    c['Professor'].remove(c['Professor'][index])
-                    c['Students'].remove(c['Students'][index])
+            if st.text_input(f'Please type "delete course {whichCourse}" to remove the course') == f"delete course {whichCourse}" and st.button('Remove Course'):
+                deleteFile(dbx,f'{st.secrets.access.coursePath}{whichCourse}.json')
+                usernames = fromDBX(dbx,userFilename)
+                usernames[user][1].remove(whichCourse)
+                toDBX(dbx,usernames,userFilename)
+                c = fromDBX(dbx,courseFilename)
+                index = c['Course'].index(whichCourse)
+                c['Course'].remove(whichCourse)
+                c['Professor'].remove(c['Professor'][index])
+                toDBX(dbx,c,courseFilename)
+                st.text(f'Course {whichCourse} has been deleted')
+                st.experimental_rerun()
             
 
 userFilename = st.secrets.files.userFilename
@@ -174,3 +175,31 @@ elif user == "NEW":
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
   st.warning("Enter Valid Username")
+
+
+"""
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+accessToken = 'access=ACT1219'
+coursePath = '/Courses/'
+
+[twilio]
+accountSID = 'ACceb691744171ae3ed3556b6d298a11ee'
+authToken = '661ce654daa8ff39029ea152bc6050eb'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+19035737575'
+
+[files]
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+"""
