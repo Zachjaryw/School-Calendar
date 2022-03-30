@@ -246,23 +246,14 @@ def completeAction(Action):
           col5.text("Add to Calendar")
           addButtons = []
           for i in range(len(assignments['Assignment Name'])):
-              find = pd.DataFrame(calendar)
-              st.write(find)
-              a = find[[find['Assignment Name'] == str(assignments['Assignment Name'][i])]]
-              st.write(find)
-              b = a[[a['Assignment Due Date'] == str(assignments['Assignment Due Date'][i])]]
-              st.write(find)
-              c = b[[b['Assignment Notes'] == str(assignments['Assignment Notes'][i])]]
-              st.write(find)
-              if c.empty():
-                col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
-                col0.text(i)
-                col1.text(assignments['Assignment Name'][i])
-                col2.text(assignments['Assignment Due Date'][i])
-                col3.text(assignments['Assignment Notes'][i])
-                col4.text(assignments['Assignment Type'][i])
-                exec(f'addButton{i} = col5.button("Add",key = 25000+{i})')
-                exec(f'addButtons.append(addButton{i})')
+            col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
+            col0.text(i)
+            col1.text(assignments['Assignment Name'][i])
+            col2.text(assignments['Assignment Due Date'][i])
+            col3.text(assignments['Assignment Notes'][i])
+            col4.text(assignments['Assignment Type'][i])
+            exec(f'addButton{i} = col5.button("Add",key = 25000+{i})')
+            exec(f'addButtons.append(addButton{i})')
           if True in addButtons:
               index = addButtons.index(True)
               add(assignments['Assignment Name'][index],
