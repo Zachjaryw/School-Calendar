@@ -515,4 +515,4 @@ elif user == "NEW":
   else:
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
-  st.text("Enter Valid Username")
+  st.warning("Enter Valid Username")
