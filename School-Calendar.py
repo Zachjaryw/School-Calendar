@@ -270,7 +270,7 @@ def completeAction(Action):
           courses['Students'][courses['Course'].index(course)].append(acceptUser)
           toDBX(dbxProf,course,st.secrets.file.courseFilename)
           data[acceptUser][2][f'{semester} {year}'].append(course)
-          saveCal()
+          save_cal()
       else:
           st.warning('This course does not exist: Please consult your professor')
   elif Action == "***SELECT ACTION***":
