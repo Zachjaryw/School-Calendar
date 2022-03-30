@@ -267,8 +267,8 @@ def completeAction(Action):
       cos = []
       for i in range(len(data[acceptUser][2][f'{semester} {year}'])):
         col1,col2,col3 = st.columns([4,4,2])
-        col1.text(courses['Course'][index])
-        col2.text(Huff.decrypt(courses['Professor'][index]))
+        col1.text(courses['Course'][i])
+        col2.text(Huff.decrypt(courses['Professor'][i]))
         exec(f'but_{i} = col3.button("Unenroll",key = 30000+{i})')
         exec(f'cos.append(but_{i})')
         if True in cos:
