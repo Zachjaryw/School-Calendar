@@ -9,7 +9,6 @@ from Send_Message import * #access message sending
 st.set_page_config(layout="wide")
 st.title("School Calendar")
 
-
 def setup_new_semester():
   global dbx
   global calendar
@@ -39,14 +38,6 @@ def reset():
         'Assignment Type': []
   }
 
-def fromDateRangePositions(lowDate, highDate):
-  global calendar
-  df = pd.DataFrame(calendar)
-  df['Assignment Due Date'] = pd.to_datetime(df['Assignment Due Date'])
-  df.sort_values('Assignment Due Date',inplace = True)
-  df = df[df['Assignment Due Date'] >= lowDate][df['Assignment Due Date'] <= highDate]
-  df['Assignment Due Date'] = df['Assignment Due Date'].apply(lambda x: dt.datetime.strftime(x, '%Y-%m-%d'))
-  return df.index.values.tolist()
 
 def addAssignmentsFromFile(file):
   global calendar
@@ -113,6 +104,15 @@ def thisWeekPositions():
   days_7 = str(dt.date.today() + dt.timedelta(weeks = 1))
   df = df[df['Assignment Due Date'] <= days_7]
   df = df[df['Assignment Status'] != 'Complete']
+  df['Assignment Due Date'] = df['Assignment Due Date'].apply(lambda x: dt.datetime.strftime(x, '%Y-%m-%d'))
+  return df.index.values.tolist()
+
+def fromDateRangePositions(lowDate, highDate):
+  global calendar
+  df = pd.DataFrame(calendar)
+  df['Assignment Due Date'] = pd.to_datetime(df['Assignment Due Date'])
+  df.sort_values('Assignment Due Date',inplace = True)
+  df = df[df['Assignment Due Date'] >= lowDate][df['Assignment Due Date'] <= highDate]
   df['Assignment Due Date'] = df['Assignment Due Date'].apply(lambda x: dt.datetime.strftime(x, '%Y-%m-%d'))
   return df.index.values.tolist()
 
@@ -185,11 +185,7 @@ def completeAction(Action):
     pos = st.text_input('Assignment Position',"0",key = 2)
     pos = int(pos)
     col = st.selectbox("Select Which Column:",['Assignment Name','Assignment Due Date','Class Code','Assignment Notes','Assignment Status','Assignment Type'])
-    if col == 'Assignment Due Date':
-      new = st.date_input('Input adjusted value', key = 5)
-      new = str(new).replace('/','-')
-    else:
-      new = st.text_input("Input adjusted value",key = 5)
+    new = st.text_input("Input adjusted value",key = 5)
     if st.button("Submit",key = 20) == True:
         if col == 'Assignment Name':
           adjust(pos,'Assignment Name',new)
@@ -210,13 +206,11 @@ def completeAction(Action):
   elif Action == "Assignments Due This Month":
     setupCompleteAssignmentsMonth()
   elif Action == "New Assignment":
-    nameC,codeC = st.columns(2)
-    name = nameC.text_input("New Assignment name","",key = 6)
-    code = codeC.text_input("Class Code","",key = 7)
-    date = nameC.date_input('Due Date',key = 8)
-    type_ = str(codeC.text_input('Assignment Type (leave empty for default)',"",key = 10))
-    date = str(date).replace('/','-')
+    name = st.text_input("New Assignment name","",key = 6)
+    code = st.text_input("Class Code","",key = 7)
+    date = st.text_input('Due Date',"",key = 8)
     notes = str(st.text_input('Notes (leave empty for default)',"",key = 9))
+    type_ = str(st.text_input('Assignment Type (leave empty for default)',"",key = 10))
     if st.button("Submit",key = 21) == True:
         if notes == "":
           if type_ == "":
@@ -231,13 +225,54 @@ def completeAction(Action):
     else:
         pass
   elif Action == "Assignments In Date Range":
-    date1,date2 = st.columns(2)
-    lowDate = date1.date_input("Enter the first (lower) date:",key = 13)
-    highDate = date2.date_input("Enter the second (higher) date:",key = 14)
-    lowDate = str(lowDate).replace('/','-')
-    highDate = str(highDate).replace('/','-')
+    st.text('Enter the first (lower) date:')
+    lowDate = st.text_input("",key = 13)
+    st.text('Enter the second (higher) date:')
+    highDate = st.text_input("",key = 14)
     if st.button("Submit",key = 24) == True:
         setupDateRangeAssignments(lowDate,highDate)
+    else:
+        pass
+  elif Action == "Course Assignmenets":
+      whichCourse = st.selectbox('Select a course:',['Select a Course']+data[acceptUser][2][f'{semester} {year}'],key=27)
+      if whichCourse != 'Select a Course':
+      assignments = fromDBX(dbx,f'{st.secrets.access.coursePath}{whichCourse}.json')
+          col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,1])
+          col0.text('#')
+          col1.text("Name")
+          col2.text("Due Date")
+          col3.text("Notes")
+          col4.text("Type")
+          col5.text("Add to Calendar")
+          addButtons = []
+          for i in range(len(assignments['Assignment Name'])):
+              col0,col1,col2,col3,col4 = st.columns([1,4,2,4,2,1])
+              col0.text(i)
+              col1.text(assignments['Assignment Name'][i])
+              col2.text(assignments['Assignment Due Date'][i])
+              col3.text(assignments['Assignment Notes'][i])
+              col4.text(assignments['Assignment Type'][i])
+              exec(f'addButton{i} = col5.button("Add",key = 25000+{i})')
+              exec(f'addButtons.append(addButton{i}')
+          if True in addButtons:
+              index = addButtons.index(True)
+              add(assignments['Assignment Name'][index],
+                  whichCourse,
+                  assignments['Assignment Due Date'][index],
+                  assignments['Assignment Notes'][index],
+                  'Incomplete',
+                  assignments['Assignment Type'][index])
+  elif Action == "Enroll in Course":
+      course = st.text_input('Enter the code for the course you would like to join:',"",key = 26)
+      courses = fromDBX(dbxProf,st.secrets.file.courseFilename)
+      if course in courses['Course']:
+          st.text(f'You are now enrolled in {course}')
+          course['Students'][course['Students'].index(course)].append(acceptUser)
+          toDBX(dbxProf,course,st.secrets.file.courseFilename)
+          data[acceptUser][2][f'{semester} {year}'].append(course)
+          saveCal()
+      else:
+          st.warning('This course does not exist: Please consult your professor')
   elif Action == "***SELECT ACTION***":
     st.text("Please select an action")
 
@@ -395,6 +430,7 @@ semesters = ['Spring','Fall']
 filename = st.secrets.file.filename
 user = st.text_input("Enter Username or type 'NEW' for a new user:")
 dbx = initialize()
+dbxProf = initializeToken(st.secrets.access.accessProfessor)
 data = fromDBX(dbx,filename)
 decrypted = Huff.decryptList(list(data.keys()))
 if user != 'NEW' and user in decrypted:
@@ -407,10 +443,8 @@ if user != 'NEW' and user in decrypted:
         year = st.selectbox('Year:',years)
         semester = st.selectbox('Semester:',semesters)
       calendar = data[acceptUser][1][f'{semester} {year}']
-      Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
+      Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range","Course Assignmenets","Enroll in Course"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
-  elif password != acceptPassword and password != "":
-      st.warning('Incorrect Password. Please enter the correct password or contact the developer for assistance.')
 elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-")
   if st.button('Press to generate access code'):
@@ -420,14 +454,15 @@ elif user == "NEW":
   if authorization == st.secrets.access.accessToken or authorization == ('access-' + str(fromDBX(dbx,'/AccessToken.json'))):
     newUsername = st.text_input('Enter your username here:')
     if newUsername == '':
-      st.warning('Please enter a valid username.')
+      st.text('Please enter a valid username.')
     elif newUsername in decrypted:
-      st.warning(f"Username, {newUsername}, is already taken. Please select a new username.")
+      st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
     elif not(newUsername in decrypted):
       password_1 = st.text_input('Enter your password here:')
       password_2 = st.text_input("Re-enter your password here:")
       if password_2 != "" and password_1 == password_2:
         newCal = {}
+        enrollment = {}
         for y in years:
           for sem in semesters:
             newCal[f'{sem} {y}'] = {
@@ -438,10 +473,42 @@ elif user == "NEW":
                                         'Assignment Status': [],
                                         'Assignment Type': []
                                   }
-        data[Huff.encrypt(newUsername)] = [Huff.encrypt(password_1), newCal]
+            enrollment[f'{sem} {y}'] = []
+        data[Huff.encrypt(newUsername)] = [Huff.encrypt(password_1), newCal,enrollment]
         toDBX(dbx, data, filename)
         st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
   else:
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
-  st.warning("Enter Valid Username")
+  st.text("Enter Valid Username")
+
+'''
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+accessProfessor = 'sl.BEtBshPlhZkeCOqdg-ry8HKeTRXXiBuEdCQ2BnFPcM2YzYNkOvjgaK0NWh-rqta_BZ59iXY4WnXXmYX2grXLQPnewEEiiSFhM7TWAXpQbDjLfH4aORUFuobSkhqzcj9ruqarZdk'
+coursePath = '/Courses/'
+accessToken = 'access-ACT1219'
+
+[twilio]
+accountSID = 'ACceb691744171ae3ed3556b6d298a11ee'
+authToken = '661ce654daa8ff39029ea152bc6050eb'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+19035737575'
+
+[file]
+filename = '/SchoolCalendar.json'
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+
+'''
+
