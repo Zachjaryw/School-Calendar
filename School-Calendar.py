@@ -265,6 +265,10 @@ def completeAction(Action):
   elif Action == "My Courses":
       courses = fromDBX(dbxProf,st.secrets.file.courseFilename)
       cos = []
+      col1,col2,col3 = st.columns([4,4,2])
+      col1.text('Course Name')
+      col2.text('Professor Name')
+      col3.text('Unenroll this course')
       for i in range(len(data[acceptUser][2][f'{semester} {year}'])):
         col1,col2,col3 = st.columns([4,4,2])
         col1.text(courses['Course'][i])
