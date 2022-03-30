@@ -247,9 +247,14 @@ def completeAction(Action):
           addButtons = []
           for i in range(len(assignments['Assignment Name'])):
               find = pd.DataFrame(calendar)
+              st.write(find)
               a = find[find['Assignment Name'] == str(assignments['Assignment Name'][i])]
+              st.write(find)
               b = a[a['Assignment Due Date'] == str(assignments['Assignment Due Date'][i])]
+              st.write(find)
               c = b[b['Assignment Notes'] == str(assignments['Assignment Notes'][i])]
+              st.write(find)
+              st.write(find.empty())
               if c.empty():
                 col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
                 col0.text(i)
