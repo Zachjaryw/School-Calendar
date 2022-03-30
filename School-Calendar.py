@@ -279,7 +279,6 @@ def completeAction(Action):
           unenrolled = courses['Course'][cos.index(True)]
           st.text(f'You are now unenrolled in {unenrolled}')
           data[acceptUser][2][f'{semester} {year}'].remove(unenrolled)
-          courses = fromDBX(dbxProf,st.secrets.file.userFilename)
           coursesIndex = courses['Course'].index(unenrolled)
           courses['Sudents'][coursesIndex].remove(acceptUser)
           save_cal()
