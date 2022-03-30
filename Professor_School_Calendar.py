@@ -155,7 +155,7 @@ if user != 'NEW' and user in decrypted:
       completeAction(acceptUser,selectAction)
 elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-",key = 9)
-  accessToken = fromDBX(dbx,accessToken,'/AccessToken.json')
+  accessToken = fromDBX(dbx,'/AccessToken.json')
   if st.button('Press to generate access code',key = 10):
       accessToken = randomMessage()
       toDBX(dbx, accessToken,'/AccessToken.json')
