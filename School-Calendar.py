@@ -267,7 +267,7 @@ def completeAction(Action):
       courses = fromDBX(dbxProf,st.secrets.file.courseFilename)
       if course in courses['Course']:
           st.text(f'You are now enrolled in {course}')
-          course['Students'][course['Students'].index(course)].append(acceptUser)
+          course['Students'][course['Course'].index(course)].append(acceptUser)
           toDBX(dbxProf,course,st.secrets.file.courseFilename)
           data[acceptUser][2][f'{semester} {year}'].append(course)
           saveCal()
@@ -481,3 +481,34 @@ elif user == "NEW":
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
   st.text("Enter Valid Username")
+
+'''
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+accessProfessor = 'sl.BEtBshPlhZkeCOqdg-ry8HKeTRXXiBuEdCQ2BnFPcM2YzYNkOvjgaK0NWh-rqta_BZ59iXY4WnXXmYX2grXLQPnewEEiiSFhM7TWAXpQbDjLfH4aORUFuobSkhqzcj9ruqarZdk'
+coursePath = '/Courses/'
+accessToken = 'access-ACT1219'
+
+[twilio]
+accountSID = 'ACceb691744171ae3ed3556b6d298a11ee'
+authToken = '661ce654daa8ff39029ea152bc6050eb'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+19035737575'
+
+[file]
+filename = '/SchoolCalendar.json'
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+
+'''
+
