@@ -236,7 +236,7 @@ def completeAction(Action):
   elif Action == "Course Assignmenets":
       whichCourse = st.selectbox('Select a course:',['Select a Course']+data[acceptUser][2][f'{semester} {year}'],key=27)
       if whichCourse != 'Select a Course':
-          assignments = fromDBX(dbx,f'{st.secrets.access.coursePath}{whichCourse}.json')
+          assignments = fromDBX(dbxProf,f'{st.secrets.access.coursePath}{whichCourse}.json')
           col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,1])
           col0.text('#')
           col1.text("Name")
