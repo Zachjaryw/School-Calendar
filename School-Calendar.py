@@ -236,7 +236,7 @@ def completeAction(Action):
   elif Action == "Course Assignments":
       whichCourse = st.selectbox('Select a course:',['Select a Course']+data[acceptUser][2][f'{semester} {year}'][0],key=27)
       if whichCourse != 'Select a Course':
-          assignments = fromDBX(dbxProf,f'{st.secrets.access.coursePath}{whichCourse}.json')
+          assignments = fromDBX(,f'{st.secrets.access.coursePath}{whichCourse}.json')
           col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
           col0.text('#')
           col1.text("Name")
@@ -268,7 +268,7 @@ def completeAction(Action):
               st.experimental_rerun()
               save_cal()
   elif Action == "My Courses":
-      courses = fromDBX(dbxProf,st.secrets.file.courseFilename)
+      courses = fromDBX(dbx,st.secrets.file.courseFilename)
       cos = []
       col1,col2,col3 = st.columns([4,4,2])
       col1.text('Course Name')
@@ -296,7 +296,7 @@ def completeAction(Action):
           st.text(f'You are now enrolled in {course}')
           idx = courses['Course'].index(course)
           courses['Students'][idx].append(acceptUser)
-          toDBX(dbxProf,courses,st.secrets.file.courseFilename)
+          toDBX(dbx,courses,st.secrets.file.courseFilename)
           data[acceptUser][2][f'{semester} {year}'][0].append(course)
           data[acceptUser][2][f'{semester} {year}'][1].append([])
           save_cal()
@@ -460,7 +460,6 @@ semesters = ['Spring','Fall']
 filename = st.secrets.file.filename
 user = st.text_input("Enter Username or type 'NEW' for a new user:")
 dbx = initialize()
-dbxProf = initializeToken(st.secrets.access.accessProfessor)
 data = fromDBX(dbx,filename)
 decrypted = Huff.decryptList(list(data.keys()))
 if user != 'NEW' and user in decrypted:
@@ -511,3 +510,33 @@ elif user == "NEW":
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
   st.text("Enter Valid Username")
+
+'''
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+coursePath = '/Courses/'
+accessToken = 'access-ACT1219'
+
+[twilio]
+accountSID = 'ACceb691744171ae3ed3556b6d298a11ee'
+authToken = '661ce654daa8ff39029ea152bc6050eb'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+19035737575'
+
+[file]
+filename = '/SchoolCalendar.json'
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+
+'''
+
