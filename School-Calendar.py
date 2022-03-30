@@ -272,27 +272,30 @@ def completeAction(Action):
               save_cal()
   elif Action == "My Courses":
       courses = fromDBX(dbx,courseFilename)
-      cos = []
-      col1,col2,col3 = st.columns([4,4,2])
-      col1.text('Course Name')
-      col2.text('Professor Name')
-      col3.text('Unenroll this course')
-      for i in range(len(data[acceptUser][2])):
+      if len(data[acceptUser][2]) == 0:
+        st.text('You are not currently enrolled in any courses. Enter a code below to join one')
+      else:
+        cos = []
         col1,col2,col3 = st.columns([4,4,2])
-        col1.text(courses['Course'][i])
-        col2.text(Huff.decrypt(courses['Professor'][i]))
-        exec(f'but_{i} = col3.button("Unenroll",key = 30000+{i})')
-        exec(f'cos.append(but_{i})')
-        if True in cos:
-          unenrolled = courses['Course'][cos.index(True)]
-          st.text(f'You are now unenrolled in {unenrolled}')
-          index = data[acceptUser][2].index(unenrolled)
-          data[acceptUser][2].remove(data[acceptUser][2][index])
-          data[acceptUser][3].remove(data[acceptUser][3][index])
-          coursesIndex = courses['Course'].index(unenrolled)
-          toDBX(dbx,courses,courseFilename)
-          save_cal()
-          st.experimental_rerun()
+        col1.text('Course Name')
+        col2.text('Professor Name')
+        col3.text('Unenroll this course')
+        for i in range(len(data[acceptUser][2])):
+          col1,col2,col3 = st.columns([4,4,2])
+          col1.text(courses['Course'][i])
+          col2.text(Huff.decrypt(courses['Professor'][i]))
+          exec(f'but_{i} = col3.button("Unenroll",key = 30000+{i})')
+          exec(f'cos.append(but_{i})')
+          if True in cos:
+            unenrolled = courses['Course'][cos.index(True)]
+            st.text(f'You are now unenrolled in {unenrolled}')
+            index = data[acceptUser][2].index(unenrolled)
+            data[acceptUser][2].remove(data[acceptUser][2][index])
+            data[acceptUser][3].remove(data[acceptUser][3][index])
+            coursesIndex = courses['Course'].index(unenrolled)
+            toDBX(dbx,courses,courseFilename)
+            save_cal()
+            st.experimental_rerun()
       course = st.text_input('Enter the code for the course you would like to join:',"",key = 26)
       if course == '':
           pass
