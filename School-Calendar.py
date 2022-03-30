@@ -246,7 +246,7 @@ def completeAction(Action):
           col5.text("Add to Calendar")
           addButtons = []
           for i in range(len(assignments['Assignment Name'])):
-              col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
+              col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2)
               col0.text(i)
               col1.text(assignments['Assignment Name'][i])
               col2.text(assignments['Assignment Due Date'][i])
@@ -262,9 +262,22 @@ def completeAction(Action):
                   assignments['Assignment Notes'][index],
                   'Incomplete',
                   assignments['Assignment Type'][index])
-  elif Action == "Enroll in Course":
-      course = st.text_input('Enter the code for the course you would like to join:',"",key = 26)
+  elif Action == "My Courses":
       courses = fromDBX(dbxProf,st.secrets.file.courseFilename)
+      cos = []
+      for i in range(len(data[acceptUser][2][f'{semester} {year}'])):
+        col1,col2,col3 = st.columns([4,4,2])
+        col1.text(courses['Course'][index])
+        col2.text(Huff.decrypt(courses['Professor'][index]))
+        exec(f'but_{i} = col3.button("Unenroll",key = 30000+{i})')
+        exec(f'cos.append(but_{i})')
+        if True in cos:
+          unenrolled = courses['Course'][cos.index(True)]
+          st.text(f'You are now unenrolled in {unenrolled}')
+          data[acceptUser][2][f'{semester} {year}'].remove(unenrolled)
+          save_cal()
+          st.experimental_rerun()
+      course = st.text_input('Enter the code for the course you would like to join:',"",key = 26)
       if course in data[acceptUser][2][f'{semester} {year}']:
           st.text('You are already enrolled in this course')
       elif course in courses['Course']:
@@ -446,7 +459,7 @@ if user != 'NEW' and user in decrypted:
         year = st.selectbox('Year:',years)
         semester = st.selectbox('Semester:',semesters)
       calendar = data[acceptUser][1][f'{semester} {year}']
-      Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range","Course Assignmenets","Enroll in Course"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
+      Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range","Course Assignmenets","My Courses"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
 elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-")
@@ -484,3 +497,34 @@ elif user == "NEW":
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
   st.text("Enter Valid Username")
+
+'''
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+accessProfessor = 'sl.BEtBshPlhZkeCOqdg-ry8HKeTRXXiBuEdCQ2BnFPcM2YzYNkOvjgaK0NWh-rqta_BZ59iXY4WnXXmYX2grXLQPnewEEiiSFhM7TWAXpQbDjLfH4aORUFuobSkhqzcj9ruqarZdk'
+coursePath = '/Courses/'
+accessToken = 'access-ACT1219'
+
+[twilio]
+accountSID = 'ACceb691744171ae3ed3556b6d298a11ee'
+authToken = '661ce654daa8ff39029ea152bc6050eb'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+19035737575'
+
+[file]
+filename = '/SchoolCalendar.json'
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+
+'''
+
