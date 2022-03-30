@@ -157,7 +157,7 @@ elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-",key = 9)
   accessToken = fromDBX(dbx,'/AccessToken.json')
   if st.button('Press to generate access code',key = 10):
-      accessToken = randomMessage()
+      accessToken = randomMessageProf()
       toDBX(dbx, accessToken,'/AccessToken.json')
       st.text(f'An access token has been sent to the developer. Message {st.secrets.phoneNumbers.to} for access.')
   if authorization == st.secrets.access.accessToken or authorization == f'access-{accessToken}':
