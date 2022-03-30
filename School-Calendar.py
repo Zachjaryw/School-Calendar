@@ -234,7 +234,7 @@ def completeAction(Action):
     else:
         pass
   elif Action == "Course Assignmenets":
-      whichCourse = st.selectbox('Select a course:',['Select a Course']+data[acceptUser][2][f'{semester} {year}'],key=27)
+      whichCourse = st.selectbox('Select a course:',['Select a Course']+data[acceptUser][2][f'{semester} {year}'][0],key=27)
       if whichCourse != 'Select a Course':
           assignments = fromDBX(dbxProf,f'{st.secrets.access.coursePath}{whichCourse}.json')
           col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
@@ -245,15 +245,17 @@ def completeAction(Action):
           col4.text("Type")
           col5.text("Add to Calendar")
           addButtons = []
+          idx = data[acceptUser][2][f'{semester} {year}'][0].index(whichCourse)
           for i in range(len(assignments['Assignment Name'])):
-            col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
-            col0.text(i)
-            col1.text(assignments['Assignment Name'][i])
-            col2.text(assignments['Assignment Due Date'][i])
-            col3.text(assignments['Assignment Notes'][i])
-            col4.text(assignments['Assignment Type'][i])
-            exec(f'addButton{i} = col5.button("Add",key = 25000+{i})')
-            exec(f'addButtons.append(addButton{i})')
+            if not(i in data[acceptUser][2][f'{semester} {year}'][1][idx]):
+              col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
+              col0.text(i)
+              col1.text(assignments['Assignment Name'][i])
+              col2.text(assignments['Assignment Due Date'][i])
+              col3.text(assignments['Assignment Notes'][i])
+              col4.text(assignments['Assignment Type'][i])
+              exec(f'addButton{i} = col5.button("Add",key = 25000+{i})')
+              exec(f'addButtons.append(addButton{i})')
           if True in addButtons:
               index = addButtons.index(True)
               add(assignments['Assignment Name'][index],
@@ -262,6 +264,8 @@ def completeAction(Action):
                   assignments['Assignment Notes'][index],
                   'Incomplete',
                   assignments['Assignment Type'][index])
+              data[acceptUser][2][f'{semester} {year}'][1].append(index)
+              save_cal()
   elif Action == "My Courses":
       courses = fromDBX(dbxProf,st.secrets.file.courseFilename)
       cos = []
@@ -269,7 +273,7 @@ def completeAction(Action):
       col1.text('Course Name')
       col2.text('Professor Name')
       col3.text('Unenroll this course')
-      for i in range(len(data[acceptUser][2][f'{semester} {year}'])):
+      for i in range(len(data[acceptUser][2][f'{semester} {year}'][0])):
         col1,col2,col3 = st.columns([4,4,2])
         col1.text(courses['Course'][i])
         col2.text(Huff.decrypt(courses['Professor'][i]))
@@ -278,7 +282,8 @@ def completeAction(Action):
         if True in cos:
           unenrolled = courses['Course'][cos.index(True)]
           st.text(f'You are now unenrolled in {unenrolled}')
-          data[acceptUser][2][f'{semester} {year}'].remove(unenrolled)
+          data[acceptUser][2][f'{semester} {year}'][1].remove(data[acceptUser][2][f'{semester} {year}'][0].index(unenrolled))
+          data[acceptUser][2][f'{semester} {year}'][0].remove(unenrolled)
           coursesIndex = courses['Course'].index(unenrolled)
           courses['Students'][coursesIndex].remove(acceptUser)
           save_cal()
@@ -291,7 +296,7 @@ def completeAction(Action):
           idx = courses['Course'].index(course)
           courses['Students'][idx].append(acceptUser)
           toDBX(dbxProf,courses,st.secrets.file.courseFilename)
-          data[acceptUser][2][f'{semester} {year}'].append(course)
+          data[acceptUser][2][f'{semester} {year}'][0].append(course)
           save_cal()
           st.experimental_rerun()
       else:
@@ -504,4 +509,34 @@ elif user == "NEW":
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
   st.text("Enter Valid Username")
+
+'''
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+accessProfessor = 'sl.BEtBshPlhZkeCOqdg-ry8HKeTRXXiBuEdCQ2BnFPcM2YzYNkOvjgaK0NWh-rqta_BZ59iXY4WnXXmYX2grXLQPnewEEiiSFhM7TWAXpQbDjLfH4aORUFuobSkhqzcj9ruqarZdk'
+coursePath = '/Courses/'
+accessToken = 'access-ACT1219'
+
+[twilio]
+accountSID = 'ACceb691744171ae3ed3556b6d298a11ee'
+authToken = '661ce654daa8ff39029ea152bc6050eb'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+19035737575'
+
+[file]
+filename = '/SchoolCalendar.json'
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+
+'''
 
