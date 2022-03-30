@@ -280,7 +280,7 @@ def completeAction(Action):
           st.text(f'You are now unenrolled in {unenrolled}')
           data[acceptUser][2][f'{semester} {year}'].remove(unenrolled)
           coursesIndex = courses['Course'].index(unenrolled)
-          courses['Sudents'][coursesIndex].remove(acceptUser)
+          courses['Students'][coursesIndex].remove(acceptUser)
           save_cal()
           st.experimental_rerun()
       course = st.text_input('Enter the code for the course you would like to join:',"",key = 26)
