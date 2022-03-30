@@ -246,14 +246,19 @@ def completeAction(Action):
           col5.text("Add to Calendar")
           addButtons = []
           for i in range(len(assignments['Assignment Name'])):
-              col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
-              col0.text(i)
-              col1.text(assignments['Assignment Name'][i])
-              col2.text(assignments['Assignment Due Date'][i])
-              col3.text(assignments['Assignment Notes'][i])
-              col4.text(assignments['Assignment Type'][i])
-              exec(f'addButton{i} = col5.button("Add",key = 25000+{i})')
-              exec(f'addButtons.append(addButton{i})')
+              find = pd.DataFrame(calendar)
+              find = find[find['Assignment Name'] == assignments['Assignment Name'][i]]
+              find = find[find['Assignment Due Date'] == assignments['Assignment Due Date'][i]]
+              find = find[find['Assignment Notes'] == assignments['Assignment Notes'][i]]
+              if find.empty():
+                col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
+                col0.text(i)
+                col1.text(assignments['Assignment Name'][i])
+                col2.text(assignments['Assignment Due Date'][i])
+                col3.text(assignments['Assignment Notes'][i])
+                col4.text(assignments['Assignment Type'][i])
+                exec(f'addButton{i} = col5.button("Add",key = 25000+{i})')
+                exec(f'addButtons.append(addButton{i})')
           if True in addButtons:
               index = addButtons.index(True)
               add(assignments['Assignment Name'][index],
@@ -504,3 +509,34 @@ elif user == "NEW":
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
   st.text("Enter Valid Username")
+
+'''
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+accessProfessor = 'sl.BEtBshPlhZkeCOqdg-ry8HKeTRXXiBuEdCQ2BnFPcM2YzYNkOvjgaK0NWh-rqta_BZ59iXY4WnXXmYX2grXLQPnewEEiiSFhM7TWAXpQbDjLfH4aORUFuobSkhqzcj9ruqarZdk'
+coursePath = '/Courses/'
+accessToken = 'access-ACT1219'
+
+[twilio]
+accountSID = 'ACceb691744171ae3ed3556b6d298a11ee'
+authToken = '661ce654daa8ff39029ea152bc6050eb'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+19035737575'
+
+[file]
+filename = '/SchoolCalendar.json'
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+
+'''
+
