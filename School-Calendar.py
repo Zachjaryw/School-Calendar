@@ -293,6 +293,7 @@ def completeAction(Action):
           toDBX(dbxProf,courses,st.secrets.file.courseFilename)
           data[acceptUser][2][f'{semester} {year}'].append(course)
           save_cal()
+          st.experimental_rerun()
       else:
           st.warning('This course does not exist: Please consult your professor')
   elif Action == "***SELECT ACTION***":
