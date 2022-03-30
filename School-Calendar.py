@@ -250,7 +250,7 @@ def completeAction(Action):
               find = find[find['Assignment Name'] == assignments['Assignment Name'][i]]
               find = find[find['Assignment Due Date'] == assignments['Assignment Due Date'][i]]
               find = find[find['Assignment Notes'] == assignments['Assignment Notes'][i]]
-              if find.empty():
+              if find.empty() == True:
                 col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
                 col0.text(i)
                 col1.text(assignments['Assignment Name'][i])
