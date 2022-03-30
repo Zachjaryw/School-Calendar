@@ -15,7 +15,7 @@ def sendMessage(message:str):
     return message
 
 '''
-sendMessage method is used to text a randomized message to the authorized phone number
+randomMessage method is used to text a randomized message to the authorized phone number
 @return message. the message is returned back.
 '''
 def randomMessage():
@@ -28,4 +28,20 @@ def randomMessage():
     client.messages.create(to= st.secrets.phoneNumbers.to,
                            from_ = st.secrets.phoneNumbers.from_,
                            body = f"A new user would like to setup an account. Access token: {message}")
+    return message
+
+'''
+randomMessage method is used to text a randomized message to the authorized phone number
+@return message. the message is returned back.
+'''
+def randomMessageProf():
+    message = []
+    possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+    for i in range(6):
+      message.append(possible[np.random.randint(0,len(possible))])
+    message = "".join(message)
+    client = Client(st.secrets.twilio.accountSID,st.secrets.twilio.authToken)
+    client.messages.create(to= st.secrets.phoneNumbers.to,
+                           from_ = st.secrets.phoneNumbers.from_,
+                           body = f"A new Professor would like to setup an account. Access token: {message}")
     return message
