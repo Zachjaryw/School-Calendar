@@ -461,7 +461,7 @@ def setupDateRangeAssignments(lowDate,highDate):
 years = [2022,2023]
 semesters = ['Spring','Fall']
 filename = st.secrets.file.filename
-courseFilename = st.secrets.file.coursesFilename
+courseFilename = st.secrets.file.courseFilename
 user = st.text_input("Enter Username or type 'NEW' for a new user:")
 dbx = initialize()
 data = fromDBX(dbx,filename)
