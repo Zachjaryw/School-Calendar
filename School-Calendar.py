@@ -233,7 +233,7 @@ def completeAction(Action):
         setupDateRangeAssignments(lowDate,highDate)
     else:
         pass
-  elif Action == "Course Assignmenets":
+  elif Action == "Course Assignments":
       whichCourse = st.selectbox('Select a course:',['Select a Course']+data[acceptUser][2][f'{semester} {year}'][0],key=27)
       if whichCourse != 'Select a Course':
           assignments = fromDBX(dbxProf,f'{st.secrets.access.coursePath}{whichCourse}.json')
@@ -473,7 +473,7 @@ if user != 'NEW' and user in decrypted:
         year = st.selectbox('Year:',years)
         semester = st.selectbox('Semester:',semesters)
       calendar = data[acceptUser][1][f'{semester} {year}']
-      Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range","Course Assignmenets","My Courses"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
+      Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range","Course Assignments","My Courses"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
 elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-")
