@@ -246,7 +246,7 @@ def completeAction(Action):
           col5.text("Add to Calendar")
           addButtons = []
           for i in range(len(assignments['Assignment Name'])):
-              col0,col1,col2,col3,col4 = st.columns([1,4,2,4,2,1])
+              col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,1])
               col0.text(i)
               col1.text(assignments['Assignment Name'][i])
               col2.text(assignments['Assignment Due Date'][i])
