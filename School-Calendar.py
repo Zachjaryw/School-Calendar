@@ -265,6 +265,7 @@ def completeAction(Action):
                   'Incomplete',
                   assignments['Assignment Type'][index])
               data[acceptUser][2][f'{semester} {year}'][1][idx].append(index)
+              st.experimental_rerun()
               save_cal()
   elif Action == "My Courses":
       courses = fromDBX(dbxProf,st.secrets.file.courseFilename)
