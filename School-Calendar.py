@@ -499,7 +499,6 @@ elif user == "NEW":
       password_2 = st.text_input("Re-enter your password here:")
       if password_2 != "" and password_1 == password_2:
         newCal = {}
-        enrollment = {}
         for y in years:
           for sem in semesters:
             newCal[f'{sem} {y}'] = {
@@ -510,8 +509,7 @@ elif user == "NEW":
                                         'Assignment Status': [],
                                         'Assignment Type': []
                                   }
-            enrollment[f'{sem} {y}'] = []
-        data[Huff.encrypt(newUsername)] = [Huff.encrypt(password_1), newCal,enrollment]
+        data[Huff.encrypt(newUsername)] = [Huff.encrypt(password_1), newCal,[],[]]
         toDBX(dbx, data, filename)
         st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
   else:
