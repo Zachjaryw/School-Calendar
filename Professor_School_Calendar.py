@@ -67,7 +67,7 @@ def completeAction(user,action):
                     toDBX(dbx,current,f'{st.secrets.access.coursePath}{whichCourse}.json')
                     st.text(f'Assignments have been added to {whichCourse}')
                     st.experimental_rerun()
-            with st.container('Enter Assignment Here (up to 5 assignemnts)')
+            with st.container('Enter Assignment Here (up to 5 assignemnts)'):
                 howManyAssignments = st.slider('How many assignments would you like to add?',1,5,key = 4)
                 col0,col1,col2,col3,col4 = st.columns([1,4,2,4,2])
                 col0.text('#')
