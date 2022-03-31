@@ -51,6 +51,7 @@ def completeAction(user,action):
                 file = st.file_uploader("Upload File Here",type = ['xlsx'])
                 if file:
                     data = pd.read_excel(file,header = 2)
+                    st.write(data)
                     data.drop(0,inplace = True)
                     data.set_index(data.columns[0],inplace = True)
                     data.reset_index(inplace = True,drop = True)
