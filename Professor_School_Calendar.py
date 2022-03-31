@@ -11,10 +11,10 @@ st.set_page_config(layout="wide")
 st.title('Professor Assignment Calendar')
 
 def add(course,name,date,notes,type_):
-    current['Assignment Name'].append(name)
-    current['Assignment Due Date'].append(str(date).replace('/','-'))
-    current['Assignment Notes'].append(notes)
-    current['Assignment Type'].append(type_)
+    course['Assignment Name'].append(name)
+    course['Assignment Due Date'].append(str(date).replace('/','-'))
+    course['Assignment Notes'].append(notes)
+    course['Assignment Type'].append(type_)
     
 def approveCourse(user):
     course = st.text_input('Please enter the course value in the correct format (ex: COMM330A-SPR22)',"",key = 2)
