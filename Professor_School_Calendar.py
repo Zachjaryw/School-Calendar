@@ -54,7 +54,6 @@ def completeAction(user,action):
                     data.drop(0,inplace = True)
                     data.set_index(data.columns[0],inplace = True)
                     data.reset_index(inplace = True,drop = True)
-                    data.drop(data.columns[4],axis = 1,inplace = True)
                     data['Assignment Due Date'] = [i[:10] for i in data['Assignment Due Date'].astype(str)]
                     counts = np.sum(list(data["Assignment Name"].value_counts(dropna = True)))
                     data = data[:counts]
