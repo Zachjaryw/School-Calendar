@@ -5,11 +5,17 @@ from Dropbox_Setup import *
 from Huffman_Encryption import *
 import streamlit as st
 from Send_Message import *
+import webbrowser
 
 st.set_page_config(layout="wide")
 st.title('Professor Assignment Calendar')
 
-        
+def add(course,name,date,notes,type_):
+    current['Assignment Name'].append(name)
+    current['Assignment Due Date'].append(str(date).replace('/','-'))
+    current['Assignment Notes'].append(notes)
+    current['Assignment Type'].append(type_)
+    
 def approveCourse(user):
     course = st.text_input('Please enter the course value in the correct format (ex: COMM330A-SPR22)',"",key = 2)
     approvedCourses = fromDBX(dbx,courseFilename)
@@ -38,29 +44,54 @@ def completeAction(user,action):
     elif action == 'Add Assignments':
         whichCourse = st.selectbox('Select a course:',['Select a Course']+fromDBX(dbx,userFilename)[user][1],key = 5)
         if whichCourse != 'Select a Course':
-            howManyAssignments = st.slider('How many assignments would you like to add?',1,5,key = 4)
-            col0,col1,col2,col3,col4 = st.columns([1,4,2,4,2])
-            col0.text('#')
-            col1.text("Name")
-            col2.text("Due Date")
-            col3.text("Notes")
-            col4.text("Type")
-            for i in range(howManyAssignments):
+            with st.container('From File (up to 100 assignments)'):
+                if st.button('Dowload File'):
+                    webbrowser.open_new_tab('https://github.com/Zachjaryw/School-Calendar/blob/main/Add_Assignments.xlsx?raw=true')
+                file = st.file_uploader("Upload File Here",type = ['xlsx'])
+                if file:
+                    data = pd.read_excel(file,header = 2)
+                    data.drop(0,inplace = True)
+                    data.set_index(data.columns[0],inplace = True)
+                    data.reset_index(inplace = True,drop = True)
+                    data.drop(data.columns[4],axis = 1,inplace = True)
+                    data['Assignment Due Date'] = [i[:10] for i in data['Assignment Due Date'].astype(str)]
+                    counts = np.sum(list(data["Assignment Name"].value_counts(dropna = True)))
+                    data = data[:counts]
+                    current = fromDBX(dbx,f'{st.secrets.access.coursePath}{whichCourse}.json')
+                    for row in range(data.shape[0]):
+                        add(current,
+                            data['Assignment Name'].iloc[row],
+                            data['Assignment Due Date'].iloc[row],
+                            data['Assignment Notes'].iloc[row],
+                            data['Assignment Type'].iloc[row])
+                    toDBX(dbx,current,f'{st.secrets.access.coursePath}{whichCourse}.json')
+                    st.text(f'Assignments have been added to {whichCourse}')
+                    st.experimental_rerun()
+            with st.container('Enter Assignment Here (up to 5 assignemnts)')
+                howManyAssignments = st.slider('How many assignments would you like to add?',1,5,key = 4)
                 col0,col1,col2,col3,col4 = st.columns([1,4,2,4,2])
-                col0.text(i)
-                exec(f'name{i} = col1.text_input("","",key = 100+i)')
-                exec(f'date{i} = col2.date_input("",key = 200+i)')
-                exec(f'notes{i} = col3.text_input("",key = 300+i)')
-                exec(f'type_{i} = col4.text_input("","Homework",key = 400+i)')
-            if st.button('Submit',key = 3):
-                current = fromDBX(dbx,f'{st.secrets.access.coursePath}{whichCourse}.json')
+                col0.text('#')
+                col1.text("Name")
+                col2.text("Due Date")
+                col3.text("Notes")
+                col4.text("Type")
                 for i in range(howManyAssignments):
-                    exec(f"current['Assignment Name'].append(name{i})")
-                    exec(f"current['Assignment Due Date'].append(str(date{i}).replace('/','-'))")
-                    exec(f"current['Assignment Notes'].append(notes{i})")
-                    exec(f"current['Assignment Type'].append(type_{i})")
-                toDBX(dbx,current,f'{st.secrets.access.coursePath}{whichCourse}.json')
-                st.text(f'Assignments have been added to {whichCourse}')
+                    col0,col1,col2,col3,col4 = st.columns([1,4,2,4,2])
+                    col0.text(i)
+                    exec(f'name{i} = col1.text_input("","",key = 100+i)')
+                    exec(f'date{i} = col2.date_input("",key = 200+i)')
+                    exec(f'notes{i} = col3.text_input("",key = 300+i)')
+                    exec(f'type_{i} = col4.text_input("","Homework",key = 400+i)')
+                if st.button('Submit',key = 3):
+                    current = fromDBX(dbx,f'{st.secrets.access.coursePath}{whichCourse}.json')
+                    for i in range(howManyAssignments):
+                        exec(f"current['Assignment Name'].append(name{i})")
+                        exec(f"current['Assignment Due Date'].append(str(date{i}).replace('/','-'))")
+                        exec(f"current['Assignment Notes'].append(notes{i})")
+                        exec(f"current['Assignment Type'].append(type_{i})")
+                    toDBX(dbx,current,f'{st.secrets.access.coursePath}{whichCourse}.json')
+                    st.text(f'Assignments have been added to {whichCourse}')
+                    st.experimental_rerun()
     elif action == 'Review Assignments':
         whichCourse = st.selectbox('Select a course:',['Select a Course']+fromDBX(dbx,userFilename)[user][1],key = 1)
         if whichCourse != 'Select a Course':
@@ -157,7 +188,7 @@ elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-",key = 9)
   accessToken = fromDBX(dbx,'/AccessToken.json')
   if st.button('Press to generate access code',key = 10):
-      accessToken = randomMessageProf()
+      accessToken = randomMessage()
       toDBX(dbx, accessToken,'/AccessToken.json')
       st.text(f'An access token has been sent to the developer. Message {st.secrets.phoneNumbers.to} for access.')
   if authorization == st.secrets.access.accessToken or authorization == f'access-{accessToken}':
@@ -177,3 +208,31 @@ elif user == "NEW":
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
   st.warning("Enter Valid Username")
+
+
+"""
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+accessToken = 'access=ACT1219'
+coursePath = '/Courses/'
+
+[twilio]
+accountSID = 'AC8970249582e9371e02ec986179470a0a'
+authToken = '58dd0aae2b7d745b24cd49681cb792af'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+17623202889'
+
+[files]
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+"""
