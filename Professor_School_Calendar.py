@@ -44,7 +44,7 @@ def completeAction(user,action):
     elif action == 'Add Assignments':
         whichCourse = st.selectbox('Select a course:',['Select a Course']+fromDBX(dbx,userFilename)[user][1],key = 5)
         if whichCourse != 'Select a Course':
-            with st.container('From File (up to 100 assignments)'):
+            with st.expander('From File (up to 100 assignments)'):
                 if st.button('Dowload File'):
                     webbrowser.open_new_tab('https://github.com/Zachjaryw/School-Calendar/blob/main/Add_Assignments.xlsx?raw=true')
                 file = st.file_uploader("Upload File Here",type = ['xlsx'])
@@ -67,7 +67,7 @@ def completeAction(user,action):
                     toDBX(dbx,current,f'{st.secrets.access.coursePath}{whichCourse}.json')
                     st.text(f'Assignments have been added to {whichCourse}')
                     st.experimental_rerun()
-            with st.container('Enter Assignment Here (up to 5 assignemnts)'):
+            with st.expander('Enter Assignment Here (up to 5 assignemnts)'):
                 howManyAssignments = st.slider('How many assignments would you like to add?',1,5,key = 4)
                 col0,col1,col2,col3,col4 = st.columns([1,4,2,4,2])
                 col0.text('#')
