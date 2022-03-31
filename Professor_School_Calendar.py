@@ -45,6 +45,7 @@ def completeAction(user,action):
         whichCourse = st.selectbox('Select a course:',['Select a Course']+fromDBX(dbx,userFilename)[user][1],key = 5)
         if whichCourse != 'Select a Course':
             with st.expander('From File (up to 100 assignments)'):
+                st.text('Download the file by pressing the button below. After filling it out with new assignmemnts, upload it in the other box below')
                 if st.button('Dowload File'):
                     webbrowser.open_new_tab('https://github.com/Zachjaryw/School-Calendar/blob/main/Add_Assignments.xlsx?raw=true')
                 file = st.file_uploader("Upload File Here",type = ['xlsx'])
