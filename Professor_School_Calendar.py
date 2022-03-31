@@ -208,31 +208,3 @@ elif user == "NEW":
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
   st.warning("Enter Valid Username")
-
-
-"""
-Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
-
-[access]
-access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
-accessToken = 'access=ACT1219'
-coursePath = '/Courses/'
-
-[twilio]
-accountSID = 'AC8970249582e9371e02ec986179470a0a'
-authToken = '58dd0aae2b7d745b24cd49681cb792af'
-
-[phoneNumbers]
-to = '+14158476685'
-from_ = '+17623202889'
-
-[files]
-userFilename = '/Usernames.json'
-courseFilename = '/Courses.json'
-
-[decryptURL]
-decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
-
-[encrypt]
-encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
-"""
