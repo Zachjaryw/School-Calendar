@@ -44,31 +44,30 @@ def completeAction(user,action):
     elif action == 'Add Assignments':
         whichCourse = st.selectbox('Select a course:',['Select a Course']+fromDBX(dbx,userFilename)[user][1],key = 5)
         if whichCourse != 'Select a Course':
-            with st.expander('From File (up to 100 assignments)'):
-                st.text('Download the file by pressing the button below. After filling it out with new assignmemnts, upload it in the other box below')
+            with st.container('From File (up to 100 assignments)'):
                 if st.button('Dowload File'):
                     webbrowser.open_new_tab('https://github.com/Zachjaryw/School-Calendar/blob/main/Add_Assignments.xlsx?raw=true')
                 file = st.file_uploader("Upload File Here",type = ['xlsx'])
-                if file:
-                    data = pd.read_excel(file,header = 2)
-                    data.drop(0,inplace = True)
-                    data.set_index(data.columns[0],inplace = True)
-                    data.reset_index(inplace = True,drop = True)
-                    data['Assignment Due Date'] = [i[:10] for i in data['Assignment Due Date'].astype(str)]
-                    counts = np.sum(list(data["Assignment Name"].value_counts(dropna = True)))
-                    data = data[:counts]
-                    st.write(data)
-                    current = fromDBX(dbx,f'{st.secrets.access.coursePath}{whichCourse}.json')
-                    for row in range(data.shape[0]):
-                        add(current,
-                            data['Assignment Name'].iloc[row],
-                            data['Assignment Due Date'].iloc[row],
-                            data['Assignment Notes'].iloc[row],
-                            data['Assignment Type'].iloc[row])
-                    toDBX(dbx,current,f'{st.secrets.access.coursePath}{whichCourse}.json')
-                    st.text(f'Assignments have been added to {whichCourse}')
-                    st.experimental_rerun()
-            with st.expander('Enter Assignment Here (up to 5 assignemnts)'):
+                if st.button('Compile Assignments',key = 32)
+                    if file:
+                        data = pd.read_excel(file,header = 2)
+                        data.drop(0,inplace = True)
+                        data.set_index(data.columns[0],inplace = True)
+                        data.reset_index(inplace = True,drop = True)
+                        data['Assignment Due Date'] = [i[:10] for i in data['Assignment Due Date'].astype(str)]
+                        counts = np.sum(list(data["Assignment Name"].value_counts(dropna = True)))
+                        data = data[:counts]
+                        current = fromDBX(dbx,f'{st.secrets.access.coursePath}{whichCourse}.json')
+                        for row in range(data.shape[0]):
+                            add(current,
+                                data['Assignment Name'].iloc[row],
+                                data['Assignment Due Date'].iloc[row],
+                                data['Assignment Notes'].iloc[row],
+                                data['Assignment Type'].iloc[row])
+                        toDBX(dbx,current,f'{st.secrets.access.coursePath}{whichCourse}.json')
+                        st.text(f'Assignments have been added to {whichCourse}')
+                        st.experimental_rerun()
+            with st.container('Enter Assignment Here (up to 5 assignemnts)')
                 howManyAssignments = st.slider('How many assignments would you like to add?',1,5,key = 4)
                 col0,col1,col2,col3,col4 = st.columns([1,4,2,4,2])
                 col0.text('#')
@@ -209,3 +208,31 @@ elif user == "NEW":
     st.text('Please Enter Auth Key from Developer')
 elif user not in decrypted:
   st.warning("Enter Valid Username")
+
+
+"""
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+accessToken = 'access=ACT1219'
+coursePath = '/Courses/'
+
+[twilio]
+accountSID = 'AC8970249582e9371e02ec986179470a0a'
+authToken = '58dd0aae2b7d745b24cd49681cb792af'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+17623202889'
+
+[files]
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+"""
