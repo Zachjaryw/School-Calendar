@@ -48,7 +48,7 @@ def completeAction(user,action):
                 if st.button('Dowload File'):
                     webbrowser.open_new_tab('https://github.com/Zachjaryw/School-Calendar/blob/main/Add_Assignments.xlsx?raw=true')
                 file = st.file_uploader("Upload File Here",type = ['xlsx'])
-                if st.button('Compile Assignments',key = 32)
+                if st.button('Compile Assignments',key = 32):
                     if file:
                         data = pd.read_excel(file,header = 2)
                         data.drop(0,inplace = True)
