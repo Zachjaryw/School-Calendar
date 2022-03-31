@@ -66,7 +66,6 @@ def completeAction(user,action):
                                 data['Assignment Type'].iloc[row])
                         toDBX(dbx,current,f'{st.secrets.access.coursePath}{whichCourse}.json')
                         st.text(f'Assignments have been added to {whichCourse}')
-                        st.experimental_rerun()
             with st.expander('Enter Assignment Here (up to 5 assignemnts)'):
                 howManyAssignments = st.slider('How many assignments would you like to add?',1,5,key = 4)
                 col0,col1,col2,col3,col4 = st.columns([1,4,2,4,2])
@@ -91,7 +90,6 @@ def completeAction(user,action):
                         exec(f"current['Assignment Type'].append(type_{i})")
                     toDBX(dbx,current,f'{st.secrets.access.coursePath}{whichCourse}.json')
                     st.text(f'Assignments have been added to {whichCourse}')
-                    st.experimental_rerun()
     elif action == 'Review Assignments':
         whichCourse = st.selectbox('Select a course:',['Select a Course']+fromDBX(dbx,userFilename)[user][1],key = 1)
         if whichCourse != 'Select a Course':
