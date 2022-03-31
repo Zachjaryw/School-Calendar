@@ -51,7 +51,6 @@ def completeAction(user,action):
                 file = st.file_uploader("Upload File Here",type = ['xlsx'])
                 if file:
                     data = pd.read_excel(file,header = 2)
-                    st.write(data)
                     data.drop(0,inplace = True)
                     data.set_index(data.columns[0],inplace = True)
                     data.reset_index(inplace = True,drop = True)
@@ -59,6 +58,7 @@ def completeAction(user,action):
                     data['Assignment Due Date'] = [i[:10] for i in data['Assignment Due Date'].astype(str)]
                     counts = np.sum(list(data["Assignment Name"].value_counts(dropna = True)))
                     data = data[:counts]
+                    st.write(data)
                     current = fromDBX(dbx,f'{st.secrets.access.coursePath}{whichCourse}.json')
                     for row in range(data.shape[0]):
                         add(current,
