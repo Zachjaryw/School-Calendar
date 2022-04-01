@@ -5,6 +5,7 @@ import streamlit as st
 from Huffman_Encryption import * #access encryption software
 from Dropbox_Setup import * #access dropbox
 from Send_Message import * #access message sending
+from PIL import Image
 
 st.set_page_config(layout="wide")
 st.title("School Calendar")
@@ -312,6 +313,13 @@ def completeAction(Action):
   elif Action == "***SELECT ACTION***":
     st.text("Please select an action")
 
+def showHelp():
+  image1 = Image.open('School_Intro1.jpg')
+  image2 = Image.open('School_Intro2.jpg')
+  st.image(image1)
+  st.image(image2)
+
+
 class assignment:
     def __init__(self,position:int):
         global calendar
@@ -490,7 +498,7 @@ elif user == "NEW":
       st.text(f'An access token has been sent to the developer. Message {st.secrets.phoneNumbers.to} for access.')
   if authorization == st.secrets.access.accessToken or authorization == ('access-' + str(fromDBX(dbx,'/AccessToken.json'))):
     newUsername = st.text_input('Enter your username here:')
-    if newUsername == '':
+    if newUsername == '' or newUsername == 'NEW' or newUsername == 'HELP':
       st.text('Please enter a valid username.')
     elif newUsername in decrypted:
       st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
@@ -514,5 +522,37 @@ elif user == "NEW":
         st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
   else:
     st.text('Please Enter Auth Key from Developer')
+elif user == "HELP":
+  showHelp()
 elif user not in decrypted:
   st.warning("Enter Valid Username")
+
+'''
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+accessToken = 'access-ACT1219'
+
+[twilio]
+accountSID = 'ACceb691744171ae3ed3556b6d298a11ee'
+authToken = '9a5cc6a815c8e01f210947369a3a4576'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+19035737575'
+
+[file]
+filename = '/SchoolCalendar.json'
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+findCourse = '/Courses/'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+
+'''
+
