@@ -188,6 +188,7 @@ def completeAction(Action):
     col = st.selectbox("Select Which Column:",['Assignment Name','Assignment Due Date','Class Code','Assignment Notes','Assignment Status','Assignment Type'])
     if col == 'Assignment Due Date':
       new = st.date_input("Input adjusted value",key = 5)
+      new = str(new).replace('/','-')
     else:
       new = st.text_input("Input adjusted value",key = 5)
     if st.button("Submit",key = 20) == True:
