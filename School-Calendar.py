@@ -186,7 +186,10 @@ def completeAction(Action):
     pos = st.text_input('Assignment Position',"0",key = 2)
     pos = int(pos)
     col = st.selectbox("Select Which Column:",['Assignment Name','Assignment Due Date','Class Code','Assignment Notes','Assignment Status','Assignment Type'])
-    new = st.text_input("Input adjusted value",key = 5)
+    if col == 'Assignment Due Date':
+      new = st.date_input("Input adjusted value",key = 5)
+    else:
+      new = st.text_input("Input adjusted value",key = 5)
     if st.button("Submit",key = 20) == True:
         if col == 'Assignment Name':
           adjust(pos,'Assignment Name',new)
