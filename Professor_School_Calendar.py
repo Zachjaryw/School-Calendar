@@ -172,7 +172,7 @@ courseFilename = st.secrets.files.courseFilename
 findCourse = st.secrets.access.coursePath
 dbx = initializeToken(st.secrets.access.access)
 usernames = fromDBX(dbx,userFilename)
-user = st.text_input("Enter Username or type 'NEW' for a new user:",key = 6)
+user = st.text_input("Enter Username, type 'NEW' for a new user, or type 'HELP':",key = 6)
 decrypted = Huff.decryptList(list(usernames.keys()))
 if user != 'NEW' and user in decrypted:
   acceptUser = list(usernames.keys())[decrypted.index(user)]
@@ -182,6 +182,9 @@ if user != 'NEW' and user in decrypted:
   if password == acceptPassword:
       selectAction = st.selectbox('Select an Action',['Review Assignments','Adjust Assignments','Add Assignments','Approve a New Course',"Remove Course"],key = 8)
       completeAction(acceptUser,selectAction)
+elif user == "HELP":
+    st.image('Professor_Intro1.jpg')
+    st.image('Professor_Intro2.jpg')
 elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-",key = 9)
   accessToken = fromDBX(dbx,'/AccessToken.json')
@@ -191,7 +194,7 @@ elif user == "NEW":
       st.text(f'An access token has been sent to the developer. Message {st.secrets.phoneNumbers.to} for access.')
   if authorization == st.secrets.access.accessToken or authorization == f'access-{accessToken}':
     newUsername = st.text_input('Enter your username here:',key = 11)
-    if newUsername == '':
+    if newUsername == '' or newUsername == 'NEW' or newUsername == 'HELP':
       st.text('Please enter a valid username.')
     elif newUsername in decrypted:
       st.text(f"Username, {newUsername}, is already taken. Please select a new username.")
