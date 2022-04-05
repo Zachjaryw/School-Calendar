@@ -213,7 +213,8 @@ def completeAction(Action):
   elif Action == "New Assignment":
     name = st.text_input("New Assignment name","",key = 6)
     code = st.text_input("Class Code","",key = 7)
-    date = st.text_input('Due Date',"",key = 8)
+    date = st.date_input('Due Date',key = 8)
+    date = str(date).replace('/','-')
     notes = str(st.text_input('Notes (leave empty for default)',"",key = 9))
     type_ = str(st.text_input('Assignment Type (leave empty for default)',"",key = 10))
     if st.button("Submit",key = 21) == True:
