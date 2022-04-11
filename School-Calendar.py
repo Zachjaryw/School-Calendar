@@ -231,12 +231,7 @@ def completeAction(Action):
     else:
         pass
   elif Action == "Assignments In Date Range":
-    lowDate = st.date_input("Enter the first (lower) date:",key = 13)
-    highDate = st.date_input("Enter the second (higher) date:",key = 14)
-    lowDate = str(lowDate).replace('/','-')
-    highDate = str(highDate).replace('/','-')
-    if st.button("Submit",key = 24) == True:
-        setupDateRangeAssignments(lowDate,highDate)
+    setupDateRangeAssignments()
   elif Action == "Course Assignments":
       whichCourse = st.selectbox('Select a course:',['Select a Course']+data[acceptUser][2],key=27)
       if whichCourse != 'Select a Course':
@@ -443,32 +438,37 @@ def setupPreviousAssignments():
   elif True in fullButtons:
     exec(f'a{previousAstPositions()[fullButtons.index(True)]}.printValues()')
 
-def setupDateRangeAssignments(lowDate,highDate):
-  col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,1.5,2,2])
-  col0.text("#")
-  col1.text("Name")
-  col2.text("Due Date")
-  col3.text("Class Code")
-  col4.text("Complete")
-  col5.text("Assignment Details")
-  completeButtons = []
-  fullButtons = []
-  for item in fromDateRangePositions(lowDate, highDate):
-      exec(f'a{item} = assignment(item)')
-      with st.container():
-          col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,1.5,2,2])
-          exec(f'col0.text(a{item}.position)')
-          exec(f'col1.text(a{item}.name)')
-          exec(f'col2.text(a{item}.due)')
-          exec(f'col3.text(a{item}.code)')
-          exec(f"completeButton{item} = col4.button('Complete',key = {10000+item})")
-          exec(f"completeButtons.append(completeButton{item})")
-          exec(f"fullButton{item} = col5.button('Full Assignment',key = {item+20000})")
-          exec(f"fullButtons.append(fullButton{item})")
-  if True in completeButtons:
-    exec(f'a{fromDateRangePositions(lowDate, highDate)[completeButtons.index(True)]}.completeAssignment()')
-  elif True in fullButtons:
-    exec(f'a{fromDateRangePositions(lowDate, highDate)[fullButtons.index(True)]}.printValues()')
+def setupDateRangeAssignments():
+  lowDate = st.date_input("Enter the first (lower) date:",key = 13)
+  highDate = st.date_input("Enter the second (higher) date:",key = 14)
+  lowDate = str(lowDate).replace('/','-')
+  highDate = str(highDate).replace('/','-')
+  if st.button("Submit",key = 24) == True:
+    col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,1.5,2,2])
+    col0.text("#")
+    col1.text("Name")
+    col2.text("Due Date")
+    col3.text("Class Code")
+    col4.text("Complete")
+    col5.text("Assignment Details")
+    completeButtons = []
+    fullButtons = []
+    for item in fromDateRangePositions(lowDate, highDate):
+        exec(f'a{item} = assignment(item)')
+        with st.container():
+            col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,1.5,2,2])
+            exec(f'col0.text(a{item}.position)')
+            exec(f'col1.text(a{item}.name)')
+            exec(f'col2.text(a{item}.due)')
+            exec(f'col3.text(a{item}.code)')
+            exec(f"completeButton{item} = col4.button('Complete',key = {10000+item})")
+            exec(f"completeButtons.append(completeButton{item})")
+            exec(f"fullButton{item} = col5.button('Full Assignment',key = {item+20000})")
+            exec(f"fullButtons.append(fullButton{item})")
+    if True in completeButtons:
+      exec(f'a{fromDateRangePositions(lowDate, highDate)[completeButtons.index(True)]}.completeAssignment()')
+    elif True in fullButtons:
+      exec(f'a{fromDateRangePositions(lowDate, highDate)[fullButtons.index(True)]}.printValues()')
 
 
 years = [2022,2023]
@@ -528,4 +528,34 @@ elif user == "HELP":
   showHelp()
 elif user not in decrypted:
   st.warning("Enter Valid Username")
- 
+  
+
+'''
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+accessToken = 'access-ACT1219'
+
+[twilio]
+accountSID = 'ACceb691744171ae3ed3556b6d298a11ee'
+authToken = '9a5cc6a815c8e01f210947369a3a4576'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+19035737575'
+
+[file]
+filename = '/SchoolCalendar.json'
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+findCourse = '/Courses/'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+
+'''
+
