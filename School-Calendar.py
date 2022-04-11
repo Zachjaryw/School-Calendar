@@ -8,6 +8,16 @@ from Send_Message import * #access message sending
 from PIL import Image
 
 st.set_page_config(layout="wide")
+st.title("School Calendar")import pandas as pd
+import numpy as np
+import datetime as dt
+import streamlit as st
+from Huffman_Encryption import * #access encryption software
+from Dropbox_Setup import * #access dropbox
+from Send_Message import * #access message sending
+from PIL import Image
+
+st.set_page_config(layout="wide")
 st.title("School Calendar")
 
 def setup_new_semester():
@@ -231,14 +241,12 @@ def completeAction(Action):
     else:
         pass
   elif Action == "Assignments In Date Range":
-    st.text('Enter the first (lower) date:')
-    lowDate = st.text_input("",key = 13)
-    st.text('Enter the second (higher) date:')
-    highDate = st.text_input("",key = 14)
+    lowDate = st.date_input("Enter the first (lower) date:",key = 13)
+    highDate = st.date_input("Enter the second (higher) date:",key = 14)
+    lowDate = str(lowDate).replace('/','-')
+    highDate = str(highDate).replace('/','-')
     if st.button("Submit",key = 24) == True:
         setupDateRangeAssignments(lowDate,highDate)
-    else:
-        pass
   elif Action == "Course Assignments":
       whichCourse = st.selectbox('Select a course:',['Select a Course']+data[acceptUser][2],key=27)
       if whichCourse != 'Select a Course':
@@ -469,7 +477,6 @@ def setupDateRangeAssignments(lowDate,highDate):
           exec(f"fullButtons.append(fullButton{item})")
   if True in completeButtons:
     exec(f'a{fromDateRangePositions(lowDate, highDate)[completeButtons.index(True)]}.completeAssignment()')
-    st.experimental_rerun()
   elif True in fullButtons:
     exec(f'a{fromDateRangePositions(lowDate, highDate)[fullButtons.index(True)]}.printValues()')
 
@@ -531,3 +538,34 @@ elif user == "HELP":
   showHelp()
 elif user not in decrypted:
   st.warning("Enter Valid Username")
+  
+
+'''
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+accessToken = 'access-ACT1219'
+
+[twilio]
+accountSID = 'ACceb691744171ae3ed3556b6d298a11ee'
+authToken = '9a5cc6a815c8e01f210947369a3a4576'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+19035737575'
+
+[file]
+filename = '/SchoolCalendar.json'
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+findCourse = '/Courses/'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+
+'''
+
