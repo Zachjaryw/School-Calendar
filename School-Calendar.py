@@ -115,7 +115,6 @@ def fromDateRangePositions(lowDate, highDate):
   df.sort_values('Assignment Due Date',inplace = True)
   df = df[df['Assignment Due Date'] >= lowDate][df['Assignment Due Date'] <= highDate]
   df['Assignment Due Date'] = df['Assignment Due Date'].apply(lambda x: dt.datetime.strftime(x, '%Y-%m-%d'))
-  st.write(df.index)
   return df.index.values.tolist()
 
 def thisMonth():
@@ -343,7 +342,6 @@ class assignment:
     def adjustAssignment(self,column,newValue):
         adjust(self.position,column,newValue)
         st.text(f'Value {self.position} in {column} adjusted.')
-        st.experimental_rerun()
         
     def printValues(self):
         st.text(f'Item Position:          {self.position}')
@@ -379,6 +377,7 @@ def setupCompleteAssignments():
           exec(f"fullButtons.append(fullButton{item})")
   if True in completeButtons:
     exec(f'a{thisWeekPositions()[completeButtons.index(True)]}.completeAssignment()')
+    save_cal()
     st.experimental_rerun()
   elif True in fullButtons:
     exec(f'a{thisWeekPositions()[fullButtons.index(True)]}.printValues()')
@@ -407,6 +406,7 @@ def setupCompleteAssignmentsMonth():
           exec(f"fullButtons.append(fullButton{item})")
   if True in completeButtons:
     exec(f'a{thismonthPositions()[completeButtons.index(True)]}.completeAssignment()')
+    save_cal()
     st.experimental_rerun()
   elif True in fullButtons:
     exec(f'a{thismonthPositions()[fullButtons.index(True)]}.printValues()')
@@ -435,6 +435,7 @@ def setupPreviousAssignments():
           exec(f"fullButtons.append(fullButton{item})")
   if True in completeButtons:
     exec(f'a{previousAstPositions()[completeButtons.index(True)]}.incompleteAssignment()')
+    save_cal()
     st.experimental_rerun()
   elif True in fullButtons:
     exec(f'a{previousAstPositions()[fullButtons.index(True)]}.printValues()')
@@ -468,6 +469,7 @@ def setupDateRangeAssignments():
             exec(f"fullButtons.append(fullButton{item})")
     if True in completeButtons:
       exec(f'a{fromDateRangePositions(lowDate, highDate)[completeButtons.index(True)]}.completeAssignment()')
+      save_cal()
     elif True in fullButtons:
       exec(f'a{fromDateRangePositions(lowDate, highDate)[fullButtons.index(True)]}.printValues()')
 
@@ -529,4 +531,34 @@ elif user == "HELP":
   showHelp()
 elif user not in decrypted:
   st.warning("Enter Valid Username")
- 
+  
+
+'''
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+accessToken = 'access-ACT1219'
+
+[twilio]
+accountSID = 'ACceb691744171ae3ed3556b6d298a11ee'
+authToken = '9a5cc6a815c8e01f210947369a3a4576'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+19035737575'
+
+[file]
+filename = '/SchoolCalendar.json'
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+findCourse = '/Courses/'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+
+'''
+
