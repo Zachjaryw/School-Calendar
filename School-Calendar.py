@@ -114,6 +114,7 @@ def fromDateRangePositions(lowDate, highDate):
   df['Assignment Due Date'] = pd.to_datetime(df['Assignment Due Date'])
   df.sort_values('Assignment Due Date',inplace = True)
   df = df[df['Assignment Due Date'] >= lowDate][df['Assignment Due Date'] <= highDate]
+  df = df[df['Assignment Status'] != 'Complete']
   df['Assignment Due Date'] = df['Assignment Due Date'].apply(lambda x: dt.datetime.strftime(x, '%Y-%m-%d'))
   return df.index.values.tolist()
 
@@ -531,3 +532,34 @@ elif user == "HELP":
   showHelp()
 elif user not in decrypted:
   st.warning("Enter Valid Username")
+  
+
+'''
+Here are the st.secrets variables. Make sure to remove this from the code if pulled from here
+
+[access]
+access = 'IEoRqM7USA8AAAAAAAAAAZoiXRl8xs8oMjsk-sa3c15WY95FMdUIeh6SBW00omxZ'
+accessToken = 'access-ACT1219'
+
+[twilio]
+accountSID = 'ACceb691744171ae3ed3556b6d298a11ee'
+authToken = '9a5cc6a815c8e01f210947369a3a4576'
+
+[phoneNumbers]
+to = '+14158476685'
+from_ = '+19035737575'
+
+[file]
+filename = '/SchoolCalendar.json'
+userFilename = '/Usernames.json'
+courseFilename = '/Courses.json'
+findCourse = '/Courses/'
+
+[decryptURL]
+decryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/Huffman_Collected.csv'
+
+[encrypt]
+encryptURL = 'https://raw.githubusercontent.com/Zachjaryw/Huffman/main/'
+
+'''
+
