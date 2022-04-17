@@ -24,7 +24,7 @@ def save_cal():
   global acceptUser
   global semester
   global year
-  toDBXDBX(dbx,calendar,f'{st.secrets.file.studentAccess}{acceptUser}/{semester} {year}.json')
+  toDBX(dbx,calendar,f'{st.secrets.file.studentAccess}{acceptUser}/{semester} {year}.json')
 
 def reset():
   global calendar
