@@ -331,12 +331,10 @@ class assignment:
     def completeAssignment(self):
         global calendar
         progress(self.position)
-        st.text(f'{self.position} marked complete')
 
     def incompleteAssignment(self):
         global calendar
-        progress(self.position,"Incomplete")
-        st.text(f'{self.position} marked Incomplete')        
+        progress(self.position,"Incomplete")       
         
     def adjustAssignment(self,column,newValue):
         adjust(self.position,column,newValue)
