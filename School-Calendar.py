@@ -503,20 +503,20 @@ elif user == "NEW":
       password_1 = st.text_input('Enter your password here:')
       password_2 = st.text_input("Re-enter your password here:")
       if password_2 != "" and password_1 == password_2:
-      data[Huff.encrypt(newUsername)] = [Huff.encrypt(password_1),[],[]]
-      toDBX(dbx, data, filename)
-      setup = {
-        'Assignment Name': [],
-        'Assignment Due Date': [],
-        'Class Code': [],
-        'Assignment Notes': [],
-        'Assignment Status': [],
-        'Assignment Type': []
-        }
-      for y in years:
-        for sem in semesters:
-          toDBX(dbx,setup, f'{st.secrets.file.studentAccess}{Huff.encrypt(newUsername)}/{sem} {y}.json')
-      st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
+        data[Huff.encrypt(newUsername)] = [Huff.encrypt(password_1),[],[]]
+        toDBX(dbx, data, filename)
+        setup = {
+          'Assignment Name': [],
+          'Assignment Due Date': [],
+          'Class Code': [],
+          'Assignment Notes': [],
+          'Assignment Status': [],
+          'Assignment Type': []
+          }
+        for y in years:
+          for sem in semesters:
+            toDBX(dbx,setup, f'{st.secrets.file.studentAccess}{Huff.encrypt(newUsername)}/{sem} {y}.json')
+        st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
   else:
     st.text('Please Enter Auth Key from Developer')
 elif user == "HELP":
