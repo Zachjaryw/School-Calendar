@@ -22,11 +22,9 @@ def save_cal():
   global data
   global dbx
   global acceptUser
-  global filename
   global semester
   global year
-  data[acceptUser][1][f'{semester} {year}'] = calendar
-  toDBX(dbx, data, filename)
+  toDBXDBX(dbx,calendar,f'{st.secrets.file.studentAccess}{acceptUser}/{semester} {year}.json')
 
 def reset():
   global calendar
@@ -234,7 +232,7 @@ def completeAction(Action):
   elif Action == "Assignments In Date Range":
     setupDateRangeAssignments()
   elif Action == "Course Assignments":
-      whichCourse = st.selectbox('Select a course:',['Select a Course']+data[acceptUser][2],key=27)
+      whichCourse = st.selectbox('Select a course:',['Select a Course']+data[acceptUser][1],key=27)
       if whichCourse != 'Select a Course':
           assignments = fromDBX(dbx,f'{findCourse}{whichCourse}.json')
           col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
@@ -245,9 +243,9 @@ def completeAction(Action):
           col4.text("Type")
           col5.text("Add to Calendar")
           addButtons = []
-          idx = data[acceptUser][2].index(whichCourse)
+          idx = data[acceptUser][1].index(whichCourse)
           for i in range(len(assignments['Assignment Name'])):
-            if not(i in data[acceptUser][3][idx]):
+            if not(i in data[acceptUser][2][idx]):
               col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2,2])
               col0.text(i)
               col1.text(assignments['Assignment Name'][i])
@@ -266,13 +264,13 @@ def completeAction(Action):
                   assignments['Assignment Notes'][index],
                   'Incomplete',
                   assignments['Assignment Type'][index])
-              data[acceptUser][3][idx].append(index)
+              data[acceptUser][2][idx].append(index)
               st.text('Assignment added to calendar')
               st.experimental_rerun()
               save_cal()
   elif Action == "My Courses":
       courses = fromDBX(dbx,courseFilename)
-      if len(data[acceptUser][2]) == 0:
+      if len(data[acceptUser][1]) == 0:
         st.text('You are not currently enrolled in any courses. Enter a code below to join one')
       else:
         cos = []
@@ -280,7 +278,7 @@ def completeAction(Action):
         col1.text('Course Name')
         col2.text('Professor Name')
         col3.text('Unenroll this course')
-        for i in range(len(data[acceptUser][2])):
+        for i in range(len(data[acceptUser][1])):
           col1,col2,col3 = st.columns([4,4,2])
           col1.text(courses['Course'][i])
           col2.text(Huff.decrypt(courses['Professor'][i]))
@@ -290,22 +288,22 @@ def completeAction(Action):
             unenrolled = courses['Course'][cos.index(True)]
             st.text(f'You are now unenrolled in {unenrolled}')
             index = data[acceptUser][2].index(unenrolled)
+            data[acceptUser][1].remove(data[acceptUser][1][index])
             data[acceptUser][2].remove(data[acceptUser][2][index])
-            data[acceptUser][3].remove(data[acceptUser][3][index])
             coursesIndex = courses['Course'].index(unenrolled)
             toDBX(dbx,courses,courseFilename)
-            save_cal()
+            toDBX(dbx,data,filename)
             st.experimental_rerun()
       course = st.text_input('Enter the code for the course you would like to join:',"",key = 26)
       if course == '':
           pass
-      elif course in data[acceptUser][2]:
+      elif course in data[acceptUser][1]:
           st.text('You are already enrolled in this course')
       elif course in courses['Course']:
           st.text(f'You are now enrolled in {course}')
-          data[acceptUser][2].append(course)
-          data[acceptUser][3].append([])
-          save_cal()
+          data[acceptUser][1].append(course)
+          data[acceptUser][2].append([])
+          toDBX(dbx,data,filename)
           st.experimental_rerun()
       else:
           st.warning('This course does not exist: Please consult your professor')
@@ -470,10 +468,10 @@ def setupDateRangeAssignments():
 
 years = [2022,2023]
 semesters = ['Spring','Fall']
-filename = st.secrets.file.filename
+filename = st.secrets.file.studentUsernames
 courseFilename = st.secrets.file.courseFilename
 findCourse = st.secrets.file.findCourse
-user = st.text_input("Enter Username, type 'NEW' for a new user, or type 'HELP':")
+user = st.text_input("Enter Username, type 'NEW' for a new user, or type 'Help':")
 dbx = initialize()
 data = fromDBX(dbx,filename)
 decrypted = Huff.decryptList(list(data.keys()))
@@ -486,7 +484,7 @@ if user != 'NEW' and user in decrypted:
       with st.expander("Year and Semester Selection"):
         year = st.selectbox('Year:',years)
         semester = st.selectbox('Semester:',semesters)
-      calendar = data[acceptUser][1][f'{semester} {year}']
+      calendar = fromDBX(dbx,f'{st.secrets.file.studentAccess}{acceptUser}/{semester} {year}.json')
       Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range","Course Assignments","My Courses"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
 elif user == "NEW":
@@ -505,24 +503,23 @@ elif user == "NEW":
       password_1 = st.text_input('Enter your password here:')
       password_2 = st.text_input("Re-enter your password here:")
       if password_2 != "" and password_1 == password_2:
-        newCal = {}
-        for y in years:
-          for sem in semesters:
-            newCal[f'{sem} {y}'] = {
-                                        'Assignment Name': [],
-                                        'Assignment Due Date': [],
-                                        'Class Code': [],
-                                        'Assignment Notes': [],
-                                        'Assignment Status': [],
-                                        'Assignment Type': []
-                                  }
-        data[Huff.encrypt(newUsername)] = [Huff.encrypt(password_1), newCal,[],[]]
-        toDBX(dbx, data, filename)
-        st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
+      data[Huff.encrypt(newUsername)] = [Huff.encrypt(password_1),[],[]]
+      toDBX(dbx, data, filename)
+      setup = {
+        'Assignment Name': [],
+        'Assignment Due Date': [],
+        'Class Code': [],
+        'Assignment Notes': [],
+        'Assignment Status': [],
+        'Assignment Type': []
+        }
+      for y in years:
+        for sem in semesters:
+          toDBX(dbx,setup, f'{st.secrets.file.studentAccess}{Huff.encrypt(newUsername)}/{sem} {y}.json')
+      st.text(f'New account for {newUsername} has been activated. \nChange username field at the top of the screen to begin.')
   else:
     st.text('Please Enter Auth Key from Developer')
 elif user == "HELP":
   showHelp()
 elif user not in decrypted:
   st.warning("Enter Valid Username")
- 
