@@ -464,7 +464,7 @@ def setupDateRangeAssignments():
             exec(f'col5.text(a{item}.type_)')
 
 years = []
-for i in range(2):
+for i in range(4):
   years.append(int(str(dt.date.today())[:4])+i)
 if int(str(dt.date.today())[5:7]) >=7:
   semesters = ['Spring','Fall']
