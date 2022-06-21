@@ -463,9 +463,13 @@ def setupDateRangeAssignments():
             exec(f'col4.text(a{item}.note)')
             exec(f'col5.text(a{item}.type_)')
 
-
-years = [2022,2023]
-semesters = ['Spring','Fall']
+years = []
+for i in range(2):
+  years.append(int(str(dt.date.today())[:4])+i)
+if int(str(dt.date.today())[5:7]) >=7:
+  semesters = ['Spring','Fall']
+else:
+  semesters = ['Fall','Spring']
 filename = st.secrets.file.studentUsernames
 courseFilename = st.secrets.file.courseFilename
 findCourse = st.secrets.file.findCourse
