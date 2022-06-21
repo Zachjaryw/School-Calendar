@@ -486,7 +486,10 @@ if user != 'NEW' and user in decrypted:
       with st.expander("Year and Semester Selection"):
         year = st.selectbox('Year:',years)
         semester = st.selectbox('Semester:',semesters)
-      calendar = fromDBX(dbx,f'{st.secrets.file.studentAccess}{acceptUser}/{semester} {year}.json')
+      try:
+        calendar = fromDBX(dbx,f'{st.secrets.file.studentAccess}{acceptUser}/{semester} {year}.json')
+       except:
+        st.warning('This Year does not exist for the selected user.')
       Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range","Course Assignments","My Courses"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
 elif user == "NEW":
