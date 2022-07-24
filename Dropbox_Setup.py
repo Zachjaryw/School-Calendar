@@ -7,8 +7,7 @@ method initialize sets up access to a dropbox
 '''
 def initialize():
   access = st.secrets.access.access
-  refresh = st.secrets.access.refresh
-  dbx = dropbox.Dropbox(access,oauth2_refresh_token = refresh)
+  dbx = dropbox.Dropbox(access)
   dbx.users_get_current_account()
   return dbx
 
@@ -17,9 +16,9 @@ method initializeToken sets up access to a dropbox from new access token
 @param token. dropbox app access token
 @return dbx. an open access token to the desired dropbox
 '''
-def initializeToken(token,refresh):
+def initializeToken(token):
   access = token
-  dbx = dropbox.Dropbox(access,oauth2_refresh_token = refresh)
+  dbx = dropbox.Dropbox(access)
   dbx.users_get_current_account()
   return dbx
 
