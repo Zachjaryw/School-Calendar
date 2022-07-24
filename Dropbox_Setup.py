@@ -12,6 +12,23 @@ def initialize():
   return dbx
 
 '''
+method to get new auth token
+'''
+def get_new_auth_token(key,secret):
+        # Run the dropbox OAuth Flow to get the user's OAuth Token.
+        auth_flow = DropboxOAuth2FlowNoRedirect(key,secret)
+        authorize_url = auth_flow.start()
+        print("Go to: " + authorize_url)
+        auth_code = input("Enter the authorization code here: ").strip()
+        try:
+            oauth_result = auth_flow.finish(auth_code)
+        except Exception as e:
+            print('Error: %s' % (e,))
+            return
+        return oauth_result.access_token 
+
+
+'''
 method initializeToken sets up access to a dropbox from new access token
 @param token. dropbox app access token
 @return dbx. an open access token to the desired dropbox
