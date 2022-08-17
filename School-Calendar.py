@@ -257,7 +257,7 @@ def completeAction(Action):
           exec(f"date = str(date{i}).replace('/','-')")
           exec(f"notes = notes{i}")
           exec(f"type_ = type_{i}")
-          add(name,classcode,date,notes,type_)
+          add(name,classcode,date,notes,'Incomplete',type_)
     a = '''
     name = st.text_input("New Assignment name","",key = 6)
     code = st.text_input("Class Code","",key = 7)
