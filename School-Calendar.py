@@ -257,27 +257,6 @@ def completeAction(Action):
           exec(f"results.append(notes{i})")
           exec(f"results.append(type_{i})")
           add(results[0],results[1],results[2],results[3],'Incomplete',results[4])
-    a = '''
-    name = st.text_input("New Assignment name","",key = 6)
-    code = st.text_input("Class Code","",key = 7)
-    date = st.date_input('Due Date',key = 8)
-    date = str(date).replace('/','-')
-    notes = str(st.text_input('Notes (leave empty for default)',"",key = 9))
-    type_ = str(st.text_input('Assignment Type (leave empty for default)',"",key = 10))
-    if st.button("Submit",key = 21) == True:
-        if notes == "":
-          if type_ == "":
-            add(name,code,date)
-          else:
-            add(name,code,date,ast_type= type_)
-        else:
-          if type_ == "":
-            add(name,code,date,notes)
-          else:
-            add(name,code,date,notes,ast_type= type_)
-    else:
-        pass
-        '''
   elif Action == "Assignments In Date Range":
     setupDateRangeAssignments()
   elif Action == "Course Assignments":
