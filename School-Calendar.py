@@ -234,7 +234,7 @@ def completeAction(Action):
           st.text(f'Assignments have been added to {whichCourse}')
     with st.expander('Enter Assignment Here (up to 5 assignemnts)'):
       howManyAssignments = st.slider('How many assignments would you like to add?',1,5,key = 4)
-      col0,col1,col2,col3,col4 = st.columns([1,4,2,2,4,2])
+      col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,2,4,2])
       col0.text('#')
       col1.text("Name")
       col2.text("Class Code")
@@ -242,7 +242,7 @@ def completeAction(Action):
       col4.text("Notes")
       col5.text("Type")
       for i in range(howManyAssignments):
-        col0,col1,col2,col3,col4 = st.columns([1,4,2,4,2])
+        col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,4,2])
         col0.text(i)
         exec(f'name{i} = col1.text_input("","",key = 100+i)')
         exec(f'class{i} = col2.text_input("",key = 150+i)')
