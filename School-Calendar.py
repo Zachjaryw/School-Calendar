@@ -254,7 +254,7 @@ def completeAction(Action):
         for i in range(howManyAssignments):
           exec(f"name= name{i}")
           exec(f"classcode = class{i}")
-          exec(f"date = date{i}).replace('/','-')")
+          exec(f"date = date{i}.replace('/','-')")
           exec(f"notes = notes{i}")
           exec(f"type_ = type_{i}")
           add(name,classcode,date,notes,type_)
