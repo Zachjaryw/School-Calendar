@@ -252,12 +252,13 @@ def completeAction(Action):
         exec(f'type_{i} = col5.text_input("","Homework",key = 400+i)')
       if st.button('Submit',key = 'Submit'):
         for i in range(howManyAssignments):
-          name= exec(f"name{i}")
-          classcode = exec(f"class{i}")
-          date = exec(f"str(date{i}).replace('/','-')")
-          notes = exec(f"notes{i}")
-          type_ = exec(f"type_{i}")
-          add(name,classcode,date,notes,'Incomplete',type_)
+          results = []
+          exec(f"results.append(name{i})")
+          exec(f"results.append(class{i})")
+          exec(f"results.append(str(date{i}).replace('/','-'))")
+          exec(f"results.append(notes{i})")
+          exec(f"results.append(type_{i})")
+          add(results[0],results[1],results[2],results[3],'Incomplete',results[4])
     a = '''
     name = st.text_input("New Assignment name","",key = 6)
     code = st.text_input("Class Code","",key = 7)
