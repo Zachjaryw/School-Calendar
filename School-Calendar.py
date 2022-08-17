@@ -219,18 +219,18 @@ def completeAction(Action):
         if file:
           d = pd.read_excel(file,header = 2)
           d.drop(0,inplace = True)
-          d.set_index(data.columns[0],inplace = True)
+          d.set_index(d.columns[0],inplace = True)
           d.reset_index(inplace = True,drop = True)
-          d['Assignment Due Date'] = [i[:10] for i in data['Assignment Due Date'].astype(str)]
+          d['Assignment Due Date'] = [i[:10] for i in d['Assignment Due Date'].astype(str)]
           counts = np.sum(list(d["Assignment Name"].value_counts(dropna = True)))
           d = d[:counts]
           for row in range(d.shape[0]):
             add(d['Assignment Name'].iloc[row],
-              d['Class Code'].iloc[row],
-              d['Assignment Due Date'].iloc[row],
-              d['Assignment Type'].iloc[row],
-              'Incomplete'
-              d['Assignment Notes'].iloc[row])
+                d['Class Code'].iloc[row],
+                d['Assignment Due Date'].iloc[row],
+                d['Assignment Type'].iloc[row],
+                'Incomplete'
+                d['Assignment Notes'].iloc[row])
     with st.expander('Enter Assignment Here (up to 5 assignemnts)'):
       howManyAssignments = st.slider('How many assignments would you like to add?',1,5,key = 4)
       col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,2,4,2])
