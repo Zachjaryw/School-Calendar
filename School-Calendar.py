@@ -210,6 +210,54 @@ def completeAction(Action):
   elif Action == "Assignments Due This Month":
     setupCompleteAssignmentsMonth()
   elif Action == "New Assignment":
+    with st.expander('From File (up to 100 assignments)'):
+      if st.button('Dowload File'):
+        webbrowser.open_new_tab('https://github.com/Zachjaryw/School-Calendar/blob/main/Add_Assignments_Calendar.xlsx?raw=true')
+      file = st.file_uploader("Upload File Here",type = ['xlsx'])
+      if st.button('Compile Assignments',key = 32):
+        if file:
+          data = pd.read_excel(file,header = 2)
+          data.drop(0,inplace = True)
+          data.set_index(data.columns[0],inplace = True)
+          data.reset_index(inplace = True,drop = True)
+          data['Assignment Due Date'] = [i[:10] for i in data['Assignment Due Date'].astype(str)]
+          counts = np.sum(list(data["Assignment Name"].value_counts(dropna = True)))
+          data = data[:counts]
+          for row in range(data.shape[0]):
+            add(current,
+              data['Assignment Name'].iloc[row],
+              data['Class Code'].iloc[row],
+              data['Assignment Due Date'].iloc[row],
+              data['Assignment Type'].iloc[row],
+              data['Assignment Notes'].iloc[row])
+            toDBX(dbx,current,f'{st.secrets.access.coursePath}{whichCourse}.json')
+          st.text(f'Assignments have been added to {whichCourse}')
+    with st.expander('Enter Assignment Here (up to 5 assignemnts)'):
+      howManyAssignments = st.slider('How many assignments would you like to add?',1,5,key = 4)
+      col0,col1,col2,col3,col4 = st.columns([1,4,2,2,4,2])
+      col0.text('#')
+      col1.text("Name")
+      col2.text("Class Code")
+      col3.text("Due Date")
+      col4.text("Notes")
+      col5.text("Type")
+      for i in range(howManyAssignments):
+        col0,col1,col2,col3,col4 = st.columns([1,4,2,4,2])
+        col0.text(i)
+        exec(f'name{i} = col1.text_input("","",key = 100+i)')
+        exec(f'class{i} = col2.text_input("",key = 150+i)')
+        exec(f'date{i} = col3.date_input("",key = 200+i)')
+        exec(f'notes{i} = col4.text_input("",key = 300+i)')
+        exec(f'type_{i} = col5.text_input("","Homework",key = 400+i)')
+      if st.button('Submit',key = 'Submit'):
+        for i in range(howManyAssignments):
+          exec(f"name= name{i}")
+          exec(f"classcode = class{i}")
+          exec(f"date = date{i}).replace('/','-')")
+          exec(f"notes = notes{i}")
+          exec(f"type_ = type_{i}")
+          add(name,classcode,date,notes,type_)
+    a = '''
     name = st.text_input("New Assignment name","",key = 6)
     code = st.text_input("Class Code","",key = 7)
     date = st.date_input('Due Date',key = 8)
@@ -229,6 +277,7 @@ def completeAction(Action):
             add(name,code,date,notes,ast_type= type_)
     else:
         pass
+        '''
   elif Action == "Assignments In Date Range":
     setupDateRangeAssignments()
   elif Action == "Course Assignments":
