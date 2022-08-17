@@ -515,7 +515,7 @@ def setupDateRangeAssignments():
 years = []
 for i in range(4):
   years.append(int(str(dt.date.today())[:4])+i)
-if int(str(dt.date.today())[5:7]) >=7:
+if int(str(dt.date.today())[5:7]) <=7:
   semesters = ['Spring','Fall']
 else:
   semesters = ['Fall','Spring']
