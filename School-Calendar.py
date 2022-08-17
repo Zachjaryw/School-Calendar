@@ -217,22 +217,20 @@ def completeAction(Action):
       file = st.file_uploader("Upload File Here",type = ['xlsx'])
       if st.button('Compile Assignments',key = 32):
         if file:
-          data = pd.read_excel(file,header = 2)
-          data.drop(0,inplace = True)
-          data.set_index(data.columns[0],inplace = True)
-          data.reset_index(inplace = True,drop = True)
-          data['Assignment Due Date'] = [i[:10] for i in data['Assignment Due Date'].astype(str)]
-          counts = np.sum(list(data["Assignment Name"].value_counts(dropna = True)))
-          data = data[:counts]
-          for row in range(data.shape[0]):
-            add(current,
-              data['Assignment Name'].iloc[row],
-              data['Class Code'].iloc[row],
-              data['Assignment Due Date'].iloc[row],
-              data['Assignment Type'].iloc[row],
-              data['Assignment Notes'].iloc[row])
-            toDBX(dbx,current,f'{st.secrets.access.coursePath}{whichCourse}.json')
-          st.text(f'Assignments have been added to {whichCourse}')
+          d = pd.read_excel(file,header = 2)
+          d.drop(0,inplace = True)
+          d.set_index(data.columns[0],inplace = True)
+          d.reset_index(inplace = True,drop = True)
+          d['Assignment Due Date'] = [i[:10] for i in data['Assignment Due Date'].astype(str)]
+          counts = np.sum(list(d["Assignment Name"].value_counts(dropna = True)))
+          d = d[:counts]
+          for row in range(d.shape[0]):
+            add(d['Assignment Name'].iloc[row],
+              d['Class Code'].iloc[row],
+              d['Assignment Due Date'].iloc[row],
+              d['Assignment Type'].iloc[row],
+              'Incomplete'
+              d['Assignment Notes'].iloc[row])
     with st.expander('Enter Assignment Here (up to 5 assignemnts)'):
       howManyAssignments = st.slider('How many assignments would you like to add?',1,5,key = 4)
       col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,2,4,2])
