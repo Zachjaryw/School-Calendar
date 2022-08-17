@@ -229,7 +229,7 @@ def completeAction(Action):
                 d['Class Code'].iloc[row],
                 d['Assignment Due Date'].iloc[row],
                 d['Assignment Notes'].iloc[row],
-                'Incomplete'
+                'Incomplete',
                 d['Assignment Type'].iloc[row])
     with st.expander('Enter Assignment Here (up to 5 assignemnts)'):
       howManyAssignments = st.slider('How many assignments would you like to add?',1,5,key = 4)
