@@ -71,6 +71,20 @@ def add(name,class_code, due_date = str(dt.date.today()),notes = 'None',status =
   st.text(f'Assignment "{name}" added to {year} Calendar')
   save_cal()
 
+def searchAssignment(assignmentName):
+  global calendar
+  df = pd.DataFrame(calendar)
+  df = df[df['Assignmet Name'] == assignmentName]
+  if df.shape[0] != 0:
+    col1, col2 = st.columns(2)
+    col1.write('Assignment Number')
+    col2.write('Assignment Name')
+    for assignment in range(df.shape[0]):
+      col1.write(assignment)
+      col2.write(df['Assignment Name'].loc[assignment])
+  else:
+    st.write(f'There are no assignments with the given name: {assignmentName}')
+  
 def show():
   global calendar
   df = pd.DataFrame(calendar)
@@ -211,6 +225,9 @@ def completeAction(Action):
     setupCompleteAssignments()
   elif Action == "Assignments Due This Month":
     setupCompleteAssignmentsMonth()
+  elif Aciton == 'Search For Assignment':
+    assignment = st.text_input('Assignment Name:')
+    searchAssignment(assignment)
   elif Action == "New Assignment":
     with st.expander('From File (up to 100 assignments)'):
       if st.button('Dowload File'):
@@ -516,7 +533,7 @@ if user != 'NEW' and user in decrypted:
         year = st.selectbox('Year:',years)
         semester = st.selectbox('Semester:',semesters)
       calendar = fromDBX(dbx,f'{st.secrets.file.studentAccess}{acceptUser}/{semester} {year}.json')
-      Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range","Course Assignments","My Courses"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
+      Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range","Search For Assignment","Course Assignments","My Courses"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
 elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-")
