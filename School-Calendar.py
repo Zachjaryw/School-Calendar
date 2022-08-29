@@ -75,14 +75,19 @@ def searchAssignment(assignmentName):
   global calendar
   df = pd.DataFrame(calendar)
   df = df[df['Assignment Name'] == assignmentName]
-  st.dataframe(df)
   if df.shape[0] != 0:
-    col1, col2 = st.columns(2)
+    col1, col2,col3,col4,col5 = st.columns([1,3,2,4,2])
     col1.write('Assignment Number')
     col2.write('Assignment Name')
+    col3.write('Class Code')
+    col4.write('Assignment Notes')
+    col5.write('Assignment Type')
     for assignment in df.index:
       col1.write(str(assignment))
       col2.write(df['Assignment Name'].loc[assignment])
+      col3.write(df['Class Code'].loc[assignment])
+      col4.write(df['Assignment Notes'].loc[assignment])
+      col5.write(df['Assignment Type'].loc[assignment])
   else:
     st.write(f'There are no assignments with the given name: {assignmentName}')
   
