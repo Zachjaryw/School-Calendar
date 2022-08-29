@@ -61,13 +61,14 @@ def addAssignmentsFromFile(file):
 
 def add(name,class_code, due_date = str(dt.date.today()),notes = 'None',status = 'Incomplete', ast_type = 'Homework'):
   global calendar
+  global year
   calendar['Assignment Name'] = list(calendar['Assignment Name']) + [str(name)]
   calendar['Assignment Due Date'] = list(calendar['Assignment Due Date']) + [str(due_date)]
   calendar['Class Code'] = list(calendar['Class Code']) + [str(class_code)]
   calendar['Assignment Notes'] = list(calendar['Assignment Notes']) + [str(notes)]
   calendar['Assignment Status'] = list(calendar['Assignment Status']) + [str(status)]
   calendar['Assignment Type'] = list(calendar['Assignment Type']) + [str(ast_type)]
-  st.text(f'Assignment "{name}" added to 2021 Calendar')
+  st.text(f'Assignment "{name}" added to {year} Calendar')
   save_cal()
 
 def show():
