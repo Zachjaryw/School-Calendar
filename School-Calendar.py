@@ -80,7 +80,7 @@ def searchAssignment(assignmentName):
     col1, col2 = st.columns(2)
     col1.write('Assignment Number')
     col2.write('Assignment Name')
-    for assignment in range(df.shape[0]):
+    for assignment in df.index:
       col1.write(str(assignment))
       col2.write(df['Assignment Name'].loc[assignment])
   else:
