@@ -74,7 +74,7 @@ def add(name,class_code, due_date = str(dt.date.today()),notes = 'None',status =
 def searchAssignment(assignmentName):
   global calendar
   df = pd.DataFrame(calendar)
-  df = df[df['Assignmet Name'] == assignmentName]
+  df = df[df['Assignment Name'] == assignmentName]
   if df.shape[0] != 0:
     col1, col2 = st.columns(2)
     col1.write('Assignment Number')
