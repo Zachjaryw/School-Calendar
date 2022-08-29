@@ -227,7 +227,8 @@ def completeAction(Action):
     setupCompleteAssignmentsMonth()
   elif Action == 'Search For Assignment':
     assignment = st.text_input('Assignment Name:')
-    searchAssignment(assignment)
+    if st.button('Submit',key = 25624):
+      searchAssignment(assignment)
   elif Action == "New Assignment":
     with st.expander('From File (up to 100 assignments)'):
       if st.button('Dowload File'):
