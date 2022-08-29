@@ -225,7 +225,7 @@ def completeAction(Action):
     setupCompleteAssignments()
   elif Action == "Assignments Due This Month":
     setupCompleteAssignmentsMonth()
-  elif Aciton == 'Search For Assignment':
+  elif Action == 'Search For Assignment':
     assignment = st.text_input('Assignment Name:')
     searchAssignment(assignment)
   elif Action == "New Assignment":
