@@ -83,7 +83,7 @@ def searchAssignment(assignmentName):
     col4.write('Assignment Notes')
     col5.write('Assignment Type')
     for assignment in df.index:
-      with st.container:
+      with st.container():
         col1.write(str(assignment))
         col2.write(df['Assignment Name'].loc[assignment])
         col3.write(df['Class Code'].loc[assignment])
