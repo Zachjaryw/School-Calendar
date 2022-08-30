@@ -59,7 +59,7 @@ def addAssignmentsFromFile(file):
     st.text('Please adjust file and try again.')
 
 
-def add(name,class_code, due_date = str(dt.date.today()),notes = 'None',status = 'Incomplete', ast_type = 'Homework'):
+def add(name,class_code, due_date = str(dt.date.today()),notes = 'None',status = 'Incomplete', ast_type = 'Homework',save = True):
   global calendar
   global year
   calendar['Assignment Name'] = list(calendar['Assignment Name']) + [str(name)]
@@ -69,7 +69,8 @@ def add(name,class_code, due_date = str(dt.date.today()),notes = 'None',status =
   calendar['Assignment Status'] = list(calendar['Assignment Status']) + [str(status)]
   calendar['Assignment Type'] = list(calendar['Assignment Type']) + [str(ast_type)]
   st.text(f'Assignment "{name}" added to {year} Calendar')
-  save_cal()
+  if save == True:
+    save_cal()
 
 def searchAssignment(assignmentName):
   global calendar
@@ -259,7 +260,9 @@ def completeAction(Action):
                 d['Assignment Due Date'].iloc[row],
                 d['Assignment Notes'].iloc[row],
                 'Incomplete',
-                d['Assignment Type'].iloc[row])
+                d['Assignment Type'].iloc[row],
+               False)
+          save_cal()
     with st.expander('Enter Assignment Here (up to 5 assignemnts)'):
       howManyAssignments = st.slider('How many assignments would you like to add?',1,5,key = 4)
       col0,col1,col2,col3,col4,col5 = st.columns([1,4,2,2,4,2])
