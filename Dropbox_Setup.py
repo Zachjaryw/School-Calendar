@@ -48,7 +48,7 @@ method toDBX allows for files to be written and rewritten to dropbox
 '''
 def toDBX(dbx, data,filename):
   with io.StringIO() as stream:
-    json.dump(data, stream)
+    json.dump(data, stream,indent=4, sort_keys=True)
     stream.seek(0)
     dbx.files_upload(stream.read().encode(), filename, mode=dropbox.files.WriteMode.overwrite)
 
