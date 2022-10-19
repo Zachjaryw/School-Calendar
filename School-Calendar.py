@@ -215,6 +215,8 @@ def completeAction(Action):
     if col == 'Assignment Due Date':
       new = st.date_input("Input adjusted value",key = 5)
       new = str(new).replace('/','-')
+    elif col == 'Assignment Status':
+      new = st.selectbox('Select assignment status',['Incomplete','Complete','In Progress'],key = 5)
     else:
       new = st.text_input("Input adjusted value",key = 5)
     if st.button("Submit",key = 20) == True:
