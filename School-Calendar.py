@@ -597,6 +597,7 @@ elif user == "NEW":
       if password_2 != "" and password_1 == password_2:
         data[Huff.encrypt(newUsername)] = [Huff.encrypt(password_1),[],[]]
         toDBX(dbx, data, filename)
+        toDBX(dbx,{'Reminder':[]},f'{st.secrets.file.studentAccess}{newUsername}/reminders.json')
         setup = {
           'Assignment Name': [],
           'Assignment Due Date': [],
