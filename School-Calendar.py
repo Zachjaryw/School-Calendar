@@ -341,7 +341,7 @@ def completeAction(Action):
       col1.write(reminder[r])
       exec(f'b_{r} = col2.button("Delete",key = 2512+{r})')
       exec(f'dele.append(b_{r})')
-      if True in del:
+      if True in dele:
         reminder.remove(reminder[dele.index(True)])
         toDBX(dbx,reminder,f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
         st.experimental_rerun()
