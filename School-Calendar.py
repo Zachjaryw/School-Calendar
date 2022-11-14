@@ -563,7 +563,7 @@ dbx = initialize()
 data = fromDBX(dbx,filename)
 
 for u in data.keys():
-  toDBX(dbx,{'Reminder':[]),f'{st.secrets.file.studentAccess}{u}/reminders.json')
+  toDBX(dbx,{'Reminder':[]},f'{st.secrets.file.studentAccess}{u}/reminders.json')
 
 decrypted = Huff.decryptList(list(data.keys()))
 if user != 'NEW' and user in decrypted:
