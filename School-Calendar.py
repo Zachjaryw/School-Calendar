@@ -335,14 +335,14 @@ def completeAction(Action):
     col1,col2 = st.columns([6,1])
     col1.write('Reminder')
     col2.write('Delete')
-    del = []
+    dele = []
     for r in range(len(reminder)):
       col1,col2 = st.columns([6,1])
       col1.write(reminder[r])
       exec(f'b_{r} = col2.button("Delete",key = 2512+{r})')
-      exec(f'del.append(b_{r})')
+      exec(f'dele.append(b_{r})')
       if True in del:
-        reminder.remove(reminder[del.index(True)])
+        reminder.remove(reminder[dele.index(True)])
         toDBX(dbx,reminder,f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
         st.experimental_rerun()
   elif Action == "My Courses":
