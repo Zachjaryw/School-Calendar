@@ -345,6 +345,10 @@ def completeAction(Action):
         reminder.remove(reminder[dele.index(True)])
         toDBX(dbx,reminder,f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
         st.experimental_rerun()
+    newrem = st.text_input('Add Reminder','',key = 'reminder')
+    if st.button('Add Reminder',key = 'add'):
+      toDBX(dbx,reminder.append(newrem),f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
+      st.experimental_rerun()
   elif Action == "My Courses":
       courses = fromDBX(dbx,courseFilename)
       if len(data[acceptUser][1]) == 0:
