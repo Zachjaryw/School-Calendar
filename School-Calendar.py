@@ -561,10 +561,6 @@ findCourse = st.secrets.file.findCourse
 user = st.text_input("Enter Username, type 'NEW' for a new user, or type 'Help':")
 dbx = initialize()
 data = fromDBX(dbx,filename)
-
-for u in data.keys():
-  toDBX(dbx,{'Reminder':[]},f'{st.secrets.file.studentAccess}{u}/reminders.json')
-
 decrypted = Huff.decryptList(list(data.keys()))
 if user != 'NEW' and user in decrypted:
   acceptUser = list(data.keys())[decrypted.index(user)]
