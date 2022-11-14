@@ -336,18 +336,18 @@ def completeAction(Action):
     col1.write('Reminder')
     col2.write('Delete')
     dele = []
-    for r in range(len(reminder)):
+    for r in range(len(reminder['Reminder'])):
       col1,col2 = st.columns([6,1])
-      col1.write(reminder[r])
+      col1.write(reminder['Reminder'][r])
       exec(f'b_{r} = col2.button("Delete",key = 2512+{r})')
       exec(f'dele.append(b_{r})')
       if True in dele:
-        reminder.remove(reminder[dele.index(True)])
+        reminder['Reminder'].remove(reminder['Reminder'][dele.index(True)])
         toDBX(dbx,reminder,f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
         st.experimental_rerun()
     newrem = st.text_input('Add Reminder','',key = 'reminder')
     if st.button('Add Reminder',key = 'add'):
-      toDBX(dbx,reminder.append(newrem),f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
+      toDBX(dbx,reminder['Reminder'].append(newrem),f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
       st.experimental_rerun()
   elif Action == "My Courses":
       courses = fromDBX(dbx,courseFilename)
@@ -561,6 +561,10 @@ findCourse = st.secrets.file.findCourse
 user = st.text_input("Enter Username, type 'NEW' for a new user, or type 'Help':")
 dbx = initialize()
 data = fromDBX(dbx,filename)
+
+for u in data.keys():
+  toDBX(dbx,{'Reminder':[]),f'{st.secrets.file.studentAccess}{u}/reminders.json')
+
 decrypted = Huff.decryptList(list(data.keys()))
 if user != 'NEW' and user in decrypted:
   acceptUser = list(data.keys())[decrypted.index(user)]
@@ -573,9 +577,9 @@ if user != 'NEW' and user in decrypted:
         semester = st.selectbox('Semester:',semesters)
       calendar = fromDBX(dbx,f'{st.secrets.file.studentAccess}{acceptUser}/{semester} {year}.json')
       reminder = fromDBX(dbx,f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
-      if len(reminder) != 0:
+      if len(reminder['Reminder']) != 0:
         with st.expander('Reminders'):
-          showreminders(reminder)
+          showreminders(reminder['Reminder'])
       Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range","Search For Assignment","Course Assignments","My Courses","Edit Reminders"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
 elif user == "NEW":
