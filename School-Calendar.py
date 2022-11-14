@@ -347,7 +347,8 @@ def completeAction(Action):
         st.experimental_rerun()
     newrem = st.text_input('Add Reminder','',key = 'reminder')
     if st.button('Add Reminder',key = 'add'):
-      toDBX(dbx,reminder['Reminder'].append(newrem),f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
+      reminder['Reminder'].append(newrem)
+      toDBX(dbx,reminder,f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
       st.experimental_rerun()
   elif Action == "My Courses":
       courses = fromDBX(dbx,courseFilename)
@@ -561,6 +562,10 @@ findCourse = st.secrets.file.findCourse
 user = st.text_input("Enter Username, type 'NEW' for a new user, or type 'Help':")
 dbx = initialize()
 data = fromDBX(dbx,filename)
+
+for u in data.keys():
+  toDBX(dbx,{'Reminder':[]},f'{st.secrets.file.studentAccess}{u}/reminders.json')
+    
 decrypted = Huff.decryptList(list(data.keys()))
 if user != 'NEW' and user in decrypted:
   acceptUser = list(data.keys())[decrypted.index(user)]
