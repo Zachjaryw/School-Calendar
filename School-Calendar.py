@@ -330,6 +330,21 @@ def completeAction(Action):
               st.text('Assignment added to calendar')
               st.experimental_rerun()
               save_cal()
+  elif Action == 'Edit Reminders':
+    reminder = fromDBX(dbx,f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
+    col1,col2 = st.columns([6,1])
+    col1.write('Reminder')
+    col2.write('Delete')
+    del = []
+    for r in range(len(reminder)):
+      col1,col2 = st.columns([6,1])
+      col1.write(reminder[r])
+      exec(f'b_{r} = col2.button("Delete",key = 2512+{r})')
+      exec(f'del.append(b_{r})')
+      if True in del:
+        reminder.remove(reminder[del.index(True)])
+        toDBX(dbx,reminder,f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
+        st.experimental_rerun()
   elif Action == "My Courses":
       courses = fromDBX(dbx,courseFilename)
       if len(data[acceptUser][1]) == 0:
@@ -525,6 +540,10 @@ def setupDateRangeAssignments():
             exec(f'col4.text(a{item}.note)')
             exec(f'col5.text(a{item}.type_)')
 
+def showreminders(reminder):
+  for r in reminder:
+    st.write(r)
+   
 years = []
 for i in range(4):
   years.append(int(str(dt.date.today())[:4])+i)
@@ -539,6 +558,14 @@ user = st.text_input("Enter Username, type 'NEW' for a new user, or type 'Help':
 dbx = initialize()
 data = fromDBX(dbx,filename)
 decrypted = Huff.decryptList(list(data.keys()))
+
+
+
+for u in list(data.keys()):
+  toDBX(dbx,[],f'{st.secrets.file.studentAccess}{u}/reminders.json')
+  
+  
+  
 if user != 'NEW' and user in decrypted:
   acceptUser = list(data.keys())[decrypted.index(user)]
   acceptPassword = Huff.decrypt(data[acceptUser][0])
@@ -549,7 +576,11 @@ if user != 'NEW' and user in decrypted:
         year = st.selectbox('Year:',years)
         semester = st.selectbox('Semester:',semesters)
       calendar = fromDBX(dbx,f'{st.secrets.file.studentAccess}{acceptUser}/{semester} {year}.json')
-      Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range","Search For Assignment","Course Assignments","My Courses"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
+      reminder = fromDBX(dbx,f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
+      if len(reminder) != 0:
+        with st.expander('Reminders'):
+          showreminders(reminder)
+      Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range","Search For Assignment","Course Assignments","My Courses","Edit Reminders"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
 elif user == "NEW":
   authorization = st.text_input('Please type the authorization code here:',"access-")
