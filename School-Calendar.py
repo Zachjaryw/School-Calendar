@@ -545,9 +545,9 @@ def setupDateRangeAssignments():
             exec(f'col4.text(a{item}.note)')
             exec(f'col5.text(a{item}.type_)')
 
-def showreminders(reminder):
-  for r in reminder:
-    st.write(r)
+#def showreminders(reminder):
+  #for r in reminder:
+    #st.write(r)
    
 years = []
 for i in range(4):
@@ -573,10 +573,10 @@ if user != 'NEW' and user in decrypted:
         year = st.selectbox('Year:',years)
         semester = st.selectbox('Semester:',semesters)
       calendar = fromDBX(dbx,f'{st.secrets.file.studentAccess}{acceptUser}/{semester} {year}.json')
-      reminder = fromDBX(dbx,f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
-      if len(reminder['Reminder']) != 0:
-        with st.expander('Reminders'):
-          showreminders(reminder['Reminder'])
+      #reminder = fromDBX(dbx,f'{st.secrets.file.studentAccess}{acceptUser}/reminders.json')
+      #if len(reminder['Reminder']) != 0:
+        #with st.expander('Reminders'):
+          #showreminders(reminder['Reminder'])
       Action = st.selectbox("Select Action",["Assignments Due This Week", "New Assignment", "Adjust Assignment", "Show Old Assignments","Assignments In Date Range","Search For Assignment","Course Assignments","My Courses","Edit Reminders"])     #["Assignments Due This Week", "Progress", "Adjust Assignment", "New Assignment", "Show Old Assignments", "Assignments Due This Month", "Show Assignments by Type", "Show Full Calendar","Review Single Assignment","Add Assignments from file","Assignments In Date Range"])
       completeAction(Action)
 elif user == "NEW":
